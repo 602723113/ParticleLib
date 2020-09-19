@@ -3,3 +3,6 @@ version: 1.0.0
 main: top.zoyn.particlelib.ParticleLib
 author: Zoyn
 api-version: "1.13"
+commands:
+  plib:
+    description: "一个可能用于测试的指令"

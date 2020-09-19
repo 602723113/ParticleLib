@@ -31,6 +31,4 @@ public class VectorUtils {
         double y = v.getX() * sin + v.getY() * cos;
         return v.setX(x).setY(y);
     }
-
-
 }

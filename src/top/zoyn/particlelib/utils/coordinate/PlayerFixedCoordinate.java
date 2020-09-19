@@ -1,4 +1,4 @@
-package top.zoyn.particlelib.coordinate;
+package top.zoyn.particlelib.utils.coordinate;
 
 import org.bukkit.Location;
 import top.zoyn.particlelib.utils.LocationUtils;
@@ -23,8 +23,8 @@ public class PlayerFixedCoordinate {
         // 旋转的角度
         rotateAngle = playerLocation.getYaw();
         originDot = playerLocation.clone();
-        originDot.setPitch(0);
         // 重设仰俯角, 防止出现仰头后旋转角度不正确的问题
+        originDot.setPitch(0);
     }
 
     public Location getOriginDot() {
