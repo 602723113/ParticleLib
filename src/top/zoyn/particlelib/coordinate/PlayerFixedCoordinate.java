@@ -31,7 +31,7 @@ public class PlayerFixedCoordinate {
         return originDot;
     }
 
-    public Location newLocation(double x,double y, double z) {
+    public Location newLocation(double x, double y, double z) {
         return LocationUtils.rotateLocationAboutPoint(originDot.clone().add(-x, y, z), rotateAngle, originDot);
     }
 }
