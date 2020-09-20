@@ -13,9 +13,6 @@ public class Arc extends ParticleObject {
     private double angle;
     private double radius;
     private double step;
-    private BukkitTask task;
-    private long period;
-    private boolean running = false;
 
     public Arc(Location origin) {
         this(origin, 30D);
@@ -55,7 +52,7 @@ public class Arc extends ParticleObject {
         this.angle = angle;
         this.radius = radius;
         this.step = step;
-        this.period = period;
+        setPeriod(period);
     }
 
     @Override
@@ -66,57 +63,6 @@ public class Arc extends ParticleObject {
             double z = radius * Math.sin(radians);
 
             origin.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, origin.clone().add(x, 0, z), 1);
-        }
-    }
-
-    @Override
-    public void alwaysShow() {
-        turnOffTask();
-
-        // 此处的延迟 2tick 是为了防止turnOffTask还没把特效给关闭时的缓冲
-        Bukkit.getScheduler().runTaskLater(ParticleLib.getInstance(), () -> {
-            running = true;
-            task = new BukkitRunnable() {
-                @Override
-                public void run() {
-                    if (!running) {
-                        return;
-                    }
-                    show();
-                }
-            }.runTaskTimer(ParticleLib.getInstance(), 0L, period);
-
-            setShowType(ShowType.ALWAYS_SHOW);
-        }, 2L);
-    }
-
-    @Override
-    public void alwaysShowAsync() {
-        turnOffTask();
-
-        // 此处的延迟 2tick 是为了防止turnOffTask还没把特效给关闭时的缓冲
-        Bukkit.getScheduler().runTaskLater(ParticleLib.getInstance(), () -> {
-            running = true;
-            task = new BukkitRunnable() {
-                @Override
-                public void run() {
-                    if (!running) {
-                        return;
-                    }
-                    show();
-                }
-            }.runTaskTimerAsynchronously(ParticleLib.getInstance(), 0L, period);
-
-            setShowType(ShowType.ALWAYS_SHOW_ASYNC);
-        }, 2L);
-    }
-
-    @Override
-    public void turnOffTask() {
-        if (task != null) {
-            running = false;
-            task.cancel();
-            setShowType(ShowType.NONE);
         }
     }
 
@@ -156,12 +102,4 @@ public class Arc extends ParticleObject {
         return this;
     }
 
-    public long getPeriod() {
-        return period;
-    }
-
-    public Arc setPeriod(long period) {
-        this.period = period;
-        return this;
-    }
 }

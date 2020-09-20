@@ -26,12 +26,6 @@ public class Line extends ParticleObject {
      * 向量长度
      */
     private double length;
-    private BukkitTask task;
-    /**
-     * 特效周期
-     */
-    private long period;
-    private boolean running = false;
 
     public Line(Location start, Location end) {
         this(start, end, 0.1);
@@ -60,7 +54,7 @@ public class Line extends ParticleObject {
         this.start = start;
         this.end = end;
         this.step = step;
-        this.period = period;
+        setPeriod(period);
 
         // 对向量进行重置
         resetVector();
@@ -74,56 +68,47 @@ public class Line extends ParticleObject {
         }
     }
 
-    @Override
-    public void alwaysShow() {
-        turnOffTask();
-
-        // 此处的延迟 2tick 是为了防止turnOffTask还没把特效给关闭时的缓冲
-        Bukkit.getScheduler().runTaskLater(ParticleLib.getInstance(), () -> {
-            running = true;
-            task = new BukkitRunnable() {
-                @Override
-                public void run() {
-                    if (!running) {
-                        return;
-                    }
-                    show();
-                }
-            }.runTaskTimer(ParticleLib.getInstance(), 0L, period);
-
-            setShowType(ShowType.ALWAYS_SHOW);
-        }, 2L);
-    }
-
-    @Override
-    public void alwaysShowAsync() {
-        turnOffTask();
-
-        // 此处的延迟 2tick 是为了防止turnOffTask还没把特效给关闭时的缓冲
-        Bukkit.getScheduler().runTaskLater(ParticleLib.getInstance(), () -> {
-            running = true;
-            task = new BukkitRunnable() {
-                @Override
-                public void run() {
-                    if (!running) {
-                        return;
-                    }
-                    show();
-                }
-            }.runTaskTimerAsynchronously(ParticleLib.getInstance(), 0L, period);
-
-            setShowType(ShowType.ALWAYS_SHOW_ASYNC);
-        }, 2L);
-    }
-
-    @Override
-    public void turnOffTask() {
-        if (task != null) {
-            running = false;
-            task.cancel();
-            setShowType(ShowType.NONE);
-        }
-    }
+//    @Override
+//    public void alwaysShow() {
+//        turnOffTask();
+//
+//        // 此处的延迟 2tick 是为了防止turnOffTask还没把特效给关闭时的缓冲
+//        Bukkit.getScheduler().runTaskLater(ParticleLib.getInstance(), () -> {
+//            running = true;
+//            task = new BukkitRunnable() {
+//                @Override
+//                public void run() {
+//                    if (!running) {
+//                        return;
+//                    }
+//                    show();
+//                }
+//            }.runTaskTimer(ParticleLib.getInstance(), 0L, period);
+//
+//            setShowType(ShowType.ALWAYS_SHOW);
+//        }, 2L);
+//    }
+//
+//    @Override
+//    public void alwaysShowAsync() {
+//        turnOffTask();
+//
+//        // 此处的延迟 2tick 是为了防止turnOffTask还没把特效给关闭时的缓冲
+//        Bukkit.getScheduler().runTaskLater(ParticleLib.getInstance(), () -> {
+//            running = true;
+//            task = new BukkitRunnable() {
+//                @Override
+//                public void run() {
+//                    if (!running) {
+//                        return;
+//                    }
+//                    show();
+//                }
+//            }.runTaskTimerAsynchronously(ParticleLib.getInstance(), 0L, period);
+//
+//            setShowType(ShowType.ALWAYS_SHOW_ASYNC);
+//        }, 2L);
+//    }
 
     public Location getStart() {
         return start;
@@ -152,15 +137,6 @@ public class Line extends ParticleObject {
     public Line setStep(double step) {
         this.step = step;
         resetVector();
-        return this;
-    }
-
-    public long getPeriod() {
-        return period;
-    }
-
-    public Line setPeriod(long period) {
-        this.period = period;
         return this;
     }
 

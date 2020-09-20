@@ -70,7 +70,7 @@ public class ParticleLib extends JavaPlugin {
         }
 
         circle = new Circle(player.getLocation());
-        circle.alwaysShow();
+        circle.alwaysShowAsync();
 
 
 //        Line line = new Line(loc1, loc2);

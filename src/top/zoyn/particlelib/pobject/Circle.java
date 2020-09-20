@@ -38,8 +38,8 @@ public class Circle extends ParticleObject {
         this.fullArc = new Arc(origin)
                 .setAngle(360D)
                 .setRadius(radius)
-                .setStep(step)
-                .setPeriod(period);
+                .setStep(step);
+        fullArc.setPeriod(period);
     }
 
     @Override
@@ -50,18 +50,21 @@ public class Circle extends ParticleObject {
     @Override
     public void alwaysShow() {
         fullArc.alwaysShow();
+        // 再设置Circle自身的ShowType
         setShowType(ShowType.ALWAYS_SHOW);
     }
 
     @Override
     public void alwaysShowAsync() {
         fullArc.alwaysShowAsync();
+        // 再设置Circle自身的ShowType
         setShowType(ShowType.ALWAYS_SHOW_ASYNC);
     }
 
     @Override
     public void turnOffTask() {
         fullArc.turnOffTask();
+        // 再设置Circle自身的ShowType
         setShowType(ShowType.NONE);
     }
 
@@ -98,9 +101,8 @@ public class Circle extends ParticleObject {
         return this.fullArc.getPeriod();
     }
 
-    public Circle setPeriod(long period) {
+    public void setPeriod(long period) {
         this.fullArc.setPeriod(period);
-        return this;
     }
 
 }
