@@ -1,5 +1,6 @@
 package top.zoyn.particlelib.pobject;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -15,8 +16,8 @@ import top.zoyn.particlelib.ParticleLib;
 public class Line extends ParticleObject {
 
     private Vector vector;
-    private Location loc1;
-    private Location loc2;
+    private Location start;
+    private Location end;
     /**
      * 步长
      */
@@ -30,33 +31,34 @@ public class Line extends ParticleObject {
      * 特效周期
      */
     private long period;
+    private boolean running = false;
 
-    public Line(Location loc1, Location loc2) {
-        this(loc1, loc2, 0.1);
+    public Line(Location start, Location end) {
+        this(start, end, 0.1);
     }
 
     /**
      * 构造一个线
      *
-     * @param loc1 线的起点
-     * @param loc2 线的终点
+     * @param start 线的起点
+     * @param end 线的终点
      * @param step 每个粒子之间的间隔 (也即步长)
      */
-    public Line(Location loc1, Location loc2, double step) {
-        this(loc1, loc2, step, 20L);
+    public Line(Location start, Location end, double step) {
+        this(start, end, step, 20L);
     }
 
     /**
      * 构造一个线
      *
-     * @param loc1   线的起点
-     * @param loc2   线的终点
+     * @param start   线的起点
+     * @param end   线的终点
      * @param step   每个粒子之间的间隔 (也即步长)
      * @param period 特效周期(如果需要可以使用)
      */
-    public Line(Location loc1, Location loc2, double step, long period) {
-        this.loc1 = loc1;
-        this.loc2 = loc2;
+    public Line(Location start, Location end, double step, long period) {
+        this.start = start;
+        this.end = end;
         this.step = step;
         this.period = period;
 
@@ -68,7 +70,7 @@ public class Line extends ParticleObject {
     public void show() {
         for (double i = 0; i < length; i += step) {
             Vector vectorTemp = vector.clone().multiply(i);
-            loc1.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, loc1.clone().add(vectorTemp), 1);
+            start.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, start.clone().add(vectorTemp), 1);
         }
     }
 
@@ -76,49 +78,69 @@ public class Line extends ParticleObject {
     public void alwaysShow() {
         turnOffTask();
 
-        task = new BukkitRunnable() {
-            @Override
-            public void run() {
-                show();
-            }
-        }.runTaskTimer(ParticleLib.getInstance(), 0L, period);
+        // 此处的延迟 2tick 是为了防止turnOffTask还没把特效给关闭时的缓冲
+        Bukkit.getScheduler().runTaskLater(ParticleLib.getInstance(), () -> {
+            running = true;
+            task = new BukkitRunnable() {
+                @Override
+                public void run() {
+                    if (!running) {
+                        return;
+                    }
+                    show();
+                }
+            }.runTaskTimer(ParticleLib.getInstance(), 0L, period);
+
+            setShowType(ShowType.ALWAYS_SHOW);
+        }, 2L);
     }
 
     @Override
     public void alwaysShowAsync() {
         turnOffTask();
 
-        task = new BukkitRunnable() {
-            @Override
-            public void run() {
-                show();
-            }
-        }.runTaskTimerAsynchronously(ParticleLib.getInstance(), 0L, period);
+        // 此处的延迟 2tick 是为了防止turnOffTask还没把特效给关闭时的缓冲
+        Bukkit.getScheduler().runTaskLater(ParticleLib.getInstance(), () -> {
+            running = true;
+            task = new BukkitRunnable() {
+                @Override
+                public void run() {
+                    if (!running) {
+                        return;
+                    }
+                    show();
+                }
+            }.runTaskTimerAsynchronously(ParticleLib.getInstance(), 0L, period);
+
+            setShowType(ShowType.ALWAYS_SHOW_ASYNC);
+        }, 2L);
     }
 
     @Override
     public void turnOffTask() {
         if (task != null) {
+            running = false;
             task.cancel();
+            setShowType(ShowType.NONE);
         }
     }
 
-    public Location getLoc1() {
-        return loc1;
+    public Location getStart() {
+        return start;
     }
 
-    public Line setLoc1(Location loc1) {
-        this.loc1 = loc1;
+    public Line setStart(Location start) {
+        this.start = start;
         resetVector();
         return this;
     }
 
-    public Location getLoc2() {
-        return loc2;
+    public Location getEnd() {
+        return end;
     }
 
-    public Line setLoc2(Location loc2) {
-        this.loc2 = loc2;
+    public Line setEnd(Location end) {
+        this.end = end;
         resetVector();
         return this;
     }
@@ -143,7 +165,7 @@ public class Line extends ParticleObject {
     }
 
     public void resetVector() {
-        vector = loc2.clone().subtract(loc1).toVector();
+        vector = end.clone().subtract(start).toVector();
         length = vector.length();
         vector.normalize();
     }

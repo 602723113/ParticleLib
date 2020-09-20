@@ -1,5 +1,6 @@
 package top.zoyn.particlelib.pobject;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -14,6 +15,7 @@ public class Arc extends ParticleObject {
     private double step;
     private BukkitTask task;
     private long period;
+    private boolean running = false;
 
     public Arc(Location origin) {
         this(origin, 30D);
@@ -71,31 +73,50 @@ public class Arc extends ParticleObject {
     public void alwaysShow() {
         turnOffTask();
 
-        task = new BukkitRunnable() {
-            @Override
-            public void run() {
-                show();
-            }
-        }.runTaskTimer(ParticleLib.getInstance(), 0L, period);
+        // 此处的延迟 2tick 是为了防止turnOffTask还没把特效给关闭时的缓冲
+        Bukkit.getScheduler().runTaskLater(ParticleLib.getInstance(), () -> {
+            running = true;
+            task = new BukkitRunnable() {
+                @Override
+                public void run() {
+                    if (!running) {
+                        return;
+                    }
+                    show();
+                }
+            }.runTaskTimer(ParticleLib.getInstance(), 0L, period);
+
+            setShowType(ShowType.ALWAYS_SHOW);
+        }, 2L);
     }
 
     @Override
     public void alwaysShowAsync() {
         turnOffTask();
 
-        task = new BukkitRunnable() {
-            @Override
-            public void run() {
-                show();
-            }
-        }.runTaskTimerAsynchronously(ParticleLib.getInstance(), 0L, period);
+        // 此处的延迟 2tick 是为了防止turnOffTask还没把特效给关闭时的缓冲
+        Bukkit.getScheduler().runTaskLater(ParticleLib.getInstance(), () -> {
+            running = true;
+            task = new BukkitRunnable() {
+                @Override
+                public void run() {
+                    if (!running) {
+                        return;
+                    }
+                    show();
+                }
+            }.runTaskTimerAsynchronously(ParticleLib.getInstance(), 0L, period);
+
+            setShowType(ShowType.ALWAYS_SHOW_ASYNC);
+        }, 2L);
     }
 
     @Override
     public void turnOffTask() {
         if (task != null) {
-//            Bukkit.getScheduler().cancelTask(task.getTaskId());
+            running = false;
             task.cancel();
+            setShowType(ShowType.NONE);
         }
     }
 

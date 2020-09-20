@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import top.zoyn.particlelib.pobject.Arc;
+import top.zoyn.particlelib.pobject.Circle;
 import top.zoyn.particlelib.pobject.Line;
 
 /**
@@ -19,7 +20,7 @@ public class ParticleLib extends JavaPlugin {
     private static ParticleLib instance;
     private Location loc1;
     private Location loc2;
-
+    private Circle circle;
     public static ParticleLib getInstance() {
         return instance;
     }
@@ -56,7 +57,21 @@ public class ParticleLib extends JavaPlugin {
                 loc2 = player.getLocation();
                 return true;
             }
+
+            if (args[0].equalsIgnoreCase("circle")) {
+                circle.setOrigin(player.getLocation());
+                return true;
+            }
+
+            if (args[0].equalsIgnoreCase("cancel")) {
+                circle.turnOffTask();
+                return true;
+            }
         }
+
+        circle = new Circle(player.getLocation());
+        circle.alwaysShow();
+
 
 //        Line line = new Line(loc1, loc2);
 //        line.show();
