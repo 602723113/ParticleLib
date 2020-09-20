@@ -2,13 +2,13 @@ package top.zoyn.particlelib;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Particle;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import top.zoyn.particlelib.pobject.Arc;
 import top.zoyn.particlelib.pobject.Circle;
-import top.zoyn.particlelib.pobject.Line;
+import top.zoyn.particlelib.utils.coordinate.PlayerBackCoordinate;
 
 /**
  * 粒子库主类
@@ -21,6 +21,7 @@ public class ParticleLib extends JavaPlugin {
     private Location loc1;
     private Location loc2;
     private Circle circle;
+
     public static ParticleLib getInstance() {
         return instance;
     }
@@ -69,10 +70,18 @@ public class ParticleLib extends JavaPlugin {
             }
         }
 
-        circle = new Circle(player.getLocation());
-        circle.alwaysShowAsync();
+//        circle = new Circle(player.getLocation());
+//        circle.alwaysShowAsync();
 
+        PlayerBackCoordinate coordinate = new PlayerBackCoordinate(player.getLocation());
+        Location loc = coordinate.newLocation(1, 1, 0);
+        loc.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, loc, 1, 0, 0, 0, 0);
 
+        loc = coordinate.newLocation(1, 1, 1);
+        loc.getWorld().spawnParticle(Particle.FLAME, loc, 1, 0, 0, 0, 0);
+
+        loc = coordinate.newLocation(1, 0, 0);
+        loc.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, loc, 1, 0, 0, 0, 0);
 //        Line line = new Line(loc1, loc2);
 //        line.show();
 
