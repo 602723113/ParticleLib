@@ -1,7 +1,13 @@
 package top.zoyn.particlelib;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import top.zoyn.particlelib.pobject.Arc;
+import top.zoyn.particlelib.pobject.Line;
 
 /**
  * 粒子库主类
@@ -11,6 +17,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class ParticleLib extends JavaPlugin {
 
     private static ParticleLib instance;
+    private Location loc1;
+    private Location loc2;
 
     public static ParticleLib getInstance() {
         return instance;
@@ -36,9 +44,31 @@ public class ParticleLib extends JavaPlugin {
         sendLog("§a粒子库已成功卸载");
     }
 
-//    @Override
-//    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-//        Player player = (Player) sender;
+    @Override
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        Player player = (Player) sender;
+        if (args.length != 0) {
+            if (args[0].equalsIgnoreCase("loc1")) {
+                loc1 = player.getLocation();
+                return true;
+            }
+            if (args[0].equalsIgnoreCase("loc2")) {
+                loc2 = player.getLocation();
+                return true;
+            }
+        }
+
+//        Line line = new Line(loc1, loc2);
+//        line.show();
+
+//        Arc arc = new Arc(player.getLocation())
+//                .setAngle(180D)
+//                .setRadius(1.5)
+//                .setStep(2);
+////        Arc arc = new Arc(player.getLocation(), 180D, 1.5, 2);
+//        arc.show();
+//        line.alwaysShowAsync();
+
 //        PlayerFixedCoordinate coordinate = new PlayerFixedCoordinate(player.getLocation());
 //
 //        Location location = coordinate.newLocation(1, 0, 1);
@@ -48,7 +78,7 @@ public class ParticleLib extends JavaPlugin {
 //        location = coordinate.newLocation(1,1,1);
 //        world.spawnParticle(Particle.VILLAGER_HAPPY, location, 1, 0, 0, 0, 0);
 //        player.sendMessage("Already Done.");
-
+//
 //        PlayerFrontCoordinate coordinate = new PlayerFrontCoordinate(player.getLocation());
 //        new BukkitRunnable() {
 //            @Override
@@ -68,7 +98,7 @@ public class ParticleLib extends JavaPlugin {
 //                }
 //            }
 //        }.runTaskTimer(this, 0L, 10L);
-
+//
 //
 //        Vector vector = player.getLocation().getDirection();
 //        Location location = player.getLocation();
@@ -90,8 +120,8 @@ public class ParticleLib extends JavaPlugin {
 //                }
 //            }
 //        }.runTaskTimer(this, 0L, 10L);
-//
-//
-//        return true;
-//    }
+
+
+        return true;
+    }
 }
