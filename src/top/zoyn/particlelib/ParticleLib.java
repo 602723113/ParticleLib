@@ -1,5 +1,6 @@
 package top.zoyn.particlelib;
 
+import com.google.common.collect.Lists;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -7,8 +8,12 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 import top.zoyn.particlelib.pobject.Circle;
 import top.zoyn.particlelib.utils.coordinate.PlayerBackCoordinate;
+
+import java.util.List;
 
 /**
  * 粒子库主类
@@ -74,14 +79,20 @@ public class ParticleLib extends JavaPlugin {
 //        circle.alwaysShowAsync();
 
         PlayerBackCoordinate coordinate = new PlayerBackCoordinate(player.getLocation());
-        Location loc = coordinate.newLocation(1, 1, 0);
-        loc.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, loc, 1, 0, 0, 0, 0);
+        Location loc = coordinate.newLocation(-4, 2.5, 0);
+        Location p1 = coordinate.newLocation(0, 0, 0);
+        Location p2 = coordinate.newLocation(4, 4, 0);
+        Location p3 = coordinate.newLocation(8, -2, -2);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                loc.getWorld().spawnParticle(Particle.FLAME, loc, 5, 0, 0, 0, 0);
+                loc.getWorld().spawnParticle(Particle.FLAME, p1, 5, 0, 0, 0, 0);
+                loc.getWorld().spawnParticle(Particle.FLAME, p2, 5, 0, 0, 0, 0);
+                loc.getWorld().spawnParticle(Particle.FLAME, p3, 5, 0, 0, 0, 0);
+            }
+        }.runTaskTimerAsynchronously(this, 0L, 10L);
 
-        loc = coordinate.newLocation(1, 1, 1);
-        loc.getWorld().spawnParticle(Particle.FLAME, loc, 1, 0, 0, 0, 0);
-
-        loc = coordinate.newLocation(1, 0, 0);
-        loc.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, loc, 1, 0, 0, 0, 0);
 //        Line line = new Line(loc1, loc2);
 //        line.show();
 
