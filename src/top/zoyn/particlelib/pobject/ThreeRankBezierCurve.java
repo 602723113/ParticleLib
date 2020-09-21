@@ -5,6 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.util.Vector;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,7 +41,7 @@ public class ThreeRankBezierCurve extends ParticleObject {
         this.p2 = p2;
         this.p3 = p3;
         this.step = step;
-        locations = Lists.newArrayList();
+        locations = new ArrayList<>();
 
         resetLocations();
     }
