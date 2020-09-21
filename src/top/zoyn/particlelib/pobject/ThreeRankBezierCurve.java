@@ -48,7 +48,11 @@ public class ThreeRankBezierCurve extends ParticleObject {
 
     @Override
     public void show() {
-        locations.forEach(loc -> loc.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, loc, 1));
+        locations.forEach(loc -> {
+            if (loc != null) {
+                loc.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, loc, 1);
+            }
+        });
     }
 
     public Location getP0() {
