@@ -6,9 +6,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 import top.zoyn.particlelib.pobject.Circle;
-import top.zoyn.particlelib.pobject.Sphere;
+import top.zoyn.particlelib.pobject.PolarEquationRenderer;
 
 /**
  * 粒子库主类
@@ -88,17 +87,39 @@ public class ParticleLib extends JavaPlugin {
 //            }
 //        }.runTaskTimerAsynchronously(this, 0L, 10L);
 
-        Sphere sphere = new Sphere(player.getLocation());
-        sphere.alwaysShowAsync();
+//        Sphere sphere = new Sphere(player.getLocation());
+//        sphere.alwaysShowAsync();
+//
+//        new BukkitRunnable() {
+//            @Override
+//            public void run() {
+//                sphere.setRadius(5)
+//                        .setOrigin(player.getLocation())
+//                        .setSample(100);
+//            }
+//        }.runTaskLater(this, 5 * 20L);
 
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                sphere.setRadius(5)
-                        .setOrigin(player.getLocation())
-                        .setSample(100);
-            }
-        }.runTaskLater(this, 5 * 20L);
+
+        // 抛物线
+//        FunctionRenderer renderer = new FunctionRenderer(player.getLocation(), Functions.QUADRATIC_FUNCTION);
+//        renderer.alwaysShowAsync();
+
+//        GeneralFunctionRenderer renderer = new GeneralFunctionRenderer(player.getLocation(), x -> {
+//            return (8 * Math.pow(1, 3)) / (Math.pow(x, 2) + (4 * Math.pow(1, 2)));
+//        });
+//        renderer.alwaysShowAsync();
+
+//        ParametricFunctionRenderer renderer = new ParametricFunctionRenderer(player.getLocation(), t -> 2 * Math.pow(Math.cos(t), 3), t -> 2 * Math.pow(Math.sin(t), 3));
+//        renderer.alwaysShowAsync();
+
+//        ParametricFunctionRenderer renderer = new ParametricFunctionRenderer(player.getLocation(), Math::cos, Math::sin);
+//        renderer.setDt(30);
+//        renderer.alwaysShowAsync();
+
+        PolarEquationRenderer renderer1 = new PolarEquationRenderer(player.getLocation(), theta -> {
+            return 1.5 * Math.sin(2 * theta);
+        });
+        renderer1.alwaysShowAsync();
 
 //        Line line = new Line(loc1, loc2);
 //        line.show();
