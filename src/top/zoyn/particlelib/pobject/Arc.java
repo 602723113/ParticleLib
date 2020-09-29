@@ -1,11 +1,7 @@
 package top.zoyn.particlelib.pobject;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
-import top.zoyn.particlelib.ParticleLib;
 
 public class Arc extends ParticleObject {
 

@@ -1,6 +1,5 @@
 package top.zoyn.particlelib.pobject;
 
-import com.google.common.collect.Lists;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.util.Vector;
