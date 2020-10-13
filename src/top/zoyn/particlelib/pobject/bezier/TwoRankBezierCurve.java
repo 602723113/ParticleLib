@@ -1,8 +1,9 @@
-package top.zoyn.particlelib.pobject;
+package top.zoyn.particlelib.pobject.bezier;
 
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.util.Vector;
+import top.zoyn.particlelib.pobject.ParticleObject;
 
 import java.util.ArrayList;
 import java.util.List;
