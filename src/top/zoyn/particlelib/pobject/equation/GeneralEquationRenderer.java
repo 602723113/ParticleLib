@@ -1,7 +1,8 @@
-package top.zoyn.particlelib.pobject;
+package top.zoyn.particlelib.pobject.equation;
 
 import org.bukkit.Location;
 import org.bukkit.Particle;
+import top.zoyn.particlelib.pobject.ParticleObject;
 
 import java.util.function.Function;
 

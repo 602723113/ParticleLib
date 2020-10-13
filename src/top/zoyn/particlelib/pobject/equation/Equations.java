@@ -1,4 +1,4 @@
-package top.zoyn.particlelib.utils;
+package top.zoyn.particlelib.pobject.equation;
 
 import java.util.function.Function;
 
@@ -7,16 +7,12 @@ public class Equations {
     /**
      * 二次函数
      */
-    public static final Function<Double, Double> QUADRATIC_FUNCTION = x -> {
-        return Math.pow(x, 2);
-    };
+    public static final Function<Double, Double> QUADRATIC_FUNCTION = x -> Math.pow(x, 2);
 
     /**
      * 一次函数
      */
-    public static final Function<Double, Double> LINEAR_FUNCTION = x -> {
-        return x;
-    };
+    public static final Function<Double, Double> LINEAR_FUNCTION = x -> x;
 
     /**
      * cos函数
@@ -31,8 +27,6 @@ public class Equations {
     /**
      * 极坐标:四叶玫瑰线
      */
-    public static final Function<Double, Double> POLAR_FOUR_LEAVE_CURVE = theta -> {
-        return 1.5 * Math.sin(2 * theta);
-    };
+    public static final Function<Double, Double> POLAR_FOUR_LEAVE_CURVE = theta -> 1.5 * Math.sin(2 * theta);
 
 }
