@@ -1,8 +1,12 @@
 package top.zoyn.particlelib.pobject;
 
 import org.bukkit.Location;
-import org.bukkit.Particle;
 
+/**
+ * 表示一个弧
+ *
+ * @author Zoyn
+ */
 public class Arc extends ParticleObject {
 
     private Location origin;
@@ -58,7 +62,7 @@ public class Arc extends ParticleObject {
             double x = radius * Math.cos(radians);
             double z = radius * Math.sin(radians);
 
-            origin.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, origin.clone().add(x, 0, z), 1);
+            spawnParticle(origin.clone().add(x, 0, z));
         }
     }
 

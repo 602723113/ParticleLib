@@ -8,7 +8,7 @@ import top.zoyn.particlelib.utils.LocationUtils;
  *
  * @author Zoyn
  */
-public class PlayerBackCoordinate {
+public class PlayerBackCoordinate implements Coordinate {
 
     private final Location originDot;
     private final double rotateAngle;
@@ -23,6 +23,7 @@ public class PlayerBackCoordinate {
         originDot.add(originDot.getDirection().multiply(-0.3));
     }
 
+    @Override
     public Location newLocation(double x, double y, double z) {
         return LocationUtils.rotateLocationAboutPoint(originDot.clone().add(-x, y, z), rotateAngle, originDot);
     }

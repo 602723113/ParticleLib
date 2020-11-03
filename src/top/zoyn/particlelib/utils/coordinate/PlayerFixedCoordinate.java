@@ -8,7 +8,7 @@ import top.zoyn.particlelib.utils.LocationUtils;
  *
  * @author Zoyn
  */
-public class PlayerFixedCoordinate {
+public class PlayerFixedCoordinate implements Coordinate {
 
     /**
      * 原点
@@ -31,6 +31,7 @@ public class PlayerFixedCoordinate {
         return originDot;
     }
 
+    @Override
     public Location newLocation(double x, double y, double z) {
         return LocationUtils.rotateLocationAboutPoint(originDot.clone().add(-x, y, z), rotateAngle, originDot);
     }
