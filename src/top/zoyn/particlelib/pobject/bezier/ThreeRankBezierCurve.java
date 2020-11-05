@@ -1,7 +1,6 @@
 package top.zoyn.particlelib.pobject.bezier;
 
 import org.bukkit.Location;
-import org.bukkit.Particle;
 import org.bukkit.util.Vector;
 import top.zoyn.particlelib.pobject.ParticleObject;
 
@@ -9,7 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 给定四点, 自动生成一条三阶贝塞尔曲线
+ * 表示一条三阶贝塞尔曲线
+ * <p>给定四点, 自动生成一条三阶贝塞尔曲线</p>
  *
  * @author Zoyn
  */

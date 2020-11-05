@@ -8,7 +8,7 @@ import org.bukkit.scheduler.BukkitTask;
 import top.zoyn.particlelib.ParticleLib;
 
 /**
- * 特效对象
+ * 表示一个特效对象
  *
  * @author Zoyn
  */

@@ -2,6 +2,11 @@ package top.zoyn.particlelib.utils;
 
 import org.bukkit.util.Vector;
 
+/**
+ * 向量工具类
+ *
+ * @author Zoyn
+ */
 public class VectorUtils {
 
     public static Vector rotateAroundAxisX(Vector v, double angle) {

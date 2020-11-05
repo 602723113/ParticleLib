@@ -4,7 +4,8 @@ import org.bukkit.Location;
 import top.zoyn.particlelib.utils.LocationUtils;
 
 /**
- * 自动修正在XZ平面上的粒子朝向
+ * 表示一个将X轴显示在玩家面前的坐标器
+ * <p>自动修正在XZ平面上的粒子朝向</p>
  *
  * @author Zoyn
  */

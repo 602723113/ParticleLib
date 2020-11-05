@@ -2,6 +2,11 @@ package top.zoyn.particlelib.utils;
 
 import org.bukkit.Location;
 
+/**
+ * 坐标工具类
+ *
+ * @author Zoyn
+ */
 public class LocationUtils {
 
     /**

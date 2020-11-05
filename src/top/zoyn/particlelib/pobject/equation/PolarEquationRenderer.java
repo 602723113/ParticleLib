@@ -1,11 +1,15 @@
 package top.zoyn.particlelib.pobject.equation;
 
 import org.bukkit.Location;
-import org.bukkit.Particle;
 import top.zoyn.particlelib.pobject.ParticleObject;
 
 import java.util.function.Function;
 
+/**
+ * 表示一个极坐标方程渲染器
+ *
+ * @author Zoyn
+ */
 public class PolarEquationRenderer extends ParticleObject {
 
     private final Function<Double, Double> function;
