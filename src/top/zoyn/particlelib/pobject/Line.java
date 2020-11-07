@@ -64,48 +64,6 @@ public class Line extends ParticleObject {
         }
     }
 
-//    @Override
-//    public void alwaysShow() {
-//        turnOffTask();
-//
-//        // 此处的延迟 2tick 是为了防止turnOffTask还没把特效给关闭时的缓冲
-//        Bukkit.getScheduler().runTaskLater(ParticleLib.getInstance(), () -> {
-//            running = true;
-//            task = new BukkitRunnable() {
-//                @Override
-//                public void run() {
-//                    if (!running) {
-//                        return;
-//                    }
-//                    show();
-//                }
-//            }.runTaskTimer(ParticleLib.getInstance(), 0L, period);
-//
-//            setShowType(ShowType.ALWAYS_SHOW);
-//        }, 2L);
-//    }
-//
-//    @Override
-//    public void alwaysShowAsync() {
-//        turnOffTask();
-//
-//        // 此处的延迟 2tick 是为了防止turnOffTask还没把特效给关闭时的缓冲
-//        Bukkit.getScheduler().runTaskLater(ParticleLib.getInstance(), () -> {
-//            running = true;
-//            task = new BukkitRunnable() {
-//                @Override
-//                public void run() {
-//                    if (!running) {
-//                        return;
-//                    }
-//                    show();
-//                }
-//            }.runTaskTimerAsynchronously(ParticleLib.getInstance(), 0L, period);
-//
-//            setShowType(ShowType.ALWAYS_SHOW_ASYNC);
-//        }, 2L);
-//    }
-
     public Location getStart() {
         return start;
     }
@@ -140,5 +98,14 @@ public class Line extends ParticleObject {
         vector = end.clone().subtract(start).toVector();
         length = vector.length();
         vector.normalize();
+    }
+
+    public static void buildLine(Location locA, Location locB, double step, Particle particle) {
+        Vector vectorAB = locB.clone().subtract(locA).toVector();
+        double vectorLength = vectorAB.length();
+        vectorAB.normalize();
+        for (double i = 0; i < vectorLength; i += step) {
+            locA.getWorld().spawnParticle(particle, locA.clone().add(vectorAB.clone().multiply(i)), 1);
+        }
     }
 }
