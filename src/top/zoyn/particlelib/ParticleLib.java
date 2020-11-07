@@ -2,17 +2,15 @@ package top.zoyn.particlelib;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Particle;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import top.zoyn.particlelib.pobject.Arc;
+import org.bukkit.util.Vector;
 import top.zoyn.particlelib.pobject.Circle;
-import top.zoyn.particlelib.pobject.Line;
-import top.zoyn.particlelib.pobject.Sphere;
-import top.zoyn.particlelib.pobject.bezier.ThreeRankBezierCurve;
-import top.zoyn.particlelib.pobject.bezier.TwoRankBezierCurve;
-import top.zoyn.particlelib.pobject.equation.GeneralEquationRenderer;
+import top.zoyn.particlelib.pobject.Polygon;
+import top.zoyn.particlelib.utils.LocationUtils;
 
 /**
  * 粒子库主类
@@ -73,6 +71,17 @@ public class ParticleLib extends JavaPlugin {
                 return true;
             }
         }
+
+        Polygon polygon = new Polygon(5, player.getLocation());
+        polygon.setParticle(Particle.FLAME);
+        polygon.alwaysShowAsync();
+
+//        Location location = player.getLocation();
+//        Vector axis = player.getEyeLocation().getDirection();
+//        for (double angle = 0; angle <= 360; angle += 45) {
+//            Location newLoc = LocationUtils.rotateLocationAboutVector(location, player.getEyeLocation(), angle, axis);
+//            newLoc.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, newLoc, 1);
+//        }
 
 //        Location p0 = player.getLocation();
 //        Location p1 = player.getLocation().add(0,3,0);
