@@ -25,7 +25,7 @@ public abstract class ParticleObject {
     private double offsetY = 0;
     private double offsetZ = 0;
     private double extra = 0;
-    private Object data = 0;
+    private Object data = null;
     private boolean force = false;
 
     public abstract void show();
