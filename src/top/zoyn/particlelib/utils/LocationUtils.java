@@ -1,6 +1,7 @@
 package top.zoyn.particlelib.utils;
 
 import org.bukkit.Location;
+import org.bukkit.util.Vector;
 
 /**
  * 坐标工具类
@@ -25,6 +26,11 @@ public class LocationUtils {
         double newX = dx * Math.cos(radians) - dz * Math.sin(radians) + point.getX();
         double newZ = dz * Math.cos(radians) + dx * Math.sin(radians) + point.getZ();
         return new Location(location.getWorld(), newX, location.getY(), newZ);
+    }
+
+    public static Location rotateLocationAboutVector(Location location, Location origin, double angle, Vector axis) {
+        Vector vector = location.clone().subtract(origin).toVector();
+        return origin.clone().add(vector.rotateAroundAxis(axis, angle));
     }
 
 }
