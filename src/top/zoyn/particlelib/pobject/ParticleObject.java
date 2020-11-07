@@ -26,7 +26,6 @@ public abstract class ParticleObject {
     private double offsetZ = 0;
     private double extra = 0;
     private Object data = null;
-    private boolean force = false;
 
     public abstract void show();
 
@@ -154,21 +153,13 @@ public abstract class ParticleObject {
         this.data = data;
     }
 
-    public boolean isForce() {
-        return force;
-    }
-
-    public void setForce(boolean force) {
-        this.force = force;
-    }
-
     /**
      * 这个方法是给定一个坐标就可以使用已经制定的参数来播放粒子
      *
      * @param location 坐标
      */
     public void spawnParticle(Location location) {
-        location.getWorld().spawnParticle(particle, location, count, offsetX, offsetY, offsetZ, extra, data, force);
+        location.getWorld().spawnParticle(particle, location, count, offsetX, offsetY, offsetZ, extra, data);
     }
 
 }
