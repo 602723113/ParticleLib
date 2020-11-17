@@ -14,6 +14,8 @@ import top.zoyn.particlelib.ParticleLib;
  */
 public abstract class ParticleObject {
 
+    private Location origin;
+
     private ShowType showType = ShowType.NONE;
     private BukkitTask task;
     private long period;
@@ -29,9 +31,13 @@ public abstract class ParticleObject {
 
     public abstract void show();
 
-//    public abstract void rotate(double angle);
+    public Location getOrigin() {
+        return origin;
+    }
 
-//    public abstract void scale(double amplifier);
+    public void setOrigin(Location origin) {
+        this.origin = origin;
+    }
 
     public void alwaysShow() {
         turnOffTask();
@@ -89,20 +95,20 @@ public abstract class ParticleObject {
         this.period = period;
     }
 
-    public Particle getParticle() {
-        return particle;
-    }
-
-    public void setParticle(Particle particle) {
-        this.particle = particle;
-    }
-
     public ShowType getShowType() {
         return showType;
     }
 
     public void setShowType(ShowType showType) {
         this.showType = showType;
+    }
+
+    public Particle getParticle() {
+        return particle;
+    }
+
+    public void setParticle(Particle particle) {
+        this.particle = particle;
     }
 
     public int getCount() {
@@ -154,7 +160,7 @@ public abstract class ParticleObject {
     }
 
     /**
-     * 这个方法是给定一个坐标就可以使用已经制定的参数来播放粒子
+     * 通过给定一个坐标就可以使用已经指定的参数来播放粒子
      *
      * @param location 坐标
      */

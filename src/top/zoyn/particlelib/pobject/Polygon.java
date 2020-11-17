@@ -11,12 +11,11 @@ import java.util.List;
  */
 public class Polygon extends ParticleObject {
 
+    private final List<Location> locations;
     /**
      * 边数
      */
     private int side;
-    private Location origin;
-    private final List<Location> locations;
     private double step;
 
     /**
@@ -34,7 +33,7 @@ public class Polygon extends ParticleObject {
             throw new IllegalArgumentException("边数不可为小于或等于2的数!");
         }
         this.side = side;
-        this.origin = origin;
+        setOrigin(origin);
         this.step = step;
 
         this.locations = new ArrayList<>();
@@ -47,15 +46,6 @@ public class Polygon extends ParticleObject {
 
     public void setSide(int side) {
         this.side = side;
-        resetLocations();
-    }
-
-    public Location getOrigin() {
-        return origin;
-    }
-
-    public void setOrigin(Location origin) {
-        this.origin = origin;
         resetLocations();
     }
 
@@ -91,7 +81,7 @@ public class Polygon extends ParticleObject {
             double x = Math.cos(radians);
             double z = Math.sin(radians);
 
-            locations.add(origin.clone().add(x, 0, z));
+            locations.add(getOrigin().clone().add(x, 0, z));
         }
     }
 
