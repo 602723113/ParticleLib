@@ -7,10 +7,11 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.util.Vector;
+import top.zoyn.particlelib.pobject.Arc;
 import top.zoyn.particlelib.pobject.Circle;
-import top.zoyn.particlelib.pobject.Polygon;
-import top.zoyn.particlelib.utils.LocationUtils;
+import top.zoyn.particlelib.utils.matrix.Matrixs;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 粒子库主类
@@ -20,6 +21,7 @@ import top.zoyn.particlelib.utils.LocationUtils;
 public class ParticleLib extends JavaPlugin {
 
     private static ParticleLib instance;
+    private final AtomicInteger angle = new AtomicInteger(0);
     private Location loc1;
     private Location loc2;
     private Circle circle;
@@ -72,9 +74,32 @@ public class ParticleLib extends JavaPlugin {
             }
         }
 
-        Polygon polygon = new Polygon(5, player.getLocation());
-        polygon.setParticle(Particle.FLAME);
-        polygon.alwaysShowAsync();
+//        Polygon polygon = new Polygon(3, player.getLocation());
+//        polygon.setParticle(Particle.VILLAGER_HAPPY);
+//        polygon.setStep(0.5);
+//        polygon.alwaysShowAsync();
+//
+//        polygon = new Polygon(3, player.getLocation());
+//        polygon.setMatrix(Matrixs.rotate2D(90).multiply(2));
+//        polygon.setParticle(Particle.FLAME);
+//        polygon.setStep(0.5);
+//        polygon.alwaysShowAsync();
+
+        Arc arc = new Arc(player.getLocation(), 90D);
+        arc.setMatrix(Matrixs.eyes(2, 2).multiply(2));
+        arc.setStep(10);
+        arc.alwaysShowAsync();
+
+//        Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> {
+//            if (angle.get() == 360) {
+//                angle.set(0);
+//            }
+//
+//            Matrix2D m1 = Matrixs.rotate2D(angle.getAndAdd(10));
+//            polygon.setMatrix(m1);
+//            polygon.resetLocations();
+//        }, 0, 7L);
+//        polygon.alwaysShowAsync();
 
 //        Location location = player.getLocation();
 //        Vector axis = player.getEyeLocation().getDirection();

@@ -73,6 +73,14 @@ public class Circle extends ParticleObject {
         setShowType(ShowType.NONE);
     }
 
+    public Location getOrigin() {
+        return fullArc.getOrigin();
+    }
+
+    public void setOrigin(Location origin) {
+        this.fullArc.setOrigin(origin);
+    }
+
     public double getRadius() {
         return this.fullArc.getRadius();
     }

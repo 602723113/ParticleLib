@@ -5,7 +5,9 @@ import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.util.Vector;
 import top.zoyn.particlelib.ParticleLib;
+import top.zoyn.particlelib.utils.matrix.Matrix;
 
 /**
  * 表示一个特效对象
@@ -28,6 +30,27 @@ public abstract class ParticleObject {
     private double offsetZ = 0;
     private double extra = 0;
     private Object data = null;
+
+    /**
+     * 表示该特效对象所拥有的矩阵
+     */
+    private Matrix matrix;
+
+    public void addMatrix(Matrix matrix) {
+        this.matrix = matrix.multiply(this.matrix);
+    }
+
+    public void setMatrix(Matrix matrix) {
+        this.matrix = matrix;
+    }
+
+    public void removeMatrix() {
+        matrix = null;
+    }
+
+    public boolean hasMatrix() {
+        return matrix != null;
+    }
 
     public abstract void show();
 
@@ -165,7 +188,14 @@ public abstract class ParticleObject {
      * @param location 坐标
      */
     public void spawnParticle(Location location) {
-        location.getWorld().spawnParticle(particle, location, count, offsetX, offsetY, offsetZ, extra, data);
+        Location showLocation = location;
+        if (hasMatrix()) {
+            Vector vector = location.clone().subtract(origin).toVector();
+            Vector changed = matrix.applyVector(vector);
+
+            showLocation = origin.clone().add(changed);
+        }
+        location.getWorld().spawnParticle(particle, showLocation, count, offsetX, offsetY, offsetZ, extra, data);
     }
 
 }
