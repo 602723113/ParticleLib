@@ -7,15 +7,16 @@ import java.util.Arrays;
 
 /**
  * 表示一个 m*n 的矩阵
+ * <p>在该类中, 所有的乘法操作都是左乘</p>
  *
  * @author Zoyn
  */
 public class Matrix {
 
-    private double[][] m;
+    private final double[][] m;
 
     public Matrix(int row, int column) {
-        this.m = new double[column][row];
+        this.m = new double[row][column];
     }
 
     public Matrix(double[][] m) {
@@ -27,11 +28,11 @@ public class Matrix {
     }
 
     public int getRow() {
-        return m[0].length;
+        return m.length;
     }
 
     public int getColumn() {
-        return m.length;
+        return m[0].length;
     }
 
     public double[][] getAsArray() {
@@ -101,6 +102,21 @@ public class Matrix {
 
     public boolean isSameRowAndColumn(Matrix matrix) {
         return isSameRow(matrix) && isSameColumn(matrix);
+    }
+
+    /**
+     * 将该矩阵进行转置变换
+     *
+     * @return {@link Matrix}
+     */
+    public Matrix invert() {
+        double[][] n = new double[getColumn()][getRow()];
+        for (int i = 0; i < getRow(); i++) {
+            for (int j = 0; j < getColumn(); j++) {
+                n[j][i] = m[i][j];
+            }
+        }
+        return new Matrix(n);
     }
 
     /**
