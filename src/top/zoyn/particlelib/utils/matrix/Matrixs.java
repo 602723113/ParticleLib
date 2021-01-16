@@ -75,4 +75,16 @@ public class Matrixs {
         return new Matrix(m);
     }
 
+    /**
+     * 建立一个放大或缩小的矩阵
+     *
+     * @param row    行数
+     * @param column 列数
+     * @param value  放大或缩小的值
+     * @return {@link Matrix}
+     */
+    public static Matrix scale(int row, int column, double value) {
+        return ones(row, column).multiply(value);
+    }
+
 }
