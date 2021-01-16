@@ -84,7 +84,7 @@ public class Matrixs {
      * @return {@link Matrix}
      */
     public static Matrix scale(int row, int column, double value) {
-        return ones(row, column).multiply(value);
+        return eyes(row, column).multiply(value);
     }
 
 }
