@@ -8,7 +8,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import top.zoyn.particlelib.pobject.Arc;
+import top.zoyn.particlelib.pobject.Astroid;
 import top.zoyn.particlelib.pobject.Circle;
+import top.zoyn.particlelib.pobject.Heart;
 import top.zoyn.particlelib.utils.matrix.Matrixs;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -53,26 +55,13 @@ public class ParticleLib extends JavaPlugin {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         Player player = (Player) sender;
-        if (args.length != 0) {
-            if (args[0].equalsIgnoreCase("loc1")) {
-                loc1 = player.getLocation();
-                return true;
-            }
-            if (args[0].equalsIgnoreCase("loc2")) {
-                loc2 = player.getLocation();
-                return true;
-            }
-
-            if (args[0].equalsIgnoreCase("circle")) {
-                circle.setOrigin(player.getLocation());
-                return true;
-            }
-
-            if (args[0].equalsIgnoreCase("cancel")) {
-                circle.turnOffTask();
-                return true;
-            }
-        }
+//
+//        Astroid astroid = new Astroid(player.getLocation());
+//        astroid.setParticle(Particle.FIREWORKS_SPARK);
+//        astroid.show();
+//
+//        Heart heart = new Heart(player.getLocation());
+//        heart.alwaysShowAsync();
 
 //        Polygon polygon = new Polygon(3, player.getLocation());
 //        polygon.setParticle(Particle.VILLAGER_HAPPY);
@@ -85,10 +74,10 @@ public class ParticleLib extends JavaPlugin {
 //        polygon.setStep(0.5);
 //        polygon.alwaysShowAsync();
 
-        Arc arc = new Arc(player.getLocation(), 90D);
-        arc.setMatrix(Matrixs.eyes(2, 2).multiply(2));
-        arc.setStep(10);
-        arc.alwaysShowAsync();
+//        Arc arc = new Arc(player.getLocation(), 90D);
+//        arc.setMatrix(Matrixs.eyes(2, 2).multiply(2));
+//        arc.setStep(10);
+//        arc.alwaysShowAsync();
 
 //        Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> {
 //            if (angle.get() == 360) {
