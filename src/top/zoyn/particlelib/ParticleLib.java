@@ -1,19 +1,24 @@
 package top.zoyn.particlelib;
 
+import com.google.common.collect.Lists;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
+import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import top.zoyn.particlelib.pobject.Arc;
-import top.zoyn.particlelib.pobject.Astroid;
+import org.bukkit.util.Vector;
 import top.zoyn.particlelib.pobject.Circle;
-import top.zoyn.particlelib.pobject.Heart;
-import top.zoyn.particlelib.utils.matrix.Matrixs;
+import top.zoyn.particlelib.pobject.Grid;
+import top.zoyn.particlelib.utils.projector.ThreeDProjector;
+import top.zoyn.particlelib.utils.projector.TwoDProjector;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.BiFunction;
 
 /**
  * 粒子库主类
@@ -41,6 +46,56 @@ public class ParticleLib extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage("§e[§6ParticleLib§e] " + message);
     }
 
+    /**
+     * 围绕一个方块画出其边框
+     *
+     * @param block    给定的方块
+     * @param particle 要显示的粒子
+     */
+    public static void showBorderAndGridAboutBlock(Block block, Particle particle) {
+        Location low = block.getLocation();
+        Location high = low.clone().add(0, 5, 0);
+        List<Location> lowers = Lists.newArrayList(
+                low,
+                low.clone().add(5, 0, 0),
+                low.clone().add(5, 0, 5),
+                low.clone().add(0, 0, 5));
+        List<Location> highers = Lists.newArrayList(
+                high,
+                high.clone().add(5, 0, 0),
+                high.clone().add(5, 0, 5),
+                high.clone().add(0, 0, 5));
+
+        for (int i = 0; i < lowers.size(); i++) {
+            Location origin = lowers.get(i);
+            Location top = highers.get(i);
+            Location next;
+            Location topNext;
+            // 最后一个的时候
+            if (i == 3) {
+                next = lowers.get(0);
+                topNext = highers.get(0);
+            } else {
+                next = lowers.get(i + 1);
+                topNext = highers.get(i + 1);
+            }
+
+            // 以下为画线操作
+            Vector vectorON = next.clone().subtract(origin).toVector().normalize();
+            Vector vectorOT = top.clone().subtract(origin).toVector().normalize();
+            Vector vectorTT = topNext.clone().subtract(top).toVector().normalize();
+            for (double j = 0; j < 5; j += 0.1) {
+                low.getWorld().spawnParticle(particle, origin.clone().add(vectorON.clone().multiply(j)), 1, 0, 0, 0, 0);
+                low.getWorld().spawnParticle(particle, origin.clone().add(vectorOT.clone().multiply(j)), 1, 0, 0, 0, 0);
+                low.getWorld().spawnParticle(particle, top.clone().add(vectorTT.clone().multiply(j)), 1, 0, 0, 0, 0);
+            }
+            // 绘制网格面
+            Grid grid = new Grid(origin, topNext, 1.4D);
+            grid.setParticle(Particle.FLAME);
+            grid.show();
+        }
+    }
+
     @Override
     public void onEnable() {
         instance = this;
@@ -55,18 +110,109 @@ public class ParticleLib extends JavaPlugin {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         Player player = (Player) sender;
+
+//        showBorderAndGridAboutBlock(player.getLocation().getBlock(), Particle.VILLAGER_HAPPY);
+
+//        Grid grid = new Grid(player.getLocation(), player.getLocation().add(5, -8, 0), 1.2D);
+//
+//        grid.setPeriod(20);
+//        grid.alwaysShowAsync();
+
+        Vector vector = player.getLocation().getDirection();
+        Location location = player.getLocation();
+        World world = location.getWorld();
+        ThreeDProjector projector = new ThreeDProjector(location, vector);
+        Bukkit.getScheduler().runTaskTimer(this, () -> {
+            double y = 0;
+            for (int i = 0; i < 8 * 360; i += 20) {
+                double rad = Math.toRadians(i);
+                double x = Math.cos(rad);
+                y += 0.1;
+                double z = Math.sin(rad);
+                // 通过投影器开始转换坐标
+                Location loc = projector.apply(x, y, z);
+                world.spawnParticle(Particle.VILLAGER_HAPPY, loc, 1, 0, 0, 0, 0);
+            }
+        }, 0L, 10L);
+
+//        Vector vector = player.getLocation().getDirection();
+//        Location location = player.getLocation();
+//        World world = location.getWorld();
+//        BiFunction<Double, Double, Location> method = TwoDProjector.create2DProjector(location, vector);
+//        Bukkit.getScheduler().runTaskTimer(this, () -> {
+//            for (int i = 0; i < 360; i++) {
+//                double rad = Math.toRadians(i);
+//                double x = Math.cos(rad);
+//                double z = Math.sin(rad);
+//                // 通过投影器开始转换坐标
+//                Location loc = method.apply(x, z);
+//                world.spawnParticle(Particle.VILLAGER_HAPPY, loc, 1, 0, 0, 0, 0);
+//            }
+//        }, 0L, 10L);
+
+//        Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> {
+//            showBorderAboutBlock(player.getLocation().getBlock(), Particle.FIREWORKS_SPARK);
+//        }, 0, 7L);
+
+//        Line.buildLine(flipHigh, high.clone().add(-1, 0, 0), 0.1, Particle.VILLAGER_HAPPY);
+//        Line.buildLine(flipHigh, high.clone().add(0, 0, -1), 0.1, Particle.VILLAGER_HAPPY);
+//
+//        Line.buildLine(flipLow, low.clone().add(1, 0, 0), 0.1, Particle.VILLAGER_HAPPY);
+//        Line.buildLine(flipLow, low.clone().add(0, 0, 1), 0.1, Particle.VILLAGER_HAPPY);
+//
+//        Line.buildLine(low, flipHigh, 0.1, Particle.VILLAGER_HAPPY);
+//        Line.buildLine(high, flipLow, 0.1, Particle.VILLAGER_HAPPY);
+//        double width = 1;
+//        double length = 1;
+//        double height = 1;
+
+//        Vector vector = new Vector(0, 0, 0);
+
+
+//        ThreeDProjector projector = new ThreeDProjector(player.getLocation(), player.getLocation().getDirection());
+//        double y = 0D;
+//        for (int i = 0; i < 360 * 8; i += 5) {
+//            double radians = Math.toRadians(i);
+//            double x = Math.cos(radians);
+//            y += 0.02;
+//            double z = Math.sin(radians);
+//
+//            player.getLocation().getWorld().spawnParticle(Particle.VILLAGER_HAPPY, projector.apply(x, y, z), 1);
+//        }
+
+//        Location launchLocation = player.getEyeLocation().add(player.getLocation().getDirection().multiply(1.2));
+//        Ray ray = new Ray(launchLocation, player.getLocation().getDirection(), 10, 0.02);
+//
+//        ray.setStopType(Ray.RayStopType.HIT_ENTITY)
+//                .setHitEntityConsumer(entity -> {
+//                    entity.setCustomName("§a芜湖!");
+//                    entity.setCustomNameVisible(true);
+//                })
+//                .setEntityFilter(entity -> entity.getName().equalsIgnoreCase(player.getName()));
+//
+//        ray.show();
+//
+//        Ray ray = new Ray(launchLocation, player.getLocation().getDirection(), 10, 0.02, 0.5D, Ray.RayStopType.HIT_ENTITY, entity -> {
+//            entity.setCustomName("§a芜湖!");
+//            entity.setCustomNameVisible(true);
+//        }, entity -> entity.getName().equalsIgnoreCase(player.getName()));
+
 //
 //        Astroid astroid = new Astroid(player.getLocation());
 //        astroid.setParticle(Particle.FIREWORKS_SPARK);
 //        astroid.show();
+
+
 //
 //        Heart heart = new Heart(player.getLocation());
 //        heart.alwaysShowAsync();
 
-//        Polygon polygon = new Polygon(3, player.getLocation());
-//        polygon.setParticle(Particle.VILLAGER_HAPPY);
+//        Polygon polygon = new Polygon(4, player.getLocation());
+//        polygon.setParticle(Particle.FLAME);
 //        polygon.setStep(0.5);
 //        polygon.alwaysShowAsync();
+
+
 //
 //        polygon = new Polygon(3, player.getLocation());
 //        polygon.setMatrix(Matrixs.rotate2D(90).multiply(2));
@@ -191,28 +337,6 @@ public class ParticleLib extends JavaPlugin {
 //        }.runTaskTimer(this, 0L, 10L);
 //
 //
-//        Vector vector = player.getLocation().getDirection();
-//        Location location = player.getLocation();
-//        World world = location.getWorld();
-//        BiFunction<Double, Double, Location> method = TwoDProjector.create2DProjector(location, vector);
-//        new BukkitRunnable() {
-//            @Override
-//            public void run() {
-//                for (int i = 0; i < 360; i++) {
-//                    double rad = Math.toRadians(i);
-//                    double x = Math.cos(rad);
-//                    double z = Math.sin(rad);
-//
-////                    Location loc = method.apply(x, z);
-//                    Location loc = location.clone().add(1, 0, 1);
-//                    world.spawnParticle(Particle.VILLAGER_HAPPY, loc, 1, 0, 0, 0, 0);
-////                    world.spawnParticle(Particle.FLAME, loc, 1, 0, 0, 0, 0);
-//                    world.spawnParticle(Particle.FLAME, method.apply(1D, 1D), 1, 0, 0, 0, 0);
-//                }
-//            }
-//        }.runTaskTimer(this, 0L, 10L);
-
-
         return true;
     }
 }
