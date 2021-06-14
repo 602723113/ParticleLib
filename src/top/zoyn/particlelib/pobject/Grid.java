@@ -9,7 +9,7 @@ public class Grid extends ParticleObject {
     private Location minimumLocation;
     private Location maximumLocation;
     private boolean isXDimension = false;
-    private boolean isYDimension = true;
+    private boolean isYDimension = false;
 
     public Grid(Location minimumLocation, Location maximumLocation) {
         this(minimumLocation, maximumLocation, 1.2D);
@@ -41,12 +41,24 @@ public class Grid extends ParticleObject {
 
     @Override
     public void show() {
-        double height = Math.abs(maximumLocation.getY() - minimumLocation.getY());
+        double height;
         double weight;
-        if (isXDimension) {
-            weight = Math.abs(maximumLocation.getX() - minimumLocation.getX());
+        // 在Y平面下有点不一样
+        if (isYDimension) {
+            if (Math.abs(minimumLocation.getX() - maximumLocation.getX()) > Math.abs(minimumLocation.getZ() - maximumLocation.getZ())) {
+                height = Math.abs(minimumLocation.getX() - maximumLocation.getX());
+                weight = Math.abs(minimumLocation.getZ() - maximumLocation.getZ());
+            } else {
+                height = Math.abs(minimumLocation.getZ() - maximumLocation.getZ());
+                weight = Math.abs(minimumLocation.getX() - maximumLocation.getX());
+            }
         } else {
-            weight = Math.abs(maximumLocation.getZ() - minimumLocation.getZ());
+            height = Math.abs(maximumLocation.getY() - minimumLocation.getY());
+            if (isXDimension) {
+                weight = Math.abs(maximumLocation.getX() - minimumLocation.getX());
+            } else {
+                weight = Math.abs(maximumLocation.getZ() - minimumLocation.getZ());
+            }
         }
         int heightSideLine = (int) (height / gridLength);
         int weightSideLine = (int) (weight / gridLength);
@@ -54,6 +66,35 @@ public class Grid extends ParticleObject {
         // 为防止给定的最小和最高点出现反向的情况, 这里做了个查找操作
         Location minLocation = findMinimumLocation();
         Location maxLocation = findMaximumLocation();
+
+//        spawnParticle(minimumLocation);
+//        spawnParticle(maximumLocation);
+
+//        spawnParticle(minLocation);
+//        spawnParticle(maxLocation);
+
+        if (isYDimension) {
+            for (int i = 1; i <= heightSideLine; i++) {
+                Vector vector = maxLocation.clone().subtract(minLocation).toVector();
+                vector.setZ(0).normalize();
+
+                Location start = minLocation.clone().add(0, 0, i * gridLength);
+                for (double j = 0; j < weight; j += 0.2) {
+                    spawnParticle(start.clone().add(vector.clone().multiply(j)));
+                }
+            }
+
+            for (int i = 1; i <= weightSideLine; i++) {
+                Vector vector = maxLocation.clone().subtract(minLocation).toVector();
+                vector.setX(0).normalize();
+                Location start = minLocation.clone().add(i * gridLength, 0, 0);
+
+                for (double j = 0; j < height; j += 0.2) {
+                    spawnParticle(start.clone().add(vector.clone().multiply(j)));
+                }
+            }
+            return;
+        }
 
         for (int i = 1; i <= heightSideLine; i++) {
             Vector vector = maxLocation.clone().subtract(minLocation).toVector();
@@ -83,6 +124,25 @@ public class Grid extends ParticleObject {
     }
 
     private Location findMinimumLocation() {
+        if (isYDimension) {
+            if (minimumLocation.getBlockX() < maximumLocation.getBlockX()) {
+                if (minimumLocation.getBlockZ() < maximumLocation.getBlockZ()) {
+                    return minimumLocation;
+                } else {
+                    Location minToLower = minimumLocation.clone();
+                    minToLower.setZ(maximumLocation.getZ());
+                    return minToLower;
+                }
+            } else {
+                if (minimumLocation.getBlockZ() < maximumLocation.getBlockZ()) {
+                    Location maxToLower = maximumLocation.clone();
+                    maxToLower.setZ(minimumLocation.getZ());
+                    return maxToLower;
+                } else {
+                    return maximumLocation;
+                }
+            }
+        }
         if (isXDimension) {
             // 以下的代码请把 minimumLoc 当做平面坐标系的中心
             // maximumLoc 在第一第二象限的情况
@@ -92,7 +152,7 @@ public class Grid extends ParticleObject {
                     maxToLower.setY(minimumLocation.getY());
                     return maxToLower;
                 }
-            // maximumLoc 在第三第四象限的情况
+                // maximumLoc 在第三第四象限的情况
             } else {
                 if (minimumLocation.getBlockX() > maximumLocation.getBlockX()) {
                     return maximumLocation;
@@ -123,6 +183,25 @@ public class Grid extends ParticleObject {
     }
 
     private Location findMaximumLocation() {
+        if (isYDimension) {
+            if (minimumLocation.getBlockX() < maximumLocation.getBlockX()) {
+                if (minimumLocation.getBlockZ() < maximumLocation.getBlockZ()) {
+                    return maximumLocation;
+                } else {
+                    Location minToHigher = minimumLocation.clone();
+                    minToHigher.setX(maximumLocation.getX());
+                    return minToHigher;
+                }
+            } else {
+                if (minimumLocation.getBlockZ() < maximumLocation.getBlockZ()) {
+                    Location maxToLower = maximumLocation.clone();
+                    maxToLower.setX(minimumLocation.getX());
+                    return maxToLower;
+                } else {
+                    return minimumLocation;
+                }
+            }
+        }
         if (isXDimension) {
             if (minimumLocation.getBlockY() < maximumLocation.getBlockY()) {
                 if (minimumLocation.getBlockX() > maximumLocation.getBlockX()) {

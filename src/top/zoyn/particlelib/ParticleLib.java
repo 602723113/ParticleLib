@@ -66,6 +66,12 @@ public class ParticleLib extends JavaPlugin {
                 high.clone().add(5, 0, 5),
                 high.clone().add(0, 0, 5));
 
+        Grid grid = new Grid(low, lowers.get(2), 1.4D);
+        grid.setParticle(Particle.FLAME);
+        grid.show();
+        Grid grid2 = new Grid(high, highers.get(2), 1.4D);
+        grid2.setParticle(Particle.FLAME);
+        grid2.show();
         for (int i = 0; i < lowers.size(); i++) {
             Location origin = lowers.get(i);
             Location top = highers.get(i);
@@ -90,9 +96,9 @@ public class ParticleLib extends JavaPlugin {
                 low.getWorld().spawnParticle(particle, top.clone().add(vectorTT.clone().multiply(j)), 1, 0, 0, 0, 0);
             }
             // 绘制网格面
-            Grid grid = new Grid(origin, topNext, 1.4D);
-            grid.setParticle(Particle.FLAME);
-            grid.show();
+            Grid grid3 = new Grid(origin, topNext, 1.4D);
+            grid3.setParticle(Particle.FLAME);
+            grid3.show();
         }
     }
 
@@ -111,29 +117,30 @@ public class ParticleLib extends JavaPlugin {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         Player player = (Player) sender;
 
-//        showBorderAndGridAboutBlock(player.getLocation().getBlock(), Particle.VILLAGER_HAPPY);
+        Location location = player.getLocation().clone();
+        Bukkit.getScheduler().runTaskTimer(this, () -> showBorderAndGridAboutBlock(location.getBlock(), Particle.VILLAGER_HAPPY), 0L, 10L);
 
-//        Grid grid = new Grid(player.getLocation(), player.getLocation().add(5, -8, 0), 1.2D);
+//        Grid grid = new Grid(player.getLocation(), player.getLocation().add(5, 0, 5), 1.2D);
 //
 //        grid.setPeriod(20);
 //        grid.alwaysShowAsync();
 
-        Vector vector = player.getLocation().getDirection();
-        Location location = player.getLocation();
-        World world = location.getWorld();
-        ThreeDProjector projector = new ThreeDProjector(location, vector);
-        Bukkit.getScheduler().runTaskTimer(this, () -> {
-            double y = 0;
-            for (int i = 0; i < 8 * 360; i += 20) {
-                double rad = Math.toRadians(i);
-                double x = Math.cos(rad);
-                y += 0.1;
-                double z = Math.sin(rad);
-                // 通过投影器开始转换坐标
-                Location loc = projector.apply(x, y, z);
-                world.spawnParticle(Particle.VILLAGER_HAPPY, loc, 1, 0, 0, 0, 0);
-            }
-        }, 0L, 10L);
+//        Vector vector = player.getLocation().getDirection();
+//        Location location = player.getLocation();
+//        World world = location.getWorld();
+//        ThreeDProjector projector = n ew ThreeDProjector(location, vector);
+//        Bukkit.getScheduler().runTaskTimer(this, () -> {
+//            double y = 0;
+//            for (int i = 0; i < 8 * 360; i += 20) {
+//                double rad = Math.toRadians(i);
+//                double x = Math.cos(rad);
+//                y += 0.1;
+//                double z = Math.sin(rad);
+//                // 通过投影器开始转换坐标
+//                Location loc = projector.apply(x, y, z);
+//                world.spawnParticle(Particle.VILLAGER_HAPPY, loc, 1, 0, 0, 0, 0);
+//            }
+//        }, 0L, 10L);
 
 //        Vector vector = player.getLocation().getDirection();
 //        Location location = player.getLocation();
