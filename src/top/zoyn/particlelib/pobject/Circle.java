@@ -7,7 +7,7 @@ import org.bukkit.Location;
  *
  * @author Zoyn
  */
-public class Circle extends ParticleObject {
+public class Circle extends ParticleObject implements Playable {
 
     private final Arc fullArc;
 
@@ -53,6 +53,16 @@ public class Circle extends ParticleObject {
     }
 
     @Override
+    public void play() {
+        fullArc.play();
+    }
+
+    @Override
+    public void playNextPoint() {
+        fullArc.playNextPoint();
+    }
+
+    @Override
     public void alwaysShow() {
         fullArc.alwaysShow();
         // 再设置Circle自身的ShowType
@@ -64,6 +74,20 @@ public class Circle extends ParticleObject {
         fullArc.alwaysShowAsync();
         // 再设置Circle自身的ShowType
         setShowType(ShowType.ALWAYS_SHOW_ASYNC);
+    }
+
+    @Override
+    public void alwaysPlay() {
+        fullArc.alwaysPlay();
+        // 再设置Circle自身的ShowType
+        setShowType(ShowType.ALWAYS_PLAY);
+    }
+
+    @Override
+    public void alwaysPlayAsync() {
+        fullArc.alwaysPlayAsync();
+        // 再设置Circle自身的ShowType
+        setShowType(ShowType.ALWAYS_PLAY_ASYNC);
     }
 
     @Override

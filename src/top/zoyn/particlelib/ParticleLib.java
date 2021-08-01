@@ -11,6 +11,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
+import top.zoyn.particlelib.pobject.Arc;
+import top.zoyn.particlelib.pobject.Astroid;
 import top.zoyn.particlelib.pobject.Circle;
 import top.zoyn.particlelib.pobject.Grid;
 import top.zoyn.particlelib.utils.projector.ThreeDProjector;
@@ -67,10 +69,10 @@ public class ParticleLib extends JavaPlugin {
                 high.clone().add(0, 0, 5));
 
         Grid grid = new Grid(low, lowers.get(2), 1.4D);
-        grid.setParticle(Particle.FLAME);
+        grid.setParticle(Particle.FIREWORKS_SPARK);
         grid.show();
         Grid grid2 = new Grid(high, highers.get(2), 1.4D);
-        grid2.setParticle(Particle.FLAME);
+        grid2.setParticle(Particle.FIREWORKS_SPARK);
         grid2.show();
         for (int i = 0; i < lowers.size(); i++) {
             Location origin = lowers.get(i);
@@ -97,7 +99,7 @@ public class ParticleLib extends JavaPlugin {
             }
             // 绘制网格面
             Grid grid3 = new Grid(origin, topNext, 1.4D);
-            grid3.setParticle(Particle.FLAME);
+            grid3.setParticle(Particle.FIREWORKS_SPARK);
             grid3.show();
         }
     }
@@ -117,8 +119,29 @@ public class ParticleLib extends JavaPlugin {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         Player player = (Player) sender;
 
-        Location location = player.getLocation().clone();
-        Bukkit.getScheduler().runTaskTimer(this, () -> showBorderAndGridAboutBlock(location.getBlock(), Particle.VILLAGER_HAPPY), 0L, 10L);
+//        Location location = player.getLocation().clone();
+//        Bukkit.getScheduler().runTaskTimer(this, () -> showBorderAndGridAboutBlock(location.getBlock(), Particle.FIREWORKS_SPARK), 0L, 10L);
+
+
+//        Circle circle = new Circle(player.getLocation());
+//        circle.setStep(10D);
+//        circle.setRadius(3D);
+//        circle.setPeriod(2);
+//        circle.play();
+//        circle.alwaysPlayAsync();
+
+//        Astroid astroid = new Astroid(player.getLocation());
+//        astroid.setParticle(Particle.FIREWORKS_SPARK);
+//        astroid.setRadius(1.3D);
+//        astroid.setStep(10D);
+//        astroid.setPeriod(1L);
+//        astroid.alwaysPlayAsync();
+
+//        Arc arc = new Arc(player.getLocation());
+//        arc.setAngle(360D);
+//        arc.setStep(15D);
+//        arc.setPeriod(2L);
+//        arc.alwaysPlayAsync();
 
 //        Grid grid = new Grid(player.getLocation(), player.getLocation().add(5, 0, 5), 1.2D);
 //

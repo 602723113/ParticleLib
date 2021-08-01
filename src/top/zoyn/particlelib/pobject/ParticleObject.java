@@ -31,36 +31,7 @@ public abstract class ParticleObject {
     private double extra = 0;
     private Object data = null;
 
-    /**
-     * 表示该特效对象所拥有的矩阵
-     */
-    private Matrix matrix;
-
-    public void addMatrix(Matrix matrix) {
-        this.matrix = matrix.multiply(this.matrix);
-    }
-
-    public void setMatrix(Matrix matrix) {
-        this.matrix = matrix;
-    }
-
-    public void removeMatrix() {
-        matrix = null;
-    }
-
-    public boolean hasMatrix() {
-        return matrix != null;
-    }
-
     public abstract void show();
-
-    public Location getOrigin() {
-        return origin;
-    }
-
-    public void setOrigin(Location origin) {
-        this.origin = origin;
-    }
 
     public void alwaysShow() {
         turnOffTask();
@@ -102,12 +73,97 @@ public abstract class ParticleObject {
         }, 2L);
     }
 
+    public void alwaysPlay() {
+        if (!(this instanceof Playable)) {
+            try {
+                throw new NoSuchMethodException("该对象不支持播放!");
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+        }
+        Playable playable = (Playable) this;
+        turnOffTask();
+
+        // 此处的延迟 2tick 是为了防止turnOffTask还没把特效给关闭时的缓冲
+        Bukkit.getScheduler().runTaskLater(ParticleLib.getInstance(), () -> {
+            running = true;
+            task = new BukkitRunnable() {
+                @Override
+                public void run() {
+                    if (!running) {
+                        return;
+                    }
+                    playable.playNextPoint();
+                }
+            }.runTaskTimer(ParticleLib.getInstance(), 0L, period);
+
+            setShowType(ShowType.ALWAYS_PLAY);
+        }, 2L);
+    }
+
+    public void alwaysPlayAsync() {
+        if (!(this instanceof Playable)) {
+            try {
+                throw new NoSuchMethodException("该对象不支持播放!");
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+        }
+        Playable playable = (Playable) this;
+        turnOffTask();
+
+        // 此处的延迟 2tick 是为了防止turnOffTask还没把特效给关闭时的缓冲
+        Bukkit.getScheduler().runTaskLater(ParticleLib.getInstance(), () -> {
+            running = true;
+            task = new BukkitRunnable() {
+                @Override
+                public void run() {
+                    if (!running) {
+                        return;
+                    }
+                    playable.playNextPoint();
+                }
+            }.runTaskTimerAsynchronously(ParticleLib.getInstance(), 0L, period);
+
+            setShowType(ShowType.ALWAYS_PLAY_ASYNC);
+        }, 2L);
+    }
+
     public void turnOffTask() {
         if (task != null) {
             running = false;
             task.cancel();
             setShowType(ShowType.NONE);
         }
+    }
+
+    /**
+     * 表示该特效对象所拥有的矩阵
+     */
+    private Matrix matrix;
+
+    public void addMatrix(Matrix matrix) {
+        this.matrix = matrix.multiply(this.matrix);
+    }
+
+    public void setMatrix(Matrix matrix) {
+        this.matrix = matrix;
+    }
+
+    public void removeMatrix() {
+        matrix = null;
+    }
+
+    public boolean hasMatrix() {
+        return matrix != null;
+    }
+
+    public Location getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin(Location origin) {
+        this.origin = origin;
     }
 
     public long getPeriod() {

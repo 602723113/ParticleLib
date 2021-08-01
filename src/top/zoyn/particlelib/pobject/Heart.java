@@ -1,18 +1,20 @@
 package top.zoyn.particlelib.pobject;
 
-import org.bukkit.Color;
 import org.bukkit.Location;
-import org.bukkit.Particle;
+import org.bukkit.scheduler.BukkitRunnable;
+import top.zoyn.particlelib.ParticleLib;
 
 /**
  * 表示一颗心
  *
  * @author Zoyn
  */
-public class Heart extends ParticleObject {
+public class Heart extends ParticleObject implements Playable {
 
     private double xScaleRate;
     private double yScaleRate;
+
+    private double currentT = -1.0D;
 
     /**
      * 构造一个小心心
@@ -28,7 +30,7 @@ public class Heart extends ParticleObject {
      *
      * @param xScaleRate X轴缩放比率
      * @param yScaleRate Y轴缩放比率
-     * @param origin 原点
+     * @param origin     原点
      */
     public Heart(double xScaleRate, double yScaleRate, Location origin) {
         this.xScaleRate = xScaleRate;
@@ -60,12 +62,36 @@ public class Heart extends ParticleObject {
 
             spawnParticle(getOrigin().clone().add(x, 0, y));
         }
-//        for (double t = 0.0D; t < 360.0D; t++) {
-//            double x = xScaleRate * 16 * Math.pow(Math.sin(t), 3);
-//            double z = yScaleRate * 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
-//
-//            spawnParticle(getOrigin().clone().add(x, 0, z));
-//        }
     }
 
+    @Override
+    public void play() {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                if (currentT > 1.0D) {
+                    cancel();
+                    return;
+                }
+                currentT += 0.001D;
+                double x = xScaleRate * Math.sin(currentT) * Math.cos(currentT) * Math.log(Math.abs(currentT));
+                double y = yScaleRate * Math.sqrt(Math.abs(currentT)) * Math.cos(currentT);
+
+                spawnParticle(getOrigin().clone().add(x, 0, y));
+            }
+        }.runTaskTimer(ParticleLib.getInstance(), 0, getPeriod());
+    }
+
+    @Override
+    public void playNextPoint() {
+        currentT += 0.001D;
+        double x = xScaleRate * Math.sin(currentT) * Math.cos(currentT) * Math.log(Math.abs(currentT));
+        double y = yScaleRate * Math.sqrt(Math.abs(currentT)) * Math.cos(currentT);
+
+        spawnParticle(getOrigin().clone().add(x, 0, y));
+
+        if (currentT > 1.0D) {
+            currentT = -1.0D;
+        }
+    }
 }

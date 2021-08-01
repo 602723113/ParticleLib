@@ -1,17 +1,21 @@
 package top.zoyn.particlelib.pobject;
 
 import org.bukkit.Location;
+import org.bukkit.scheduler.BukkitRunnable;
+import top.zoyn.particlelib.ParticleLib;
 
 /**
  * 表示一个弧
  *
  * @author Zoyn
  */
-public class Arc extends ParticleObject {
+public class Arc extends ParticleObject implements Playable {
 
+    private final boolean isDone = true;
     private double angle;
     private double radius;
     private double step;
+    private double currentAngle = 0D;
 
     public Arc(Location origin) {
         this(origin, 30D);
@@ -62,6 +66,41 @@ public class Arc extends ParticleObject {
             double z = radius * Math.sin(radians);
 
             spawnParticle(getOrigin().clone().add(x, 0, z));
+        }
+    }
+
+    @Override
+    public void play() {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                // 进行关闭
+                if (currentAngle > angle) {
+                    cancel();
+                    return;
+                }
+                currentAngle += step;
+                double radians = Math.toRadians(currentAngle);
+                double x = radius * Math.cos(radians);
+                double z = radius * Math.sin(radians);
+
+                spawnParticle(getOrigin().clone().add(x, 0, z));
+            }
+        }.runTaskTimer(ParticleLib.getInstance(), 0, getPeriod());
+    }
+
+    @Override
+    public void playNextPoint() {
+        currentAngle += step;
+        double radians = Math.toRadians(currentAngle);
+        double x = radius * Math.cos(radians);
+        double z = radius * Math.sin(radians);
+
+        spawnParticle(getOrigin().clone().add(x, 0, z));
+
+        // 进行重置
+        if (currentAngle > angle) {
+            currentAngle = 0D;
         }
     }
 
