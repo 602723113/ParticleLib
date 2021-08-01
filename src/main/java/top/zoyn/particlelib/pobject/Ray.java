@@ -59,7 +59,7 @@ public class Ray extends ParticleObject {
             spawnParticle(spawnLocation);
 
             if (stopType.equals(RayStopType.HIT_ENTITY)) {
-                Collection<Entity> nearbyEntities = spawnLocation.getNearbyEntities(range, range, range);
+                Collection<Entity> nearbyEntities = spawnLocation.getWorld().getNearbyEntities(spawnLocation, range, range, range);
                 List<Entity> entities = Lists.newArrayList();
                 // 检测有无过滤器
                 if (entityFilter != null) {

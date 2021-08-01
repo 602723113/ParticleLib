@@ -162,52 +162,52 @@ public class ParticleLib extends JavaPlugin {
 //        Bukkit.getScheduler().runTaskTimer(this, () -> showBorderAndGridAboutBlock(location.getBlock(), Particle.FIREWORKS_SPARK), 0L, 10L);
 
 
-        Circle circle = new Circle(player.getLocation());
-        circle.setStep(10D);
-
-        Astroid astroid = new Astroid(player.getLocation());
-        astroid.setParticle(Particle.FIREWORKS_SPARK);
-        astroid.setStep(10D);
-        astroid.alwaysPlayAsync();
-
-        Heart heart = new Heart(player.getLocation());
-        heart.setXScaleRate(1.5D);
-        heart.setYScaleRate(1.5D);
-        heart.setParticle(Particle.FLAME);
-        heart.setStep(0.05D);
-
-        Heart heart2 = new Heart(player.getLocation());
-        heart2.setXScaleRate(1.5D);
-        heart2.setYScaleRate(1.5D);
-        heart2.addMatrix(Matrixs.rotate2D(90));
-        heart2.setParticle(Particle.FLAME);
-        heart2.setStep(0.05D);
-
-        Heart heart3 = new Heart(player.getLocation());
-        heart3.setXScaleRate(1.5D);
-        heart3.setYScaleRate(1.5D);
-        heart3.addMatrix(Matrixs.rotate2D(180));
-        heart3.setParticle(Particle.FLAME);
-        heart3.setStep(0.05D);
-
-        Heart heart4 = new Heart(player.getLocation());
-        heart4.setXScaleRate(1.5D);
-        heart4.setYScaleRate(1.5D);
-        heart4.addMatrix(Matrixs.rotate2D(270));
-        heart4.setParticle(Particle.FLAME);
-        heart4.setStep(0.05D);
-
-        EffectGroup group = new EffectGroup()
-                .addEffect(circle)
-                .addEffect(astroid)
-                .addEffect(heart)
-                .addEffect(heart2)
-                .addEffect(heart3)
-                .addEffect(heart4)
-                .scale(2)
-                .rotate(45)
-                .setPeriod(1)
-                .alwaysPlayAsync();
+//        Circle circle = new Circle(player.getLocation());
+//        circle.setStep(10D);
+//
+//        Astroid astroid = new Astroid(player.getLocation());
+//        astroid.setParticle(Particle.FIREWORKS_SPARK);
+//        astroid.setStep(10D);
+//        astroid.alwaysPlayAsync();
+//
+//        Heart heart = new Heart(player.getLocation());
+//        heart.setXScaleRate(1.5D);
+//        heart.setYScaleRate(1.5D);
+//        heart.setParticle(Particle.FLAME);
+//        heart.setStep(0.05D);
+//
+//        Heart heart2 = new Heart(player.getLocation());
+//        heart2.setXScaleRate(1.5D);
+//        heart2.setYScaleRate(1.5D);
+//        heart2.addMatrix(Matrixs.rotate2D(90));
+//        heart2.setParticle(Particle.FLAME);
+//        heart2.setStep(0.05D);
+//
+//        Heart heart3 = new Heart(player.getLocation());
+//        heart3.setXScaleRate(1.5D);
+//        heart3.setYScaleRate(1.5D);
+//        heart3.addMatrix(Matrixs.rotate2D(180));
+//        heart3.setParticle(Particle.FLAME);
+//        heart3.setStep(0.05D);
+//
+//        Heart heart4 = new Heart(player.getLocation());
+//        heart4.setXScaleRate(1.5D);
+//        heart4.setYScaleRate(1.5D);
+//        heart4.addMatrix(Matrixs.rotate2D(270));
+//        heart4.setParticle(Particle.FLAME);
+//        heart4.setStep(0.05D);
+//
+//        EffectGroup group = new EffectGroup()
+//                .addEffect(circle)
+//                .addEffect(astroid)
+//                .addEffect(heart)
+//                .addEffect(heart2)
+//                .addEffect(heart3)
+//                .addEffect(heart4)
+//                .scale(2)
+//                .rotate(45)
+//                .setPeriod(1)
+//                .alwaysPlayAsync();
 
 //        Arc arc = new Arc(player.getLocation());
 //        arc.setAngle(360D);
