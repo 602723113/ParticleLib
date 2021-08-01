@@ -11,5 +11,5 @@
 请点击 [Wiki](https://github.com/602723113/ParticleLib/wiki) 获得更多
 
 # Maven
-暂时还没用Maven
+目前我们使用 Maven 进行管理
 
