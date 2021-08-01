@@ -4,23 +4,17 @@ import com.google.common.collect.Lists;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
-import top.zoyn.particlelib.pobject.Arc;
-import top.zoyn.particlelib.pobject.Astroid;
-import top.zoyn.particlelib.pobject.Circle;
-import top.zoyn.particlelib.pobject.Grid;
-import top.zoyn.particlelib.utils.projector.ThreeDProjector;
-import top.zoyn.particlelib.utils.projector.TwoDProjector;
+import top.zoyn.particlelib.pobject.*;
+import top.zoyn.particlelib.utils.matrix.Matrixs;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.BiFunction;
 
 /**
  * 粒子库主类
@@ -46,6 +40,51 @@ public class ParticleLib extends JavaPlugin {
      */
     public static void sendLog(String message) {
         Bukkit.getConsoleSender().sendMessage("§e[§6ParticleLib§e] " + message);
+    }
+
+    /**
+     * 围绕一个方块画出其边框
+     *
+     * @param block    给定的方块
+     * @param particle 要显示的粒子
+     */
+    public static void showBorderAboutBlock(Block block, Particle particle) {
+        Location low = block.getLocation();
+        Location high = low.clone().add(0, 1, 0);
+        List<Location> lowers = Lists.newArrayList(
+                low,
+                low.clone().add(1, 0, 0),
+                low.clone().add(1, 0, 1),
+                low.clone().add(0, 0, 1));
+        List<Location> highers = Lists.newArrayList(
+                high,
+                high.clone().add(1, 0, 0),
+                high.clone().add(1, 0, 1),
+                high.clone().add(0, 0, 1));
+        for (int i = 0; i < lowers.size(); i++) {
+            Location origin = lowers.get(i);
+            Location top = highers.get(i);
+            Location next;
+            Location topNext;
+            // 最后一个的时候
+            if (i == 3) {
+                next = lowers.get(0);
+                topNext = highers.get(0);
+            } else {
+                next = lowers.get(i + 1);
+                topNext = highers.get(i + 1);
+            }
+
+            // 以下为画线操作
+            Vector vectorON = next.clone().subtract(origin).toVector().normalize();
+            Vector vectorOT = top.clone().subtract(origin).toVector().normalize();
+            Vector vectorTT = topNext.clone().subtract(top).toVector().normalize();
+            for (double j = 0; j < 1; j += 0.1) {
+                low.getWorld().spawnParticle(particle, origin.clone().add(vectorON.clone().multiply(j)), 1, 0, 0, 0, 0);
+                low.getWorld().spawnParticle(particle, origin.clone().add(vectorOT.clone().multiply(j)), 1, 0, 0, 0, 0);
+                low.getWorld().spawnParticle(particle, top.clone().add(vectorTT.clone().multiply(j)), 1, 0, 0, 0, 0);
+            }
+        }
     }
 
     /**
@@ -123,19 +162,52 @@ public class ParticleLib extends JavaPlugin {
 //        Bukkit.getScheduler().runTaskTimer(this, () -> showBorderAndGridAboutBlock(location.getBlock(), Particle.FIREWORKS_SPARK), 0L, 10L);
 
 
-//        Circle circle = new Circle(player.getLocation());
-//        circle.setStep(10D);
-//        circle.setRadius(3D);
-//        circle.setPeriod(2);
-//        circle.play();
-//        circle.alwaysPlayAsync();
+        Circle circle = new Circle(player.getLocation());
+        circle.setStep(10D);
 
-//        Astroid astroid = new Astroid(player.getLocation());
-//        astroid.setParticle(Particle.FIREWORKS_SPARK);
-//        astroid.setRadius(1.3D);
-//        astroid.setStep(10D);
-//        astroid.setPeriod(1L);
-//        astroid.alwaysPlayAsync();
+        Astroid astroid = new Astroid(player.getLocation());
+        astroid.setParticle(Particle.FIREWORKS_SPARK);
+        astroid.setStep(10D);
+        astroid.alwaysPlayAsync();
+
+        Heart heart = new Heart(player.getLocation());
+        heart.setXScaleRate(1.5D);
+        heart.setYScaleRate(1.5D);
+        heart.setParticle(Particle.FLAME);
+        heart.setStep(0.05D);
+
+        Heart heart2 = new Heart(player.getLocation());
+        heart2.setXScaleRate(1.5D);
+        heart2.setYScaleRate(1.5D);
+        heart2.addMatrix(Matrixs.rotate2D(90));
+        heart2.setParticle(Particle.FLAME);
+        heart2.setStep(0.05D);
+
+        Heart heart3 = new Heart(player.getLocation());
+        heart3.setXScaleRate(1.5D);
+        heart3.setYScaleRate(1.5D);
+        heart3.addMatrix(Matrixs.rotate2D(180));
+        heart3.setParticle(Particle.FLAME);
+        heart3.setStep(0.05D);
+
+        Heart heart4 = new Heart(player.getLocation());
+        heart4.setXScaleRate(1.5D);
+        heart4.setYScaleRate(1.5D);
+        heart4.addMatrix(Matrixs.rotate2D(270));
+        heart4.setParticle(Particle.FLAME);
+        heart4.setStep(0.05D);
+
+        EffectGroup group = new EffectGroup()
+                .addEffect(circle)
+                .addEffect(astroid)
+                .addEffect(heart)
+                .addEffect(heart2)
+                .addEffect(heart3)
+                .addEffect(heart4)
+                .scale(2)
+                .rotate(45)
+                .setPeriod(1)
+                .alwaysPlayAsync();
 
 //        Arc arc = new Arc(player.getLocation());
 //        arc.setAngle(360D);

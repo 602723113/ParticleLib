@@ -1,6 +1,7 @@
 package top.zoyn.particlelib.pobject;
 
 import org.bukkit.Location;
+import top.zoyn.particlelib.utils.matrix.Matrix;
 
 /**
  * 表示一个圆
@@ -45,6 +46,26 @@ public class Circle extends ParticleObject implements Playable {
                 .setRadius(radius)
                 .setStep(step);
         fullArc.setPeriod(period);
+    }
+
+    @Override
+    public void addMatrix(Matrix matrix) {
+        fullArc.addMatrix(matrix);
+    }
+
+    @Override
+    public void setMatrix(Matrix matrix) {
+        fullArc.setMatrix(matrix);
+    }
+
+    @Override
+    public void removeMatrix() {
+        fullArc.removeMatrix();
+    }
+
+    @Override
+    public boolean hasMatrix() {
+        return fullArc.hasMatrix();
     }
 
     @Override

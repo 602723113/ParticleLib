@@ -14,6 +14,8 @@ public class Heart extends ParticleObject implements Playable {
     private double xScaleRate;
     private double yScaleRate;
 
+    private double step = 0.001D;
+
     private double currentT = -1.0D;
 
     /**
@@ -54,9 +56,17 @@ public class Heart extends ParticleObject implements Playable {
         this.yScaleRate = yScaleRate;
     }
 
+    public double getStep() {
+        return step;
+    }
+
+    public void setStep(double step) {
+        this.step = step;
+    }
+
     @Override
     public void show() {
-        for (double t = -1.0D; t <= 1.0D; t += 0.001D) {
+        for (double t = -1.0D; t <= 1.0D; t += step) {
             double x = xScaleRate * Math.sin(t) * Math.cos(t) * Math.log(Math.abs(t));
             double y = yScaleRate * Math.sqrt(Math.abs(t)) * Math.cos(t);
 
@@ -73,7 +83,7 @@ public class Heart extends ParticleObject implements Playable {
                     cancel();
                     return;
                 }
-                currentT += 0.001D;
+                currentT += step;
                 double x = xScaleRate * Math.sin(currentT) * Math.cos(currentT) * Math.log(Math.abs(currentT));
                 double y = yScaleRate * Math.sqrt(Math.abs(currentT)) * Math.cos(currentT);
 
@@ -84,7 +94,7 @@ public class Heart extends ParticleObject implements Playable {
 
     @Override
     public void playNextPoint() {
-        currentT += 0.001D;
+        currentT += step;
         double x = xScaleRate * Math.sin(currentT) * Math.cos(currentT) * Math.log(Math.abs(currentT));
         double y = yScaleRate * Math.sqrt(Math.abs(currentT)) * Math.cos(currentT);
 

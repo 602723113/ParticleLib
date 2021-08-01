@@ -143,6 +143,10 @@ public abstract class ParticleObject {
     private Matrix matrix;
 
     public void addMatrix(Matrix matrix) {
+        if (this.matrix == null) {
+            setMatrix(matrix);
+            return;
+        }
         this.matrix = matrix.multiply(this.matrix);
     }
 
