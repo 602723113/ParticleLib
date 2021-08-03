@@ -1,13 +1,15 @@
 package top.zoyn.particlelib.pobject;
 
+import org.bukkit.Color;
 import org.bukkit.Location;
+import org.bukkit.Particle;
 import org.bukkit.scheduler.BukkitRunnable;
 import top.zoyn.particlelib.ParticleLib;
 
 /**
  * 表示一个弧
  *
- * @author Zoyn
+ * @author Zoyn IceCold
  */
 public class Arc extends ParticleObject implements Playable {
 
@@ -16,6 +18,7 @@ public class Arc extends ParticleObject implements Playable {
     private double radius;
     private double step;
     private double currentAngle = 0D;
+    private Color color;
 
     public Arc(Location origin) {
         this(origin, 30D);
@@ -28,6 +31,7 @@ public class Arc extends ParticleObject implements Playable {
     public Arc(Location origin, double angle, double radius) {
         this(origin, angle, radius, 1);
     }
+
 
     /**
      * 构造一个弧
@@ -58,14 +62,37 @@ public class Arc extends ParticleObject implements Playable {
         setPeriod(period);
     }
 
+    /**
+     * 构造一个彩色弧
+     *
+     * @param origin 弧所在的圆的圆点
+     * @param angle  弧所占的角度
+     * @param radius 弧所在的圆的半径
+     * @param step   每个粒子的间隔(也即步长)
+     * @param period 特效周期(如果需要可以使用)
+     * @param color 颜色
+     */
+    public Arc(Location origin, double angle, double radius, double step, long period,Color color) {
+        setOrigin(origin);
+        this.angle = angle;
+        this.radius = radius;
+        this.step = step;
+        setPeriod(period);
+        this.color = color;
+        setParticle(Particle.REDSTONE);
+    }
+
     @Override
     public void show() {
         for (int i = 0; i < angle; i += step) {
             double radians = Math.toRadians(i);
             double x = radius * Math.cos(radians);
             double z = radius * Math.sin(radians);
-
-            spawnParticle(getOrigin().clone().add(x, 0, z));
+            if (color != null){
+                spawnParticle(getOrigin().clone().add(x, 0, z),color);
+            }else {
+                spawnParticle(getOrigin().clone().add(x, 0, z));
+            }
         }
     }
 
@@ -84,7 +111,11 @@ public class Arc extends ParticleObject implements Playable {
                 double x = radius * Math.cos(radians);
                 double z = radius * Math.sin(radians);
 
-                spawnParticle(getOrigin().clone().add(x, 0, z));
+                if (color != null){
+                    spawnParticle(getOrigin().clone().add(x, 0, z),color);
+                }else {
+                    spawnParticle(getOrigin().clone().add(x, 0, z));
+                }
             }
         }.runTaskTimer(ParticleLib.getInstance(), 0, getPeriod());
     }
@@ -96,7 +127,11 @@ public class Arc extends ParticleObject implements Playable {
         double x = radius * Math.cos(radians);
         double z = radius * Math.sin(radians);
 
-        spawnParticle(getOrigin().clone().add(x, 0, z));
+        if (color != null){
+            spawnParticle(getOrigin().clone().add(x, 0, z),color);
+        }else {
+            spawnParticle(getOrigin().clone().add(x, 0, z));
+        }
 
         // 进行重置
         if (currentAngle > angle) {
@@ -131,4 +166,13 @@ public class Arc extends ParticleObject implements Playable {
         return this;
     }
 
+    public Color getColor() {
+        return color;
+    }
+
+    public Arc setColor(Color color) {
+        this.color = color;
+        setParticle(Particle.REDSTONE);
+        return this;
+    }
 }

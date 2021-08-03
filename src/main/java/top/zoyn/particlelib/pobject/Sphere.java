@@ -1,5 +1,6 @@
 package top.zoyn.particlelib.pobject;
 
+import org.bukkit.Color;
 import org.bukkit.Location;
 
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.List;
  * 表示一个球
  * <p>算法来源: https://stackoverflow.com/questions/9600801/evenly-distributing-n-points-on-a-sphere/26127012#26127012</p>
  *
- * @author Zoyn
+ * @author Zoyn IceCold
  */
 public class Sphere extends ParticleObject {
 
@@ -20,6 +21,8 @@ public class Sphere extends ParticleObject {
     private final List<Location> locations;
     private int sample;
     private double radius;
+
+    private Color color;
 
     public Sphere(Location origin) {
         this(origin, 50, 1);
@@ -41,11 +44,20 @@ public class Sphere extends ParticleObject {
         resetLocations();
     }
 
+    public Sphere(Location origin, int sample, double radius,Color color) {
+        this(origin,sample,radius);
+        this.color = color;
+    }
+
     @Override
     public void show() {
         locations.forEach(loc -> {
             if (loc != null) {
-                spawnParticle(loc);
+                if (color != null){
+                    spawnParticle(loc,color);
+                }else {
+                    spawnParticle(loc);
+                }
             }
         });
     }
@@ -86,5 +98,14 @@ public class Sphere extends ParticleObject {
 
             locations.add(getOrigin().clone().add(x, y, z));
         }
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public Sphere setColor(Color color) {
+        this.color = color;
+        return this;
     }
 }

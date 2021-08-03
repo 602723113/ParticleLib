@@ -1,5 +1,6 @@
 package top.zoyn.particlelib.pobject;
 
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
@@ -10,6 +11,8 @@ public class Grid extends ParticleObject {
     private Location maximumLocation;
     private boolean isXDimension = false;
     private boolean isYDimension = false;
+
+    private Color color;
 
     public Grid(Location minimumLocation, Location maximumLocation) {
         this(minimumLocation, maximumLocation, 1.2D);
@@ -38,6 +41,13 @@ public class Grid extends ParticleObject {
 
         this.gridLength = gridLength;
     }
+
+    public Grid(Location minimumLocation, Location maximumLocation, double gridLength,Color color) {
+        this(minimumLocation,maximumLocation,gridLength);
+        this.color = color;
+    }
+
+
 
     @Override
     public void show() {
@@ -80,7 +90,12 @@ public class Grid extends ParticleObject {
 
                 Location start = minLocation.clone().add(0, 0, i * gridLength);
                 for (double j = 0; j < weight; j += 0.2) {
-                    spawnParticle(start.clone().add(vector.clone().multiply(j)));
+                    if (color != null){
+                        spawnParticle(start.clone().add(vector.clone().multiply(j)),color);
+                    }else {
+                        spawnParticle(start.clone().add(vector.clone().multiply(j)));
+                    }
+
                 }
             }
 
@@ -90,7 +105,11 @@ public class Grid extends ParticleObject {
                 Location start = minLocation.clone().add(i * gridLength, 0, 0);
 
                 for (double j = 0; j < height; j += 0.2) {
-                    spawnParticle(start.clone().add(vector.clone().multiply(j)));
+                    if (color != null){
+                        spawnParticle(start.clone().add(vector.clone().multiply(j)),color);
+                    }else {
+                        spawnParticle(start.clone().add(vector.clone().multiply(j)));
+                    }
                 }
             }
             return;
@@ -102,7 +121,11 @@ public class Grid extends ParticleObject {
 
             Location start = minLocation.clone().add(0, i * gridLength, 0);
             for (double j = 0; j < weight; j += 0.2) {
-                spawnParticle(start.clone().add(vector.clone().multiply(j)));
+                if (color != null){
+                    spawnParticle(start.clone().add(vector.clone().multiply(j)),color);
+                }else {
+                    spawnParticle(start.clone().add(vector.clone().multiply(j)));
+                }
             }
         }
 
@@ -118,7 +141,11 @@ public class Grid extends ParticleObject {
             }
 
             for (double j = 0; j < height; j += 0.2) {
-                spawnParticle(start.clone().add(vector.clone().multiply(j)));
+                if (color != null){
+                    spawnParticle(start.clone().add(vector.clone().multiply(j)),color);
+                }else {
+                    spawnParticle(start.clone().add(vector.clone().multiply(j)));
+                }
             }
         }
     }
@@ -252,5 +279,14 @@ public class Grid extends ParticleObject {
 
     public void setMaximumLocation(Location maximumLocation) {
         this.maximumLocation = maximumLocation;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public Grid setColor(Color color) {
+        this.color = color;
+        return this;
     }
 }

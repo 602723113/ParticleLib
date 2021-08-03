@@ -1,6 +1,9 @@
 package top.zoyn.particlelib.pobject;
 
 import com.google.common.collect.Lists;
+import org.bukkit.entity.Entity;
+import org.bukkit.scheduler.BukkitRunnable;
+import top.zoyn.particlelib.ParticleLib;
 import top.zoyn.particlelib.utils.matrix.Matrixs;
 
 import java.util.List;
@@ -11,7 +14,7 @@ import java.util.List;
  * 如果你要使用 EffectGroup#scale 这样的方法, 我不建议你将 2D 的特效和 3D 的特效放在一起
  * </p>
  *
- * @author Zoyn
+ * @author Zoyn IceCold
  */
 public class EffectGroup {
 
@@ -158,6 +161,18 @@ public class EffectGroup {
                 pObj.alwaysPlayAsync();
             }
         }
+        return this;
+    }
+
+    public EffectGroup attachEntity(Entity entity){
+        effectList.forEach((effect)->{
+            new BukkitRunnable(){
+                @Override
+                public void run() {
+                    effect.setOrigin(entity.getLocation().clone().add(0,1,0));
+                }
+            }.runTaskTimerAsynchronously(ParticleLib.getInstance(),0,effect.getPeriod());
+        });
         return this;
     }
 

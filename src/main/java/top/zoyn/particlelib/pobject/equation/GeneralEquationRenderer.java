@@ -1,5 +1,6 @@
 package top.zoyn.particlelib.pobject.equation;
 
+import org.bukkit.Color;
 import org.bukkit.Location;
 import top.zoyn.particlelib.pobject.ParticleObject;
 
@@ -17,6 +18,8 @@ public class GeneralEquationRenderer extends ParticleObject {
     private double maxX;
     private double dx;
 
+    private Color color;
+
     public GeneralEquationRenderer(Location origin, Function<Double, Double> function) {
         this(origin, function, -5D, 5D);
     }
@@ -33,10 +36,20 @@ public class GeneralEquationRenderer extends ParticleObject {
         this.dx = dx;
     }
 
+    public GeneralEquationRenderer(Location origin, Function<Double, Double> function, double minX, double maxX, double dx,Color color) {
+        this(origin, function, minX, maxX, dx);
+        this.color = color;
+    }
+
+
     @Override
     public void show() {
         for (double x = minX; x < maxX; x += dx) {
-            spawnParticle(getOrigin().clone().add(x, function.apply(x), 0));
+            if (color != null){
+                spawnParticle(getOrigin().clone().add(x, function.apply(x), 0),color);
+            }else {
+                spawnParticle(getOrigin().clone().add(x, function.apply(x), 0));
+            }
         }
     }
 
@@ -64,6 +77,15 @@ public class GeneralEquationRenderer extends ParticleObject {
 
     public GeneralEquationRenderer setDx(double dx) {
         this.dx = dx;
+        return this;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public GeneralEquationRenderer setColor(Color color) {
+        this.color = color;
         return this;
     }
 }

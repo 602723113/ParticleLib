@@ -1,5 +1,6 @@
 package top.zoyn.particlelib.pobject;
 
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -9,8 +10,8 @@ import top.zoyn.particlelib.ParticleLib;
 /**
  * 表示一条线
  *
-         * @author Zoyn
-        */
+ * @author Zoyn IceCold
+ */
 public class Line extends ParticleObject implements Playable {
 
     private Vector vector;
@@ -24,6 +25,8 @@ public class Line extends ParticleObject implements Playable {
      * 向量长度
      */
     private double length;
+
+    private Color color;
 
     private double currentStep = 0D;
 
@@ -60,6 +63,11 @@ public class Line extends ParticleObject implements Playable {
         resetVector();
     }
 
+    public Line(Location start, Location end, double step, long period,Color color) {
+        this(start,end,step,period);
+        this.color = color;
+    }
+
     public static void buildLine(Location locA, Location locB, double step, Particle particle) {
         Vector vectorAB = locB.clone().subtract(locA).toVector();
         double vectorLength = vectorAB.length();
@@ -69,11 +77,24 @@ public class Line extends ParticleObject implements Playable {
         }
     }
 
+    public static void buildLine(Location locA, Location locB, double step,Color color) {
+        Vector vectorAB = locB.clone().subtract(locA).toVector();
+        double vectorLength = vectorAB.length();
+        vectorAB.normalize();
+        for (double i = 0; i < vectorLength; i += step) {
+            locA.getWorld().spawnParticle(Particle.REDSTONE, locA.clone().add(vectorAB.clone().multiply(i)), 1,0,0,0, color);
+        }
+    }
+
     @Override
     public void show() {
         for (double i = 0; i < length; i += step) {
             Vector vectorTemp = vector.clone().multiply(i);
-            spawnParticle(start.clone().add(vectorTemp));
+            if (color != null){
+                spawnParticle(start.clone().add(vectorTemp),color);
+            }else {
+                spawnParticle(start.clone().add(vectorTemp));
+            }
         }
     }
 
@@ -89,7 +110,11 @@ public class Line extends ParticleObject implements Playable {
                 }
                 currentStep += step;
                 Vector vectorTemp = vector.clone().multiply(currentStep);
-                spawnParticle(start.clone().add(vectorTemp));
+                if (color != null){
+                    spawnParticle(start.clone().add(vectorTemp),color);
+                }else {
+                    spawnParticle(start.clone().add(vectorTemp));
+                }
             }
         }.runTaskTimer(ParticleLib.getInstance(), 0, getPeriod());
     }
@@ -98,7 +123,11 @@ public class Line extends ParticleObject implements Playable {
     public void playNextPoint() {
         currentStep += step;
         Vector vectorTemp = vector.clone().multiply(currentStep);
-        spawnParticle(start.clone().add(vectorTemp));
+        if (color != null){
+            spawnParticle(start.clone().add(vectorTemp),color);
+        }else {
+            spawnParticle(start.clone().add(vectorTemp));
+        }
 
         if (currentStep > length) {
             currentStep = 0D;
@@ -139,5 +168,14 @@ public class Line extends ParticleObject implements Playable {
         vector = end.clone().subtract(start).toVector();
         length = vector.length();
         vector.normalize();
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public Line setColor(Color color) {
+        this.color = color;
+        return this;
     }
 }

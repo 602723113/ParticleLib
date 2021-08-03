@@ -2,6 +2,7 @@ package top.zoyn.particlelib;
 
 import com.google.common.collect.Lists;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
@@ -161,9 +162,17 @@ public class ParticleLib extends JavaPlugin {
 //        Location location = player.getLocation().clone();
 //        Bukkit.getScheduler().runTaskTimer(this, () -> showBorderAndGridAboutBlock(location.getBlock(), Particle.FIREWORKS_SPARK), 0L, 10L);
 
+/**
+        Circle circle = new Circle(player.getLocation().clone().add(0,1,0));
+        circle.setColor(Color.fromRGB(255,255,0));
+        circle.setStep(5);
+        EffectGroup effectGroup = new EffectGroup();
+        effectGroup.addEffect(circle);
+        effectGroup.setPeriod(1);
+        effectGroup.attachEntity(player);
+        effectGroup.alwaysPlayAsync();
+*/
 
-//        Circle circle = new Circle(player.getLocation());
-//        circle.setStep(10D);
 //
 //        Astroid astroid = new Astroid(player.getLocation());
 //        astroid.setParticle(Particle.FIREWORKS_SPARK);

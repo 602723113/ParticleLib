@@ -1,5 +1,6 @@
 package top.zoyn.particlelib.pobject;
 
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitRunnable;
 import top.zoyn.particlelib.ParticleLib;
@@ -7,7 +8,7 @@ import top.zoyn.particlelib.ParticleLib;
 /**
  * 表示一个星形线
  *
- * @author Zoyn
+ * @author Zoyn IceCold
  */
 public class Astroid extends ParticleObject implements Playable {
 
@@ -15,6 +16,8 @@ public class Astroid extends ParticleObject implements Playable {
     private double step;
 
     private double currentT = 0D;
+
+    private Color color;
 
     /**
      * 构造一个星形线
@@ -41,6 +44,13 @@ public class Astroid extends ParticleObject implements Playable {
         setOrigin(origin);
     }
 
+    public Astroid(double radius, Location origin, double step,Color color) {
+        this.radius = radius;
+        this.step = step;
+        setOrigin(origin);
+        this.color = color;
+    }
+
     @Override
     public void show() {
         for (double t = 0.0D; t < 360.0D; t += step) {
@@ -49,8 +59,11 @@ public class Astroid extends ParticleObject implements Playable {
             double x = Math.pow(this.radius * Math.cos(radians), 3.0D);
             double z = Math.pow(this.radius * Math.sin(radians), 3.0D);
 
-            spawnParticle(getOrigin().clone().add(x, 0, z));
-        }
+            if (color != null){
+                spawnParticle(getOrigin().clone().add(x, 0, z),color);
+            }else {
+                spawnParticle(getOrigin().clone().add(x, 0, z));
+            }        }
     }
 
     @Override
@@ -69,8 +82,11 @@ public class Astroid extends ParticleObject implements Playable {
                 double x = Math.pow(getRadius() * Math.cos(radians), 3.0D);
                 double z = Math.pow(getRadius() * Math.sin(radians), 3.0D);
 
-                spawnParticle(getOrigin().clone().add(x, 0, z));
-            }
+                if (color != null){
+                    spawnParticle(getOrigin().clone().add(x, 0, z),color);
+                }else {
+                    spawnParticle(getOrigin().clone().add(x, 0, z));
+                }            }
         }.runTaskTimer(ParticleLib.getInstance(), 0, getPeriod());
     }
 
@@ -82,8 +98,11 @@ public class Astroid extends ParticleObject implements Playable {
         double x = Math.pow(this.radius * Math.cos(radians), 3.0D);
         double z = Math.pow(this.radius * Math.sin(radians), 3.0D);
 
-        spawnParticle(getOrigin().clone().add(x, 0, z));
-
+        if (color != null){
+            spawnParticle(getOrigin().clone().add(x, 0, z),color);
+        }else {
+            spawnParticle(getOrigin().clone().add(x, 0, z));
+        }
         // 重置
         if (currentT > 360D) {
             currentT = 0D;
@@ -104,5 +123,14 @@ public class Astroid extends ParticleObject implements Playable {
 
     public void setStep(double step) {
         this.step = step;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public Astroid setColor(Color color) {
+        this.color = color;
+        return this;
     }
 }
