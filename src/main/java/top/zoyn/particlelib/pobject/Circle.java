@@ -13,8 +13,6 @@ public class Circle extends ParticleObject implements Playable {
 
     private final Arc fullArc;
 
-    private Color color;
-
     public Circle(Location origin) {
         this(origin, 1);
     }
@@ -51,25 +49,22 @@ public class Circle extends ParticleObject implements Playable {
         fullArc.setPeriod(period);
     }
 
-    public Circle(Location origin, double radius, double step, long period, Color color) {
-        this(origin, radius, step, period);
-        this.color = color;
-        this.fullArc.setColor(color);
-    }
-
     @Override
-    public void addMatrix(Matrix matrix) {
+    public Circle addMatrix(Matrix matrix) {
         fullArc.addMatrix(matrix);
+        return this;
     }
 
     @Override
-    public void setMatrix(Matrix matrix) {
+    public Circle setMatrix(Matrix matrix) {
         fullArc.setMatrix(matrix);
+        return this;
     }
 
     @Override
-    public void removeMatrix() {
+    public Circle removeMatrix() {
         fullArc.removeMatrix();
+        return this;
     }
 
     @Override
@@ -131,8 +126,9 @@ public class Circle extends ParticleObject implements Playable {
         return fullArc.getOrigin();
     }
 
-    public void setOrigin(Location origin) {
+    public Circle setOrigin(Location origin) {
         this.fullArc.setOrigin(origin);
+        return this;
     }
 
     public double getRadius() {
@@ -157,16 +153,16 @@ public class Circle extends ParticleObject implements Playable {
         return this.fullArc.getPeriod();
     }
 
-    public void setPeriod(long period) {
+    public Circle setPeriod(long period) {
         this.fullArc.setPeriod(period);
+        return this;
     }
 
     public Color getColor() {
-        return color;
+        return fullArc.getColor();
     }
 
     public Circle setColor(Color color) {
-        this.color = color;
         this.fullArc.setColor(color);
         return this;
     }

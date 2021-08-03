@@ -1,7 +1,6 @@
 package top.zoyn.particlelib.pobject;
 
 import com.google.common.collect.Lists;
-import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Consumer;
@@ -29,8 +28,6 @@ public class Ray extends ParticleObject {
     private Consumer<Entity> hitEntityConsumer;
     private Predicate<Entity> entityFilter;
 
-    private Color color;
-
     public Ray(Location origin, Vector direction, double maxLength) {
         this(origin, direction, maxLength, 0.2D);
     }
@@ -54,30 +51,13 @@ public class Ray extends ParticleObject {
         this.entityFilter = entityFilter;
     }
 
-    public Ray(Location origin, Vector direction, double maxLength, double step, double range, RayStopType stopType, Consumer<Entity> hitEntityConsumer, Predicate<Entity> entityFilter, Color color) {
-        setOrigin(origin);
-        this.direction = direction;
-        this.maxLength = maxLength;
-        this.step = step;
-        this.range = range;
-        this.stopType = stopType;
-        this.hitEntityConsumer = hitEntityConsumer;
-        this.entityFilter = entityFilter;
-        this.color = color;
-    }
-
     @Override
     public void show() {
         for (double i = 0; i < maxLength; i += step) {
             Vector vectorTemp = direction.clone().multiply(i);
             Location spawnLocation = getOrigin().clone().add(vectorTemp);
 
-            if (color != null){
-                spawnParticle(spawnLocation,color);
-
-            }else {
-                spawnParticle(spawnLocation);
-            }
+            spawnParticle(spawnLocation);
 
             if (stopType.equals(RayStopType.HIT_ENTITY)) {
                 Collection<Entity> nearbyEntities = spawnLocation.getWorld().getNearbyEntities(spawnLocation, range, range, range);
@@ -162,15 +142,6 @@ public class Ray extends ParticleObject {
 
     public Ray setEntityFilter(Predicate<Entity> entityFilter) {
         this.entityFilter = entityFilter;
-        return this;
-    }
-
-    public Color getColor() {
-        return color;
-    }
-
-    public Ray setColor(Color color) {
-        this.color = color;
         return this;
     }
 

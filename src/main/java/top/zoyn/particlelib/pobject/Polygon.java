@@ -1,6 +1,5 @@
 package top.zoyn.particlelib.pobject;
 
-import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
@@ -19,7 +18,6 @@ public class Polygon extends ParticleObject {
     private int side;
     private double step;
 
-    private Color color;
 
     /**
      * 构造一个多边形
@@ -43,11 +41,6 @@ public class Polygon extends ParticleObject {
         resetLocations();
     }
 
-    public Polygon(int side, Location origin, double step,Color color) {
-        this(side,origin,step);
-        this.color = color;
-    }
-
     public int getSide() {
         return side;
     }
@@ -64,15 +57,6 @@ public class Polygon extends ParticleObject {
     public void setStep(double step) {
         this.step = step;
         resetLocations();
-    }
-
-    public Color getColor() {
-        return color;
-    }
-
-    public Polygon setColor(Color color) {
-        this.color = color;
-        return this;
     }
 
     @Override
@@ -114,11 +98,7 @@ public class Polygon extends ParticleObject {
         double vectorLength = vectorAB.length();
         vectorAB.normalize();
         for (double i = 0; i < vectorLength; i += step) {
-            if (color != null){
-                spawnParticle(locA.clone().add(vectorAB.clone().multiply(i)),this.color);
-            }else {
-                spawnParticle(locA.clone().add(vectorAB.clone().multiply(i)));
-            }
+            spawnParticle(locA.clone().add(vectorAB.clone().multiply(i)));
         }
     }
 

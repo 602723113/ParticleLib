@@ -22,8 +22,6 @@ public class Sphere extends ParticleObject {
     private int sample;
     private double radius;
 
-    private Color color;
-
     public Sphere(Location origin) {
         this(origin, 50, 1);
     }
@@ -44,20 +42,15 @@ public class Sphere extends ParticleObject {
         resetLocations();
     }
 
-    public Sphere(Location origin, int sample, double radius,Color color) {
-        this(origin,sample,radius);
-        this.color = color;
+    public Sphere(Location origin, int sample, double radius, Color color) {
+        this(origin, sample, radius);
     }
 
     @Override
     public void show() {
         locations.forEach(loc -> {
             if (loc != null) {
-                if (color != null){
-                    spawnParticle(loc,color);
-                }else {
-                    spawnParticle(loc);
-                }
+                spawnParticle(loc);
             }
         });
     }
@@ -98,14 +91,5 @@ public class Sphere extends ParticleObject {
 
             locations.add(getOrigin().clone().add(x, y, z));
         }
-    }
-
-    public Color getColor() {
-        return color;
-    }
-
-    public Sphere setColor(Color color) {
-        this.color = color;
-        return this;
     }
 }

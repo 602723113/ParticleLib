@@ -1,6 +1,5 @@
 package top.zoyn.particlelib.pobject.equation;
 
-import org.bukkit.Color;
 import org.bukkit.Location;
 import top.zoyn.particlelib.pobject.ParticleObject;
 
@@ -20,7 +19,6 @@ public class ParametricEquationRenderer extends ParticleObject {
     private double maxT;
     private double dt;
 
-    private Color color;
     /**
      * 参数方程渲染器, 自动将z方程变为0
      *
@@ -79,22 +77,13 @@ public class ParametricEquationRenderer extends ParticleObject {
         this.dt = dT;
     }
 
-    public ParametricEquationRenderer(Location origin, Function<Double, Double> xFunction, Function<Double, Double> yFunction, Function<Double, Double> zFunction, double minT, double maxT, double dT,Color color) {
-        this(origin, xFunction, yFunction, zFunction, minT, maxT, dT);
-        this.color = color;
-    }
-
     @Override
     public void show() {
         for (double t = minT; t < maxT; t += dt) {
             double x = xFunction.apply(t);
             double y = yFunction.apply(t);
             double z = zFunction.apply(t);
-            if (color != null){
-                spawnParticle(getOrigin().clone().add(x, y, z),color);
-            }else {
-                spawnParticle(getOrigin().clone().add(x, y, z));
-            }
+            spawnParticle(getOrigin().clone().add(x, y, z));
         }
     }
 
@@ -125,12 +114,4 @@ public class ParametricEquationRenderer extends ParticleObject {
         return this;
     }
 
-    public Color getColor() {
-        return color;
-    }
-
-    public ParametricEquationRenderer setColor(Color color) {
-        this.color = color;
-        return this;
-    }
 }

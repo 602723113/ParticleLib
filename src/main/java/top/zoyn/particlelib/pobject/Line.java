@@ -25,9 +25,6 @@ public class Line extends ParticleObject implements Playable {
      * 向量长度
      */
     private double length;
-
-    private Color color;
-
     private double currentStep = 0D;
 
     public Line(Location start, Location end) {
@@ -63,11 +60,6 @@ public class Line extends ParticleObject implements Playable {
         resetVector();
     }
 
-    public Line(Location start, Location end, double step, long period,Color color) {
-        this(start,end,step,period);
-        this.color = color;
-    }
-
     public static void buildLine(Location locA, Location locB, double step, Particle particle) {
         Vector vectorAB = locB.clone().subtract(locA).toVector();
         double vectorLength = vectorAB.length();
@@ -77,12 +69,12 @@ public class Line extends ParticleObject implements Playable {
         }
     }
 
-    public static void buildLine(Location locA, Location locB, double step,Color color) {
+    public static void buildLine(Location locA, Location locB, double step, Color color) {
         Vector vectorAB = locB.clone().subtract(locA).toVector();
         double vectorLength = vectorAB.length();
         vectorAB.normalize();
         for (double i = 0; i < vectorLength; i += step) {
-            locA.getWorld().spawnParticle(Particle.REDSTONE, locA.clone().add(vectorAB.clone().multiply(i)), 1,0,0,0, color);
+            locA.getWorld().spawnParticle(Particle.REDSTONE, locA.clone().add(vectorAB.clone().multiply(i)), 1, 0, 0, 0, color);
         }
     }
 
@@ -90,11 +82,7 @@ public class Line extends ParticleObject implements Playable {
     public void show() {
         for (double i = 0; i < length; i += step) {
             Vector vectorTemp = vector.clone().multiply(i);
-            if (color != null){
-                spawnParticle(start.clone().add(vectorTemp),color);
-            }else {
-                spawnParticle(start.clone().add(vectorTemp));
-            }
+            spawnParticle(start.clone().add(vectorTemp));
         }
     }
 
@@ -110,11 +98,7 @@ public class Line extends ParticleObject implements Playable {
                 }
                 currentStep += step;
                 Vector vectorTemp = vector.clone().multiply(currentStep);
-                if (color != null){
-                    spawnParticle(start.clone().add(vectorTemp),color);
-                }else {
-                    spawnParticle(start.clone().add(vectorTemp));
-                }
+                spawnParticle(start.clone().add(vectorTemp));
             }
         }.runTaskTimer(ParticleLib.getInstance(), 0, getPeriod());
     }
@@ -123,11 +107,7 @@ public class Line extends ParticleObject implements Playable {
     public void playNextPoint() {
         currentStep += step;
         Vector vectorTemp = vector.clone().multiply(currentStep);
-        if (color != null){
-            spawnParticle(start.clone().add(vectorTemp),color);
-        }else {
-            spawnParticle(start.clone().add(vectorTemp));
-        }
+        spawnParticle(start.clone().add(vectorTemp));
 
         if (currentStep > length) {
             currentStep = 0D;
@@ -170,12 +150,4 @@ public class Line extends ParticleObject implements Playable {
         vector.normalize();
     }
 
-    public Color getColor() {
-        return color;
-    }
-
-    public Line setColor(Color color) {
-        this.color = color;
-        return this;
-    }
 }

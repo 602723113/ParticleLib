@@ -11,8 +11,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
-import top.zoyn.particlelib.pobject.*;
-import top.zoyn.particlelib.utils.matrix.Matrixs;
+import top.zoyn.particlelib.pobject.Circle;
+import top.zoyn.particlelib.pobject.EffectGroup;
+import top.zoyn.particlelib.pobject.Grid;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -159,19 +160,30 @@ public class ParticleLib extends JavaPlugin {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         Player player = (Player) sender;
 
+
+//        Circle circle = new Circle(player.getLocation().clone().add(0, 1, 0))
+//                .setColor(Color.fromRGB(254, 67, 101))
+//                .setStep(20);
+//
+//        EffectGroup effectGroup = new EffectGroup()
+//                .addEffect(circle)
+//                .setPeriod(1)
+//                .attachEntity(player)
+//                .alwaysPlayAsync();
+
 //        Location location = player.getLocation().clone();
 //        Bukkit.getScheduler().runTaskTimer(this, () -> showBorderAndGridAboutBlock(location.getBlock(), Particle.FIREWORKS_SPARK), 0L, 10L);
 
 /**
-        Circle circle = new Circle(player.getLocation().clone().add(0,1,0));
-        circle.setColor(Color.fromRGB(255,255,0));
-        circle.setStep(5);
-        EffectGroup effectGroup = new EffectGroup();
-        effectGroup.addEffect(circle);
-        effectGroup.setPeriod(1);
-        effectGroup.attachEntity(player);
-        effectGroup.alwaysPlayAsync();
-*/
+ Circle circle = new Circle(player.getLocation().clone().add(0,1,0));
+ circle.setColor(Color.fromRGB(255,255,0));
+ circle.setStep(5);
+ EffectGroup effectGroup = new EffectGroup();
+ effectGroup.addEffect(circle);
+ effectGroup.setPeriod(1);
+ effectGroup.attachEntity(player);
+ effectGroup.alwaysPlayAsync();
+ */
 
 //
 //        Astroid astroid = new Astroid(player.getLocation());

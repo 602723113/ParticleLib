@@ -10,8 +10,6 @@ import org.bukkit.util.Vector;
 import top.zoyn.particlelib.ParticleLib;
 import top.zoyn.particlelib.utils.matrix.Matrix;
 
-import java.awt.*;
-
 /**
  * 表示一个特效对象
  *
@@ -33,6 +31,16 @@ public abstract class ParticleObject {
     private double offsetZ = 0;
     private double extra = 0;
     private Object data = null;
+    private Color color;
+    /**
+     * 表示该特效对象所拥有的矩阵
+     */
+    private Matrix matrix;
+
+    public static boolean isNewer() {
+        String bukkitVersion = Bukkit.getBukkitVersion();
+        return !bukkitVersion.contains("1.6") && !bukkitVersion.contains("1.7") && !bukkitVersion.contains("1.8") && !bukkitVersion.contains("1.9") && !bukkitVersion.contains("1.10") && !bukkitVersion.contains("1.11") && !bukkitVersion.contains("1.12");
+    }
 
     public abstract void show();
 
@@ -140,25 +148,23 @@ public abstract class ParticleObject {
         }
     }
 
-    /**
-     * 表示该特效对象所拥有的矩阵
-     */
-    private Matrix matrix;
-
-    public void addMatrix(Matrix matrix) {
+    public ParticleObject addMatrix(Matrix matrix) {
         if (this.matrix == null) {
             setMatrix(matrix);
-            return;
+            return this;
         }
         this.matrix = matrix.multiply(this.matrix);
+        return this;
     }
 
-    public void setMatrix(Matrix matrix) {
+    public ParticleObject setMatrix(Matrix matrix) {
         this.matrix = matrix;
+        return this;
     }
 
-    public void removeMatrix() {
+    public ParticleObject removeMatrix() {
         matrix = null;
+        return this;
     }
 
     public boolean hasMatrix() {
@@ -169,80 +175,103 @@ public abstract class ParticleObject {
         return origin;
     }
 
-    public void setOrigin(Location origin) {
+    public ParticleObject setOrigin(Location origin) {
         this.origin = origin;
+        return this;
     }
 
     public long getPeriod() {
         return period;
     }
 
-    public void setPeriod(long period) {
+    public ParticleObject setPeriod(long period) {
         this.period = period;
+        return this;
     }
 
     public ShowType getShowType() {
         return showType;
     }
 
-    public void setShowType(ShowType showType) {
+    public ParticleObject setShowType(ShowType showType) {
         this.showType = showType;
+        return this;
     }
 
     public Particle getParticle() {
         return particle;
     }
 
-    public void setParticle(Particle particle) {
+    public ParticleObject setParticle(Particle particle) {
         this.particle = particle;
+        // 记得重置颜色
+        if (color != null) {
+            color = null;
+        }
+        return this;
     }
 
     public int getCount() {
         return count;
     }
 
-    public void setCount(int count) {
+    public ParticleObject setCount(int count) {
         this.count = count;
+        return this;
     }
 
     public double getOffsetX() {
         return offsetX;
     }
 
-    public void setOffsetX(double offsetX) {
+    public ParticleObject setOffsetX(double offsetX) {
         this.offsetX = offsetX;
+        return this;
     }
 
     public double getOffsetY() {
         return offsetY;
     }
 
-    public void setOffsetY(double offsetY) {
+    public ParticleObject setOffsetY(double offsetY) {
         this.offsetY = offsetY;
+        return this;
     }
 
     public double getOffsetZ() {
         return offsetZ;
     }
 
-    public void setOffsetZ(double offsetZ) {
+    public ParticleObject setOffsetZ(double offsetZ) {
         this.offsetZ = offsetZ;
+        return this;
     }
 
     public double getExtra() {
         return extra;
     }
 
-    public void setExtra(double extra) {
+    public ParticleObject setExtra(double extra) {
         this.extra = extra;
+        return this;
     }
 
     public Object getData() {
         return data;
     }
 
-    public void setData(Object data) {
+    public ParticleObject setData(Object data) {
         this.data = data;
+        return this;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public ParticleObject setColor(Color color) {
+        this.color = color;
+        return this;
     }
 
     /**
@@ -258,33 +287,40 @@ public abstract class ParticleObject {
 
             showLocation = origin.clone().add(changed);
         }
+
+        // 可以在这里设置 Color
+        if (color != null) {
+            if (isNewer()) {
+                Particle.DustOptions dust = new Particle.DustOptions(color, 1);
+                location.getWorld().spawnParticle(Particle.REDSTONE, showLocation.getX(), showLocation.getY(), showLocation.getZ(), 0, 0, 0, 0, 1, dust);
+            } else {
+                location.getWorld().spawnParticle(Particle.REDSTONE, showLocation.getX(), showLocation.getY(), showLocation.getZ(), 0, color.getRed() / 255.0f, color.getGreen() / 255.0f, color.getBlue() / 255.0f, 1);
+            }
+            return;
+        }
         location.getWorld().spawnParticle(particle, showLocation, count, offsetX, offsetY, offsetZ, extra, data);
     }
 
-    /**
-     * 播放彩色粒子
-     * @param location 坐标
-     * @param color 颜色
-     */
-    public void spawnParticle(Location location,Color color) {
-        Location showLocation = location;
-        if (hasMatrix()) {
-            Vector vector = location.clone().subtract(origin).toVector();
-            Vector changed = matrix.applyVector(vector);
-
-            showLocation = origin.clone().add(changed);
-        }
-        if (isNewer()){
-            Particle.DustOptions dust = new Particle.DustOptions(color, 1);
-            location.getWorld().spawnParticle(Particle.REDSTONE, showLocation.getX(), showLocation.getY(), showLocation.getZ(), 0,0, 0, 0,1,dust);
-        }else {
-            location.getWorld().spawnParticle(Particle.REDSTONE, showLocation.getX(), showLocation.getY(), showLocation.getZ(), 0,color.getRed()/255.0f, color.getGreen()/255.0f, color.getBlue()/255.0f,1);
-        }
-    }
-
-    public static boolean isNewer(){
-        String bukkitVersion = Bukkit.getBukkitVersion();
-        return !bukkitVersion.contains("1.6") && !bukkitVersion.contains("1.7") && !bukkitVersion.contains("1.8") && !bukkitVersion.contains("1.9") && !bukkitVersion.contains("1.10") && !bukkitVersion.contains("1.11") && !bukkitVersion.contains("1.12");
-    }
+//    /**
+//     * 播放彩色粒子
+//     *
+//     * @param location 坐标
+//     * @param color    颜色
+//     */
+//    public void spawnParticle(Location location, Color color) {
+//        Location showLocation = location;
+//        if (hasMatrix()) {
+//            Vector vector = location.clone().subtract(origin).toVector();
+//            Vector changed = matrix.applyVector(vector);
+//
+//            showLocation = origin.clone().add(changed);
+//        }
+//        if (isNewer()) {
+//            Particle.DustOptions dust = new Particle.DustOptions(color, 1);
+//            location.getWorld().spawnParticle(Particle.REDSTONE, showLocation.getX(), showLocation.getY(), showLocation.getZ(), 0, 0, 0, 0, 1, dust);
+//        } else {
+//            location.getWorld().spawnParticle(Particle.REDSTONE, showLocation.getX(), showLocation.getY(), showLocation.getZ(), 0, color.getRed() / 255.0f, color.getGreen() / 255.0f, color.getBlue() / 255.0f, 1);
+//        }
+//    }
 
 }
