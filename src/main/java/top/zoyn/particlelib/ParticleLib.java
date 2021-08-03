@@ -165,16 +165,16 @@ public class ParticleLib extends JavaPlugin {
 //        Astroid astroid = (Astroid) new Astroid(player.getLocation())
 //                .setColor(Color.fromRGB(254, 67, 101))
 //                .addMatrix(Matrixs.scale(2, 2, 1.5))
-//                .setIncrementY(1);
+//                .setIncrementY(1D);
 //
-//        Circle circle = new Circle(player.getLocation().clone().add(0, 1, 0))
-//                .setColor(Color.BLUE)
-//                .setStep(20);
+//        Circle circle = new Circle(player.getLocation());
+//        circle.setStep(20D)
+//                .setColor(Color.BLUE);
 //
 //        EffectGroup effectGroup = new EffectGroup()
 //                .addEffect(circle)
 //                .addEffect(astroid)
-//                .setPeriod(1)
+//                .setPeriod(1L)
 //                .attachEntity(player)
 //                .alwaysPlayAsync();
 
