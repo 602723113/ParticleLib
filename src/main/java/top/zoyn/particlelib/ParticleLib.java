@@ -2,6 +2,7 @@ package top.zoyn.particlelib;
 
 import com.google.common.collect.Lists;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
@@ -10,8 +11,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
+import top.zoyn.particlelib.pobject.Astroid;
 import top.zoyn.particlelib.pobject.Circle;
+import top.zoyn.particlelib.pobject.EffectGroup;
 import top.zoyn.particlelib.pobject.Grid;
+import top.zoyn.particlelib.utils.matrix.Matrixs;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -158,13 +162,18 @@ public class ParticleLib extends JavaPlugin {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         Player player = (Player) sender;
 
-
-//        Circle circle = new Circle(player.getLocation().clone().add(0, 1, 0))
+//        Astroid astroid = (Astroid) new Astroid(player.getLocation())
 //                .setColor(Color.fromRGB(254, 67, 101))
+//                .addMatrix(Matrixs.scale(2, 2, 1.5))
+//                .setIncrementY(1);
+//
+//        Circle circle = new Circle(player.getLocation().clone().add(0, 1, 0))
+//                .setColor(Color.BLUE)
 //                .setStep(20);
 //
 //        EffectGroup effectGroup = new EffectGroup()
 //                .addEffect(circle)
+//                .addEffect(astroid)
 //                .setPeriod(1)
 //                .attachEntity(player)
 //                .alwaysPlayAsync();

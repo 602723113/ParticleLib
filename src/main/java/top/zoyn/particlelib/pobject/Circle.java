@@ -2,6 +2,7 @@ package top.zoyn.particlelib.pobject;
 
 import org.bukkit.Color;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import top.zoyn.particlelib.utils.matrix.Matrix;
 
 /**
@@ -85,6 +86,12 @@ public class Circle extends ParticleObject implements Playable {
     @Override
     public void playNextPoint() {
         fullArc.playNextPoint();
+    }
+
+    @Override
+    public Circle attachEntity(Entity entity) {
+        fullArc.attachEntity(entity);
+        return this;
     }
 
     @Override

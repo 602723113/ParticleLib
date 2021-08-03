@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
+import org.bukkit.entity.Entity;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
@@ -32,6 +33,14 @@ public abstract class ParticleObject {
     private double extra = 0;
     private Object data = null;
     private Color color;
+    private Entity entity;
+    private BukkitTask attachTask;
+    /**
+     * X的变化量
+     */
+    private double incrementX;
+    private double incrementY;
+    private double incrementZ;
     /**
      * 表示该特效对象所拥有的矩阵
      */
@@ -144,6 +153,7 @@ public abstract class ParticleObject {
         if (task != null) {
             running = false;
             task.cancel();
+            attachTask.cancel();
             setShowType(ShowType.NONE);
         }
     }
@@ -274,6 +284,44 @@ public abstract class ParticleObject {
         return this;
     }
 
+    public Entity getEntity() {
+        return entity;
+    }
+
+    public ParticleObject attachEntity(Entity entity) {
+        this.entity = entity;
+        if (attachTask != null) {
+            attachTask.cancel();
+        }
+
+        attachTask = new BukkitRunnable() {
+            @Override
+            public void run() {
+                // 死亡或下线自动return 防止报错
+                if (!running || entity == null || entity.isDead()) {
+                    return;
+                }
+                setOrigin(entity.getLocation());
+            }
+        }.runTaskTimerAsynchronously(ParticleLib.getInstance(), 2, getPeriod());
+        return this;
+    }
+
+    public ParticleObject setIncrementX(double incrementX) {
+        this.incrementX = incrementX;
+        return this;
+    }
+
+    public ParticleObject setIncrementY(double incrementY) {
+        this.incrementY = incrementY;
+        return this;
+    }
+
+    public ParticleObject setIncrementZ(double incrementZ) {
+        this.incrementZ = incrementZ;
+        return this;
+    }
+
     /**
      * 通过给定一个坐标就可以使用已经指定的参数来播放粒子
      *
@@ -288,11 +336,14 @@ public abstract class ParticleObject {
             showLocation = origin.clone().add(changed);
         }
 
+        // 在这里可以设置一个XYZ的变化量
+        showLocation.add(incrementX, incrementY, incrementZ);
+
         // 可以在这里设置 Color
         if (color != null) {
             if (isNewer()) {
                 Particle.DustOptions dust = new Particle.DustOptions(color, 1);
-                location.getWorld().spawnParticle(Particle.REDSTONE, showLocation.getX(), showLocation.getY(), showLocation.getZ(), 0, 0, 0, 0, 1, dust);
+                location.getWorld().spawnParticle(Particle.REDSTONE, showLocation.getX(), showLocation.getY(), showLocation.getZ(), 0, offsetX, offsetY, offsetZ, 1, dust);
             } else {
                 // 对低版本的黑色做一个小小的兼容
                 if (color.getRed() == 0 && color.getBlue() == 0 && color.getGreen() == 0) {
