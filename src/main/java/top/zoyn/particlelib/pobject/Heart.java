@@ -1,5 +1,6 @@
 package top.zoyn.particlelib.pobject;
 
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitRunnable;
 import top.zoyn.particlelib.ParticleLib;
@@ -7,7 +8,7 @@ import top.zoyn.particlelib.ParticleLib;
 /**
  * 表示一颗心
  *
- * @author Zoyn
+ * @author Zoyn IceCold
  */
 public class Heart extends ParticleObject implements Playable {
 
@@ -17,6 +18,8 @@ public class Heart extends ParticleObject implements Playable {
     private double step = 0.001D;
 
     private double currentT = -1.0D;
+
+    private Color color;
 
     /**
      * 构造一个小心心
@@ -38,6 +41,11 @@ public class Heart extends ParticleObject implements Playable {
         this.xScaleRate = xScaleRate;
         this.yScaleRate = yScaleRate;
         setOrigin(origin);
+    }
+
+    public Heart(double xScaleRate, double yScaleRate, Location origin,Color color) {
+        this(xScaleRate,yScaleRate,origin);
+        this.color = color;
     }
 
     public double getXScaleRate() {
@@ -70,7 +78,12 @@ public class Heart extends ParticleObject implements Playable {
             double x = xScaleRate * Math.sin(t) * Math.cos(t) * Math.log(Math.abs(t));
             double y = yScaleRate * Math.sqrt(Math.abs(t)) * Math.cos(t);
 
-            spawnParticle(getOrigin().clone().add(x, 0, y));
+            if (color != null){
+                spawnParticle(getOrigin().clone().add(x, 0, y),color);
+            }else {
+                spawnParticle(getOrigin().clone().add(x, 0, y));
+            }
+
         }
     }
 
@@ -87,7 +100,11 @@ public class Heart extends ParticleObject implements Playable {
                 double x = xScaleRate * Math.sin(currentT) * Math.cos(currentT) * Math.log(Math.abs(currentT));
                 double y = yScaleRate * Math.sqrt(Math.abs(currentT)) * Math.cos(currentT);
 
-                spawnParticle(getOrigin().clone().add(x, 0, y));
+                if (color != null){
+                    spawnParticle(getOrigin().clone().add(x, 0, y),color);
+                }else {
+                    spawnParticle(getOrigin().clone().add(x, 0, y));
+                }
             }
         }.runTaskTimer(ParticleLib.getInstance(), 0, getPeriod());
     }
@@ -98,10 +115,23 @@ public class Heart extends ParticleObject implements Playable {
         double x = xScaleRate * Math.sin(currentT) * Math.cos(currentT) * Math.log(Math.abs(currentT));
         double y = yScaleRate * Math.sqrt(Math.abs(currentT)) * Math.cos(currentT);
 
-        spawnParticle(getOrigin().clone().add(x, 0, y));
+        if (color != null){
+            spawnParticle(getOrigin().clone().add(x, 0, y),color);
+        }else {
+            spawnParticle(getOrigin().clone().add(x, 0, y));
+        }
 
         if (currentT > 1.0D) {
             currentT = -1.0D;
         }
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public Heart setColor(Color color) {
+        this.color = color;
+        return this;
     }
 }

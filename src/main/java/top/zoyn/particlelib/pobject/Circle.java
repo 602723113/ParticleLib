@@ -1,16 +1,19 @@
 package top.zoyn.particlelib.pobject;
 
+import org.bukkit.Color;
 import org.bukkit.Location;
 import top.zoyn.particlelib.utils.matrix.Matrix;
 
 /**
  * 表示一个圆
  *
- * @author Zoyn
+ * @author Zoyn IceCold
  */
 public class Circle extends ParticleObject implements Playable {
 
     private final Arc fullArc;
+
+    private Color color;
 
     public Circle(Location origin) {
         this(origin, 1);
@@ -46,6 +49,12 @@ public class Circle extends ParticleObject implements Playable {
                 .setRadius(radius)
                 .setStep(step);
         fullArc.setPeriod(period);
+    }
+
+    public Circle(Location origin, double radius, double step, long period, Color color) {
+        this(origin, radius, step, period);
+        this.color = color;
+        this.fullArc.setColor(color);
     }
 
     @Override
@@ -152,4 +161,13 @@ public class Circle extends ParticleObject implements Playable {
         this.fullArc.setPeriod(period);
     }
 
+    public Color getColor() {
+        return color;
+    }
+
+    public Circle setColor(Color color) {
+        this.color = color;
+        this.fullArc.setColor(color);
+        return this;
+    }
 }

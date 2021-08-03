@@ -1,5 +1,6 @@
 package top.zoyn.particlelib.pobject.bezier;
 
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 import top.zoyn.particlelib.pobject.ParticleObject;
@@ -21,6 +22,8 @@ public class ThreeRankBezierCurve extends ParticleObject {
     private Location p2;
     private Location p3;
     private double step;
+
+    private Color color;
 
     public ThreeRankBezierCurve(Location p0, Location p1, Location p2, Location p3) {
         this(p0, p1, p2, p3, 0.05);
@@ -46,11 +49,20 @@ public class ThreeRankBezierCurve extends ParticleObject {
         resetLocations();
     }
 
+    public ThreeRankBezierCurve(Location p0, Location p1, Location p2, Location p3, double step, Color color) {
+        this(p0, p1, p2, p3, step);
+        this.color = color;
+    }
+
     @Override
     public void show() {
         locations.forEach(loc -> {
             if (loc != null) {
-                spawnParticle(loc);
+                if (color != null){
+                    spawnParticle(loc,color);
+                }else {
+                    spawnParticle(loc);
+                }
 //                loc.getWorld().spawnParticle(this.getParticle(), loc, 1);
             }
         });
@@ -103,6 +115,15 @@ public class ThreeRankBezierCurve extends ParticleObject {
     public ThreeRankBezierCurve setStep(double step) {
         this.step = step;
         resetLocations();
+        return this;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public ThreeRankBezierCurve setColor(Color color) {
+        this.color = color;
         return this;
     }
 

@@ -1,5 +1,6 @@
 package top.zoyn.particlelib.pobject.equation;
 
+import org.bukkit.Color;
 import org.bukkit.Location;
 import top.zoyn.particlelib.pobject.ParticleObject;
 
@@ -17,6 +18,7 @@ public class PolarEquationRenderer extends ParticleObject {
     private double maxTheta;
     private double dTheta;
 
+    private Color color;
     /**
      * 极坐标渲染器
      *
@@ -44,14 +46,27 @@ public class PolarEquationRenderer extends ParticleObject {
         this.dTheta = dTheta;
     }
 
+    public PolarEquationRenderer(Location origin, Function<Double, Double> function, double minTheta, double maxTheta, double dTheta,Color color) {
+        setOrigin(origin);
+        this.function = function;
+        this.minTheta = minTheta;
+        this.maxTheta = maxTheta;
+        this.dTheta = dTheta;
+        this.color = color;
+    }
+
     @Override
     public void show() {
         for (double theta = minTheta; theta < maxTheta; theta += dTheta) {
             double rho = function.apply(theta);
             double x = rho * Math.cos(theta);
             double y = rho * Math.sin(theta);
+            if (color != null){
+                spawnParticle(getOrigin().clone().add(x, y, 0),color);
+            }else {
+                spawnParticle(getOrigin().clone().add(x, y, 0));
+            }
 
-            spawnParticle(getOrigin().clone().add(x, y, 0));
 //            origin.getWorld().spawnParticle(this.getParticle(), origin.clone().add(x, y, 0), 1);
         }
     }
@@ -83,5 +98,12 @@ public class PolarEquationRenderer extends ParticleObject {
         return this;
     }
 
+    public Color getColor() {
+        return color;
+    }
 
+    public PolarEquationRenderer setColor(Color color) {
+        this.color = color;
+        return this;
+    }
 }

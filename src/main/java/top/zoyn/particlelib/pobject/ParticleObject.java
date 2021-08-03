@@ -1,6 +1,7 @@
 package top.zoyn.particlelib.pobject;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -9,10 +10,12 @@ import org.bukkit.util.Vector;
 import top.zoyn.particlelib.ParticleLib;
 import top.zoyn.particlelib.utils.matrix.Matrix;
 
+import java.awt.*;
+
 /**
  * 表示一个特效对象
  *
- * @author Zoyn
+ * @author Zoyn IceCold
  */
 public abstract class ParticleObject {
 
@@ -256,6 +259,32 @@ public abstract class ParticleObject {
             showLocation = origin.clone().add(changed);
         }
         location.getWorld().spawnParticle(particle, showLocation, count, offsetX, offsetY, offsetZ, extra, data);
+    }
+
+    /**
+     * 播放彩色粒子
+     * @param location 坐标
+     * @param color 颜色
+     */
+    public void spawnParticle(Location location,Color color) {
+        Location showLocation = location;
+        if (hasMatrix()) {
+            Vector vector = location.clone().subtract(origin).toVector();
+            Vector changed = matrix.applyVector(vector);
+
+            showLocation = origin.clone().add(changed);
+        }
+        if (isNewer()){
+            Particle.DustOptions dust = new Particle.DustOptions(color, 1);
+            location.getWorld().spawnParticle(Particle.REDSTONE, showLocation.getX(), showLocation.getY(), showLocation.getZ(), 0,0, 0, 0,1,dust);
+        }else {
+            location.getWorld().spawnParticle(Particle.REDSTONE, showLocation.getX(), showLocation.getY(), showLocation.getZ(), 0,color.getRed()/255.0f, color.getGreen()/255.0f, color.getBlue()/255.0f,1);
+        }
+    }
+
+    public static boolean isNewer(){
+        String bukkitVersion = Bukkit.getBukkitVersion();
+        return !bukkitVersion.contains("1.6") && !bukkitVersion.contains("1.7") && !bukkitVersion.contains("1.8") && !bukkitVersion.contains("1.9") && !bukkitVersion.contains("1.10") && !bukkitVersion.contains("1.11") && !bukkitVersion.contains("1.12");
     }
 
 }
