@@ -2,7 +2,6 @@ package top.zoyn.particlelib;
 
 import com.google.common.collect.Lists;
 import org.bukkit.Bukkit;
-import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
@@ -12,7 +11,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
 import top.zoyn.particlelib.pobject.Circle;
-import top.zoyn.particlelib.pobject.EffectGroup;
 import top.zoyn.particlelib.pobject.Grid;
 
 import java.util.List;

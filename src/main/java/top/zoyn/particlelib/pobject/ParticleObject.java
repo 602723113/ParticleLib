@@ -294,7 +294,12 @@ public abstract class ParticleObject {
                 Particle.DustOptions dust = new Particle.DustOptions(color, 1);
                 location.getWorld().spawnParticle(Particle.REDSTONE, showLocation.getX(), showLocation.getY(), showLocation.getZ(), 0, 0, 0, 0, 1, dust);
             } else {
-                location.getWorld().spawnParticle(Particle.REDSTONE, showLocation.getX(), showLocation.getY(), showLocation.getZ(), 0, color.getRed() / 255.0f, color.getGreen() / 255.0f, color.getBlue() / 255.0f, 1);
+                // 对低版本的黑色做一个小小的兼容
+                if (color.getRed() == 0 && color.getBlue() == 0 && color.getGreen() == 0) {
+                    location.getWorld().spawnParticle(Particle.REDSTONE, showLocation.getX(), showLocation.getY(), showLocation.getZ(), 0, Float.MIN_VALUE / 255.0f, Float.MIN_VALUE / 255.0f, Float.MIN_VALUE / 255.0f, 1);
+                } else {
+                    location.getWorld().spawnParticle(Particle.REDSTONE, showLocation.getX(), showLocation.getY(), showLocation.getZ(), 0, color.getRed() / 255.0f, color.getGreen() / 255.0f, color.getBlue() / 255.0f, 1);
+                }
             }
             return;
         }
