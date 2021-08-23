@@ -328,6 +328,49 @@ public abstract class ParticleObject {
      * @param location 坐标
      */
     public void spawnParticle(Location location) {
+        spawnParticle(location, this.particle, count, offsetX, offsetY, offsetZ, extra, data);
+//        Location showLocation = location;
+//        if (hasMatrix()) {
+//            Vector vector = location.clone().subtract(origin).toVector();
+//            Vector changed = matrix.applyVector(vector);
+//
+//            showLocation = origin.clone().add(changed);
+//        }
+//
+//        // 在这里可以设置一个XYZ的变化量
+//        showLocation.add(incrementX, incrementY, incrementZ);
+//
+//        // 可以在这里设置 Color
+//        if (color != null) {
+//            if (isNewer()) {
+//                Particle.DustOptions dust = new Particle.DustOptions(color, 1);
+//                location.getWorld().spawnParticle(Particle.REDSTONE, showLocation.getX(), showLocation.getY(), showLocation.getZ(), 0, offsetX, offsetY, offsetZ, 1, dust);
+//            } else {
+//                // 对低版本的黑色做一个小小的兼容
+//                if (color.getRed() == 0 && color.getBlue() == 0 && color.getGreen() == 0) {
+//                    location.getWorld().spawnParticle(Particle.REDSTONE, showLocation.getX(), showLocation.getY(), showLocation.getZ(), 0, Float.MIN_VALUE / 255.0f, Float.MIN_VALUE / 255.0f, Float.MIN_VALUE / 255.0f, 1);
+//                } else {
+//                    location.getWorld().spawnParticle(Particle.REDSTONE, showLocation.getX(), showLocation.getY(), showLocation.getZ(), 0, color.getRed() / 255.0f, color.getGreen() / 255.0f, color.getBlue() / 255.0f, 1);
+//                }
+//            }
+//            return;
+//        }
+//        location.getWorld().spawnParticle(particle, showLocation, count, offsetX, offsetY, offsetZ, extra, data);
+    }
+
+    /**
+     * 自定义程度较高的生成粒子方法
+     *
+     * @param location 坐标
+     * @param particle 粒子
+     * @param count    粒子数量
+     * @param offsetX  X轴偏移量
+     * @param offsetY  Y轴偏移量
+     * @param offsetZ  Z轴偏移量
+     * @param extra    粒子额外参数
+     * @param data     特殊粒子属性
+     */
+    public void spawnParticle(Location location, Particle particle, int count, double offsetX, double offsetY, double offsetZ, double extra, Object data) {
         Location showLocation = location;
         if (hasMatrix()) {
             Vector vector = location.clone().subtract(origin).toVector();

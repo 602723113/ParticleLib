@@ -2,6 +2,7 @@ package top.zoyn.particlelib;
 
 import com.google.common.collect.Lists;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
@@ -10,8 +11,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
-import top.zoyn.particlelib.pobject.*;
-import top.zoyn.particlelib.utils.matrix.Matrixs;
+import top.zoyn.particlelib.pobject.Circle;
+import top.zoyn.particlelib.pobject.Cube;
+import top.zoyn.particlelib.pobject.Grid;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -158,7 +160,11 @@ public class ParticleLib extends JavaPlugin {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         Player player = (Player) sender;
 
-//
+//        Cube cube = new Cube(player.getLocation().add(-1, -1, -1), player.getEyeLocation().add(1D, 1D, 1D));
+//        cube.setPeriod(1L)
+//                .setColor(Color.WHITE)
+//                .alwaysShowAsync();
+
 //        Astroid astroid = (Astroid) new Astroid(player.getLocation())
 //                .setParticle(Particle.FIREWORKS_SPARK);
 //
