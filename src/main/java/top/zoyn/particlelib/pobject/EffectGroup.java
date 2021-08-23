@@ -1,9 +1,11 @@
 package top.zoyn.particlelib.pobject;
 
 import com.google.common.collect.Lists;
+import org.bukkit.Particle;
 import org.bukkit.entity.Entity;
 import top.zoyn.particlelib.utils.matrix.Matrixs;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -42,6 +44,17 @@ public class EffectGroup {
      */
     public EffectGroup addEffect(ParticleObject particleObj) {
         effectList.add(particleObj);
+        return this;
+    }
+
+    /**
+     * 往特效组添加一堆特效
+     *
+     * @param particleObj 一堆特效对象
+     * @return {@link EffectGroup}
+     */
+    public EffectGroup addEffect(ParticleObject... particleObj) {
+        effectList.addAll(Arrays.asList(particleObj));
         return this;
     }
 
@@ -170,6 +183,11 @@ public class EffectGroup {
 //                effect.setOrigin(entity.getLocation());
 //            }
 //        }.runTaskTimerAsynchronously(ParticleLib.getInstance(), 0, effect.getPeriod()));
+        return this;
+    }
+
+    public EffectGroup setParticle(Particle particle) {
+        effectList.forEach(effect -> effect.setParticle(particle));
         return this;
     }
 
