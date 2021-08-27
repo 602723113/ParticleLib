@@ -182,6 +182,9 @@ public abstract class ParticleObject {
     }
 
     public Location getOrigin() {
+        if (entity != null) {
+            return entity.getLocation();
+        }
         return origin;
     }
 
@@ -290,20 +293,6 @@ public abstract class ParticleObject {
 
     public ParticleObject attachEntity(Entity entity) {
         this.entity = entity;
-        if (attachTask != null) {
-            attachTask.cancel();
-        }
-
-        attachTask = new BukkitRunnable() {
-            @Override
-            public void run() {
-                // 死亡或下线自动return 防止报错
-                if (!running || entity == null || entity.isDead()) {
-                    return;
-                }
-                setOrigin(entity.getLocation());
-            }
-        }.runTaskTimerAsynchronously(ParticleLib.getInstance(), 2, getPeriod());
         return this;
     }
 
@@ -329,33 +318,6 @@ public abstract class ParticleObject {
      */
     public void spawnParticle(Location location) {
         spawnParticle(location, this.particle, count, offsetX, offsetY, offsetZ, extra, data);
-//        Location showLocation = location;
-//        if (hasMatrix()) {
-//            Vector vector = location.clone().subtract(origin).toVector();
-//            Vector changed = matrix.applyVector(vector);
-//
-//            showLocation = origin.clone().add(changed);
-//        }
-//
-//        // 在这里可以设置一个XYZ的变化量
-//        showLocation.add(incrementX, incrementY, incrementZ);
-//
-//        // 可以在这里设置 Color
-//        if (color != null) {
-//            if (isNewer()) {
-//                Particle.DustOptions dust = new Particle.DustOptions(color, 1);
-//                location.getWorld().spawnParticle(Particle.REDSTONE, showLocation.getX(), showLocation.getY(), showLocation.getZ(), 0, offsetX, offsetY, offsetZ, 1, dust);
-//            } else {
-//                // 对低版本的黑色做一个小小的兼容
-//                if (color.getRed() == 0 && color.getBlue() == 0 && color.getGreen() == 0) {
-//                    location.getWorld().spawnParticle(Particle.REDSTONE, showLocation.getX(), showLocation.getY(), showLocation.getZ(), 0, Float.MIN_VALUE / 255.0f, Float.MIN_VALUE / 255.0f, Float.MIN_VALUE / 255.0f, 1);
-//                } else {
-//                    location.getWorld().spawnParticle(Particle.REDSTONE, showLocation.getX(), showLocation.getY(), showLocation.getZ(), 0, color.getRed() / 255.0f, color.getGreen() / 255.0f, color.getBlue() / 255.0f, 1);
-//                }
-//            }
-//            return;
-//        }
-//        location.getWorld().spawnParticle(particle, showLocation, count, offsetX, offsetY, offsetZ, extra, data);
     }
 
     /**
@@ -399,27 +361,5 @@ public abstract class ParticleObject {
         }
         location.getWorld().spawnParticle(particle, showLocation, count, offsetX, offsetY, offsetZ, extra, data);
     }
-
-//    /**
-//     * 播放彩色粒子
-//     *
-//     * @param location 坐标
-//     * @param color    颜色
-//     */
-//    public void spawnParticle(Location location, Color color) {
-//        Location showLocation = location;
-//        if (hasMatrix()) {
-//            Vector vector = location.clone().subtract(origin).toVector();
-//            Vector changed = matrix.applyVector(vector);
-//
-//            showLocation = origin.clone().add(changed);
-//        }
-//        if (isNewer()) {
-//            Particle.DustOptions dust = new Particle.DustOptions(color, 1);
-//            location.getWorld().spawnParticle(Particle.REDSTONE, showLocation.getX(), showLocation.getY(), showLocation.getZ(), 0, 0, 0, 0, 1, dust);
-//        } else {
-//            location.getWorld().spawnParticle(Particle.REDSTONE, showLocation.getX(), showLocation.getY(), showLocation.getZ(), 0, color.getRed() / 255.0f, color.getGreen() / 255.0f, color.getBlue() / 255.0f, 1);
-//        }
-//    }
 
 }
