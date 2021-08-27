@@ -1,7 +1,10 @@
 package top.zoyn.particlelib.pobject.equation;
 
 import org.bukkit.Location;
+import org.bukkit.scheduler.BukkitRunnable;
+import top.zoyn.particlelib.ParticleLib;
 import top.zoyn.particlelib.pobject.ParticleObject;
+import top.zoyn.particlelib.pobject.Playable;
 
 import java.util.function.Function;
 
@@ -10,12 +13,13 @@ import java.util.function.Function;
  *
  * @author Zoyn
  */
-public class GeneralEquationRenderer extends ParticleObject {
+public class GeneralEquationRenderer extends ParticleObject implements Playable {
 
     private final Function<Double, Double> function;
     private double minX;
     private double maxX;
     private double dx;
+    private double currentX;
 
     public GeneralEquationRenderer(Location origin, Function<Double, Double> function) {
         this(origin, function, -5D, 5D);
@@ -38,6 +42,32 @@ public class GeneralEquationRenderer extends ParticleObject {
         for (double x = minX; x < maxX; x += dx) {
             spawnParticle(getOrigin().clone().add(x, function.apply(x), 0));
         }
+    }
+
+    @Override
+    public void play() {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                // 进行关闭
+                if (currentX > maxX) {
+                    cancel();
+                    return;
+                }
+                currentX += dx;
+                spawnParticle(getOrigin().clone().add(currentX, function.apply(currentX), 0));
+            }
+        }.runTaskTimer(ParticleLib.getInstance(), 0, getPeriod());
+    }
+
+    @Override
+    public void playNextPoint() {
+        // 进行关闭
+        if (currentX > maxX) {
+            currentX = minX;
+        }
+        currentX += dx;
+        spawnParticle(getOrigin().clone().add(currentX, function.apply(currentX), 0));
     }
 
     public double getMinX() {

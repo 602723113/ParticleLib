@@ -1,12 +1,17 @@
 package top.zoyn.particlelib;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
+import org.bukkit.Particle;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import top.zoyn.particlelib.pobject.Arc;
-import top.zoyn.particlelib.pobject.Grid;
+import top.zoyn.particlelib.pobject.equation.Equations;
+import top.zoyn.particlelib.pobject.equation.GeneralEquationRenderer;
+import top.zoyn.particlelib.pobject.equation.ParametricEquationRenderer;
+import top.zoyn.particlelib.pobject.equation.PolarEquationRenderer;
+import top.zoyn.particlelib.utils.matrix.Matrixs;
 
 /**
  * 粒子库主类
@@ -44,6 +49,32 @@ public class ParticleLib extends JavaPlugin {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         Player player = (Player) sender;
+
+//        GeneralEquationRenderer render = new GeneralEquationRenderer(player.getLocation(), Equations.QUADRATIC_FUNCTION);
+//        render.setMinX(-3).setMaxX(3);
+//        render.alwaysPlayAsync();
+
+//        ParametricEquationRenderer render2 = new ParametricEquationRenderer(player.getLocation(), Equations.COS_FUNCTION, Equations.SIN_FUNCTION);
+//        render2.setColor(Color.BLUE);
+//        render2.alwaysPlayAsync();
+
+//        PolarEquationRenderer render3 = new PolarEquationRenderer(player.getLocation(), theta -> 3 * Math.sin(2 * theta));
+//        render3.setParticle(Particle.FLAME);
+//        render3.alwaysPlayAsync();
+
+//        Polygon polygon = new Polygon(8, player.getLocation());
+//        polygon.setStep(0.2);
+//        polygon.addMatrix(Matrixs.scale(2, 2, 3));
+//        polygon.setPeriod(1);
+//        polygon.play();
+//        Sphere sphere = new Sphere(player.getLocation())
+//                .setSample(20)
+//                .setRadius(3);
+//        sphere.setPeriod(1).
+//                alwaysPlayAsync();
+
+//        Lotus lotus = new Lotus(player.getLocation());
+//        lotus.alwaysShowAsync();
 
 //        Grid grid = new Grid(player.getLocation(), player.getLocation().add(5, 5, 0), 2D);
 //        grid.alwaysShowAsync();

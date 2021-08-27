@@ -2,6 +2,8 @@ package top.zoyn.particlelib.pobject;
 
 import org.bukkit.Color;
 import org.bukkit.Location;
+import org.bukkit.scheduler.BukkitRunnable;
+import top.zoyn.particlelib.ParticleLib;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +14,7 @@ import java.util.List;
  *
  * @author Zoyn IceCold
  */
-public class Sphere extends ParticleObject {
+public class Sphere extends ParticleObject implements Playable {
 
     /**
      * 黄金角度 约等于137.5度
@@ -21,6 +23,7 @@ public class Sphere extends ParticleObject {
     private final List<Location> locations;
     private int sample;
     private double radius;
+    private int currentSample = 0;
 
     public Sphere(Location origin) {
         this(origin, 50, 1);
@@ -55,6 +58,33 @@ public class Sphere extends ParticleObject {
         });
     }
 
+    @Override
+    public void play() {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                // 进行关闭
+                if (currentSample + 1 == locations.size()) {
+                    cancel();
+                    return;
+                }
+                currentSample++;
+
+                spawnParticle(locations.get(currentSample));
+            }
+        }.runTaskTimer(ParticleLib.getInstance(), 0, getPeriod());
+    }
+
+    @Override
+    public void playNextPoint() {
+        // 重置
+        if (currentSample + 1 == locations.size()) {
+            currentSample = 0;
+        }
+        spawnParticle(locations.get(currentSample));
+        currentSample++;
+    }
+
     public int getSample() {
         return sample;
     }
@@ -78,7 +108,7 @@ public class Sphere extends ParticleObject {
     public void resetLocations() {
         locations.clear();
 
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < sample; i++) {
             // y goes from 1 to -1
             double y = 1 - (i / (sample - 1f)) * 2;
             // radius at y

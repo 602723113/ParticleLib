@@ -1,7 +1,10 @@
 package top.zoyn.particlelib.pobject;
 
 import org.bukkit.Location;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import top.zoyn.particlelib.ParticleLib;
+import top.zoyn.particlelib.utils.VectorUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +12,7 @@ import java.util.List;
 /**
  * 表示一个多边形
  */
-public class Polygon extends ParticleObject {
+public class Polygon extends ParticleObject implements Playable {
 
     private final List<Location> locations;
     /**
@@ -17,7 +20,10 @@ public class Polygon extends ParticleObject {
      */
     private int side;
     private double step;
-
+    private Vector currentVector;
+    private int currentLoc = 0;
+    private double length;
+    private double currentStep = 0;
 
     /**
      * 构造一个多边形
@@ -74,6 +80,47 @@ public class Polygon extends ParticleObject {
         }
     }
 
+    @Override
+    public void play() {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                Vector vectorTemp = currentVector.clone().normalize().multiply(currentStep);
+                spawnParticle(locations.get(currentLoc).clone().add(vectorTemp));
+
+                // 重置
+                if (currentStep > length) {
+                    currentStep = 0D;
+                    currentVector = VectorUtils.rotateAroundAxisY(currentVector, 360D / side);
+                    currentLoc++;
+                }
+                // 在此处进行退出
+                if (currentLoc == side) {
+                    cancel();
+                    return;
+                }
+                currentStep += step;
+            }
+        }.runTaskTimer(ParticleLib.getInstance(), 0, getPeriod());
+    }
+
+    @Override
+    public void playNextPoint() {
+        Vector vectorTemp = currentVector.clone().normalize().multiply(currentStep);
+        spawnParticle(locations.get(currentLoc).clone().add(vectorTemp));
+
+        // 重置
+        if (currentStep > length) {
+            currentStep = 0D;
+            currentVector = VectorUtils.rotateAroundAxisY(currentVector, 360D / side);
+            currentLoc++;
+        }
+        if (currentLoc == side) {
+            currentLoc = 0;
+        }
+        currentStep += step;
+    }
+
     public void resetLocations() {
         locations.clear();
 
@@ -84,6 +131,9 @@ public class Polygon extends ParticleObject {
 
             locations.add(getOrigin().clone().add(x, 0, z));
         }
+
+        currentVector = locations.get(1).clone().subtract(locations.get(0)).toVector();
+        length = currentVector.length();
     }
 
     /**

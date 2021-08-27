@@ -1,7 +1,10 @@
 package top.zoyn.particlelib.pobject.equation;
 
 import org.bukkit.Location;
+import org.bukkit.scheduler.BukkitRunnable;
+import top.zoyn.particlelib.ParticleLib;
 import top.zoyn.particlelib.pobject.ParticleObject;
+import top.zoyn.particlelib.pobject.Playable;
 
 import java.util.function.Function;
 
@@ -10,12 +13,13 @@ import java.util.function.Function;
  *
  * @author Zoyn
  */
-public class PolarEquationRenderer extends ParticleObject {
+public class PolarEquationRenderer extends ParticleObject implements Playable {
 
     private final Function<Double, Double> function;
     private double minTheta;
     private double maxTheta;
     private double dTheta;
+    private double currentTheta;
 
     /**
      * 极坐标渲染器
@@ -55,6 +59,40 @@ public class PolarEquationRenderer extends ParticleObject {
 
 //            origin.getWorld().spawnParticle(this.getParticle(), origin.clone().add(x, y, 0), 1);
         }
+    }
+
+    @Override
+    public void play() {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                // 进行关闭
+                if (currentTheta > maxTheta) {
+                    cancel();
+                    return;
+                }
+                currentTheta += dTheta;
+
+                double rho = function.apply(currentTheta);
+                double x = rho * Math.cos(currentTheta);
+                double y = rho * Math.sin(currentTheta);
+                spawnParticle(getOrigin().clone().add(x, y, 0));
+            }
+        }.runTaskTimer(ParticleLib.getInstance(), 0, getPeriod());
+    }
+
+    @Override
+    public void playNextPoint() {
+        // 进行关闭
+        if (currentTheta > maxTheta) {
+            currentTheta = minTheta;
+        }
+        currentTheta += dTheta;
+
+        double rho = function.apply(currentTheta);
+        double x = rho * Math.cos(currentTheta);
+        double y = rho * Math.sin(currentTheta);
+        spawnParticle(getOrigin().clone().add(x, y, 0));
     }
 
     public double getMinTheta() {
