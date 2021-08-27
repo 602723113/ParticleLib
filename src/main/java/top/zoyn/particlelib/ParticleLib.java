@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import top.zoyn.particlelib.pobject.Arc;
+import top.zoyn.particlelib.pobject.Grid;
 
 /**
  * 粒子库主类
@@ -43,6 +44,9 @@ public class ParticleLib extends JavaPlugin {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         Player player = (Player) sender;
+
+//        Grid grid = new Grid(player.getLocation(), player.getLocation().add(5, 5, 0), 2D);
+//        grid.alwaysShowAsync();
 
 //        Arc arc = new Arc(player.getLocation())
 //                .setAngle(360D)
