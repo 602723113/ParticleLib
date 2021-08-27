@@ -15,13 +15,16 @@ public class Cube extends ParticleObject {
      * 向上的向量
      */
     private static final Vector UP = new Vector(0, 1, 0).normalize();
+    /**
+     * 向 X正半轴 的向量
+     */
+    private static final Vector RIGHT = new Vector(1, 0, 0).normalize();
     private final Location minLoc;
     private final Location maxLoc;
     private final double step;
 
     public Cube(Location minLoc, Location maxLoc) {
         this(minLoc, maxLoc, 0.2D);
-
     }
 
     /**
@@ -59,13 +62,10 @@ public class Cube extends ParticleObject {
         double depth = maxZ - minZ;
 
         // 此处的 newOrigin是底部的四个点
-        Location newOrigin = minLoc.clone().add(width, 0, 0);
-        // 构造第一条边的向量
-        Vector vector = newOrigin.clone().subtract(minLoc).toVector();
-        newOrigin = minLoc;
+        Location newOrigin = minLoc;
         double length;
-        vector.normalize();
-
+        // 这里直接得到向X正半轴方向的向量
+        Vector vector = RIGHT.clone();
         for (int i = 1; i <= 4; i++) {
             if (i % 2 == 0) {
                 length = depth;
