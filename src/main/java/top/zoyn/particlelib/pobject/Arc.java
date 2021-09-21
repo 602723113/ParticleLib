@@ -11,22 +11,26 @@ import top.zoyn.particlelib.ParticleLib;
  */
 public class Arc extends ParticleObject implements Playable {
 
-    private final boolean isDone = true;
+    private double startAngle;
     private double angle;
     private double radius;
     private double step;
     private double currentAngle = 0D;
 
     public Arc(Location origin) {
-        this(origin, 30D);
+        this(origin, 60D);
     }
 
     public Arc(Location origin, double angle) {
-        this(origin, angle, 1D);
+        this(origin, 0D, angle);
     }
 
-    public Arc(Location origin, double angle, double radius) {
-        this(origin, angle, radius, 1);
+    public Arc(Location origin, double startAngle, double angle) {
+        this(origin, startAngle, angle, 1);
+    }
+
+    public Arc(Location origin, double startAngle, double angle, double radius) {
+        this(origin, startAngle, angle, radius, 1);
     }
 
 
@@ -38,21 +42,23 @@ public class Arc extends ParticleObject implements Playable {
      * @param radius 弧所在的圆的半径
      * @param step   每个粒子的间隔(也即步长)
      */
-    public Arc(Location origin, double angle, double radius, double step) {
-        this(origin, angle, radius, step, 20L);
+    public Arc(Location origin, double startAngle, double angle, double radius, double step) {
+        this(origin, startAngle, angle, radius, step, 20L);
     }
 
     /**
      * 构造一个弧
      *
-     * @param origin 弧所在的圆的圆点
-     * @param angle  弧所占的角度
-     * @param radius 弧所在的圆的半径
-     * @param step   每个粒子的间隔(也即步长)
-     * @param period 特效周期(如果需要可以使用)
+     * @param origin     弧所在的圆的圆点
+     * @param startAngle 弧开始的角度
+     * @param angle      弧所占的角度
+     * @param radius     弧所在的圆的半径
+     * @param step       每个粒子的间隔(也即步长)
+     * @param period     特效周期(如果需要可以使用)
      */
-    public Arc(Location origin, double angle, double radius, double step, long period) {
+    public Arc(Location origin, double startAngle, double angle, double radius, double step, long period) {
         setOrigin(origin);
+        this.startAngle = startAngle;
         this.angle = angle;
         this.radius = radius;
         this.step = step;
@@ -61,7 +67,7 @@ public class Arc extends ParticleObject implements Playable {
 
     @Override
     public void show() {
-        for (int i = 0; i < angle; i += step) {
+        for (double i = startAngle; i < angle; i += step) {
             double radians = Math.toRadians(i);
             double x = radius * Math.cos(radians);
             double z = radius * Math.sin(radians);
@@ -102,6 +108,15 @@ public class Arc extends ParticleObject implements Playable {
         if (currentAngle > angle) {
             currentAngle = 0D;
         }
+    }
+
+    public double getStartAngle() {
+        return startAngle;
+    }
+
+    public Arc setStartAngle(double startAngle) {
+        this.startAngle = startAngle;
+        return this;
     }
 
     public double getAngle() {

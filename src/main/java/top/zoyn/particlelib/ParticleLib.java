@@ -1,16 +1,11 @@
 package top.zoyn.particlelib;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.Particle;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import top.zoyn.particlelib.pobject.equation.Equations;
-import top.zoyn.particlelib.pobject.equation.GeneralEquationRenderer;
-import top.zoyn.particlelib.pobject.equation.ParametricEquationRenderer;
-import top.zoyn.particlelib.pobject.equation.PolarEquationRenderer;
+import top.zoyn.particlelib.pobject.Arc;
 import top.zoyn.particlelib.utils.matrix.Matrixs;
 
 /**
@@ -49,6 +44,20 @@ public class ParticleLib extends JavaPlugin {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         Player player = (Player) sender;
+
+//        Arc arc = new Arc(player.getLocation(), 0, 180D);
+//        Arc arc2 = new Arc(player.getLocation(), 0, 180D);
+//        arc.addMatrix(Matrixs.rotateAroundYAxis(-90D))
+//                .addMatrix(Matrixs.rotateAroundXAxis(30D));
+//
+//        arc2.addMatrix(Matrixs.rotateAroundYAxis(-90D))
+//                .addMatrix(Matrixs.rotateAroundXAxis(-30D));
+//
+//        arc.alwaysShowAsync();
+//        arc2.alwaysShowAsync();
+
+//        Cone cone = new Cone(player.getLocation());
+//        cone.alwaysShowAsync();
 
 //        GeneralEquationRenderer render = new GeneralEquationRenderer(player.getLocation(), Equations.QUADRATIC_FUNCTION);
 //        render.setMinX(-3).setMaxX(3);
