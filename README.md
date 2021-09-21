@@ -26,7 +26,7 @@ Step 2. Add the dependency
 <dependency>
     <groupId>com.github.602723113</groupId>
     <artifactId>ParticleLib</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
 </dependency>
 ```
 # Gradle
@@ -42,6 +42,6 @@ allprojects {
 Step 2. Add the dependency
 ```gradle
 dependencies {
-    implementation 'com.github.602723113:ParticleLib:1.1.0'
+    implementation 'com.github.602723113:ParticleLib:1.2.0'
 }
 ```
