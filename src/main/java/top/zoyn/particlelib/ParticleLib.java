@@ -1,12 +1,11 @@
 package top.zoyn.particlelib;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import top.zoyn.particlelib.pobject.Arc;
-import top.zoyn.particlelib.utils.matrix.Matrixs;
 
 /**
  * 粒子库主类
@@ -44,16 +43,54 @@ public class ParticleLib extends JavaPlugin {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         Player player = (Player) sender;
+        Location origin = player.getLocation();
 
-//        Arc arc = new Arc(player.getLocation(), 0, 180D);
-//        Arc arc2 = new Arc(player.getLocation(), 0, 180D);
-//        arc.addMatrix(Matrixs.rotateAroundYAxis(-90D))
-//                .addMatrix(Matrixs.rotateAroundXAxis(30D));
+//        NRankBezierCurve nRankBezierCurve = new NRankBezierCurve(
+//                origin.clone(),
+//                origin.clone().add(0, 3, 0),
+//                origin.clone().add(3, 0, 0),
+//                origin.clone().add(5, 5, 0)
+//        );
+//        nRankBezierCurve.alwaysShowAsync();
+
+//        Random random = new Random();
+//        List<Location> points = Lists.newArrayList();
+//        for (int i = 0; i < 21; i++) {
+//            points.add(origin.clone().add(random.nextDouble() * 10, random.nextDouble() * 10, 0));
+//        }
 //
-//        arc2.addMatrix(Matrixs.rotateAroundYAxis(-90D))
-//                .addMatrix(Matrixs.rotateAroundXAxis(-30D));
+//        NRankBezierCurve nRankBezierCurve = new NRankBezierCurve(points);
+//        nRankBezierCurve.alwaysShowAsync();
+//        AtomicInteger atomicInteger = new AtomicInteger(1);
+//        Sphere sphere = new Sphere(new Location(player.getWorld(), 54, 77, -19));
+//        sphere.setSample(50)
+//                .setRadius(1);
+//        sphere.setParticle(Particle.ITEM_CRACK)
+//                .setData(new ItemStack(Material.DIAMOND_AXE));
 //
-//        arc.alwaysShowAsync();
+//        Bukkit.getScheduler().runTaskTimer(this, () -> {
+//            if (atomicInteger.get() >= 10) {
+//                return;
+//            }
+//            sphere.setRadius(atomicInteger.addAndGet(1));
+//            sphere.show();
+//        },0L, 2L);
+//        Arc arc = new Arc(player.getEyeLocation(), 0, 180D)
+//                .setStep(20D);
+//        arc.setParticle(Particle.FLAME)
+//                .addMatrix(Matrixs.rotateAroundZAxis(30D))
+//                .addMatrix(Matrixs.rotateAroundYAxis(-player.getLocation().getYaw()));
+//
+//        Arc arc2 = new Arc(player.getEyeLocation(), 0, 180D)
+//                .setStep(20D);
+//        arc2.setParticle(Particle.FLAME)
+//                .addMatrix(Matrixs.rotateAroundZAxis(-30D))
+//                .addMatrix(Matrixs.rotateAroundYAxis(-player.getLocation().getYaw()));
+//
+//        EffectGroup group = new EffectGroup()
+//                .addEffect(arc, arc2)
+//                .setPeriod(1)
+//                .alwaysPlayAsync();
 //        arc2.alwaysShowAsync();
 
 //        Cone cone = new Cone(player.getLocation());
