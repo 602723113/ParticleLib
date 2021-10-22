@@ -1,11 +1,16 @@
 package top.zoyn.particlelib;
 
+import com.google.common.collect.Lists;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Particle;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import top.zoyn.particlelib.pobject.Wing;
+
+import java.util.List;
 
 /**
  * 粒子库主类
@@ -44,6 +49,24 @@ public class ParticleLib extends JavaPlugin {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         Player player = (Player) sender;
         Location origin = player.getLocation();
+
+//        List<String> points = Lists.newArrayList();
+//        points.add("  aaaaa");
+//        points.add(" aaaaa");
+//        points.add("aaaaa");
+//        points.add("aaaa");
+//        points.add(" aaaa");
+//        points.add("  aaaa");
+//        points.add("    aaa");
+//        points.add(" ");
+//
+//        Wing wing = new Wing(origin, points, 30D, 60D, 0.2D);
+//        wing.setSwing(true);
+//        wing.setParticle(Particle.FLAME)
+//                .setPeriod(1L)
+//                .attachEntity(player);
+//        wing.alwaysShowAsync();
+
 
 //        NRankBezierCurve nRankBezierCurve = new NRankBezierCurve(
 //                origin.clone(),
