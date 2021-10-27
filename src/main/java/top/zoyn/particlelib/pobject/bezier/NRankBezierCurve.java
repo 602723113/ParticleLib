@@ -31,7 +31,6 @@ public class NRankBezierCurve extends ParticleObject {
 
     public NRankBezierCurve(List<Location> locations) {
         this(locations, 0.05D);
-        resetLocation();
     }
 
     /**
@@ -43,6 +42,7 @@ public class NRankBezierCurve extends ParticleObject {
     public NRankBezierCurve(List<Location> locations, double step) {
         this.locations = locations;
         this.step = step;
+        resetLocation();
     }
 
     private static Location calculateCurve(List<Location> locList, double t) {
