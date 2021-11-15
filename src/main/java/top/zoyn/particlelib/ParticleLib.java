@@ -1,16 +1,11 @@
 package top.zoyn.particlelib;
 
-import com.google.common.collect.Lists;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Particle;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import top.zoyn.particlelib.pobject.Wing;
-
-import java.util.List;
 
 /**
  * 粒子库主类
@@ -49,6 +44,7 @@ public class ParticleLib extends JavaPlugin {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         Player player = (Player) sender;
         Location origin = player.getLocation();
+
 
 //        List<String> points = Lists.newArrayList();
 //        points.add("  aaaaa");

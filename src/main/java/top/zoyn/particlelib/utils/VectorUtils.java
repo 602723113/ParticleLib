@@ -1,5 +1,6 @@
 package top.zoyn.particlelib.utils;
 
+import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
 /**
@@ -8,6 +9,27 @@ import org.bukkit.util.Vector;
  * @author Zoyn
  */
 public class VectorUtils {
+
+    public static Vector getLeftDirection(Location location) {
+        return rotateAroundAxisY(location.getDirection().clone(), 90);
+    }
+
+    public static Vector getRightDirection(Location location) {
+        return rotateAroundAxisY(location.getDirection().clone(), -90);
+    }
+
+    /**
+     * 得到一个单位为 1 的向上的向量
+     *
+     * @return {@link Vector}
+     */
+    public static Vector getUpVector() {
+        return getUpVector(1);
+    }
+
+    public static Vector getUpVector(double multiply) {
+        return new Vector(0, 1, 0).multiply(multiply);
+    }
 
     public static Vector rotateAroundAxisX(Vector v, double angle) {
         angle = Math.toRadians(angle);
