@@ -38,7 +38,7 @@ public class Circle extends Arc {
      */
     public Circle(Location origin, double radius, double step, long period) {
         // Circle只需要控制这个fullArc就可以满足所有的要求
-        super(origin, 360D, radius, step, period);
+        super(origin, 0D, 360D, radius, step, period);
     }
 
 }
