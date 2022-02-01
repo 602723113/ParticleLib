@@ -34,7 +34,6 @@ public abstract class ParticleObject {
     private Object data = null;
     private Color color;
     private Entity entity;
-    private BukkitTask attachTask;
     /**
      * X的变化量
      */
@@ -153,7 +152,6 @@ public abstract class ParticleObject {
         if (task != null) {
             running = false;
             task.cancel();
-            attachTask.cancel();
             setShowType(ShowType.NONE);
         }
     }
