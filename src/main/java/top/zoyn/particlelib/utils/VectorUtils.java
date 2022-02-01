@@ -10,6 +10,17 @@ import org.bukkit.util.Vector;
  */
 public class VectorUtils {
 
+    /**
+     * 只通过数字本身相减得到向量, 减少额外克隆的损耗
+     *
+     * @param start 起点
+     * @param end   终点
+     * @return {@link Vector}
+     */
+    public static Vector createVector(Location start, Location end) {
+        return new Vector(end.getX() - start.getX(), end.getY() - start.getY(), end.getZ() - start.getZ());
+    }
+
     public static Vector getLeftDirection(Location location) {
         return rotateAroundAxisY(location.getDirection().clone(), 90);
     }
