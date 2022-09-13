@@ -1,6 +1,7 @@
 # ParticleLib
 一个有趣的 Minecraft 特效类库  
-[![Java CI with Maven](https://github.com/602723113/ParticleLib/actions/workflows/maven.yml/badge.svg)](https://github.com/602723113/ParticleLib/actions/workflows/maven.yml)
+
+[![Java CI with Gradle](https://github.com/602723113/ParticleLib/actions/workflows/gradle.yml/badge.svg)](https://github.com/602723113/ParticleLib/actions/workflows/gradle.yml)
 
 # 你可以拿来做什么?
 你可以用这个类库来制作你想要的 Minecraft 粒子特效
