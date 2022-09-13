@@ -13,6 +13,14 @@ repositories {
         url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
     }
 
+    /*
+     * lss的库
+     */
+    maven {
+        url = uri("https://lss233.littleservice.cn/repositories/minecraft")
+    }
+
+
     maven {
         url = uri("https://repo.maven.apache.org/maven2/")
     }
