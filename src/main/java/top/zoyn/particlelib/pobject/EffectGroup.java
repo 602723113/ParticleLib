@@ -177,12 +177,6 @@ public class EffectGroup {
 
     public EffectGroup attachEntity(Entity entity) {
         effectList.forEach(effect -> effect.attachEntity(entity));
-//        effectList.forEach((effect) -> new BukkitRunnable() {
-//            @Override
-//            public void run() {
-//                effect.setOrigin(entity.getLocation());
-//            }
-//        }.runTaskTimerAsynchronously(ParticleLib.getInstance(), 0, effect.getPeriod()));
         return this;
     }
 

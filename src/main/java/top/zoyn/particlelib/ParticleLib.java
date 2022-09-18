@@ -45,9 +45,6 @@ public class ParticleLib extends JavaPlugin {
         Player player = (Player) sender;
         Location origin = player.getLocation();
 
-//        FilledCircle filledCircle = new FilledCircle(player.getLocation(), 3, 100);
-//        filledCircle.playWithTime(10, 1000);
-
         return true;
     }
 }
