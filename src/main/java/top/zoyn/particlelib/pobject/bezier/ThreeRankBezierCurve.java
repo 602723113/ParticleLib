@@ -114,7 +114,7 @@ public class ThreeRankBezierCurve extends ParticleObject {
         locations.clear();
         // 算法
         // 算了我知道很蠢这个算法...
-        for (double t = 0; t < 1; t += 0.05) {
+        for (double t = 0; t < 1; t += step) {
             Vector v1 = p1.clone().subtract(p0).toVector();
             Location t1 = p0.clone().add(v1.multiply(t));
             Vector v2 = p2.clone().subtract(p1).toVector();
