@@ -1,6 +1,7 @@
 package top.zoyn.particlelib.utils;
 
 import org.bukkit.Location;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 
 /**
@@ -33,4 +34,50 @@ public class LocationUtils {
         return origin.clone().add(vector.rotateAroundAxis(axis, angle));
     }
 
+    /**
+     * 判断一个是否处在实体面向的扇形区域内
+     * <p>
+     * 通过反三角算向量夹角的算法
+     *
+     * @param target       目标坐标
+     * @param livingEntity 实体
+     * @param radius       扇形半径
+     * @param angle        扇形角度
+     * @return 如果处于扇形区域则返回 true
+     */
+    public static boolean isPointInEntitySector(Location target, LivingEntity livingEntity, double radius, double angle) {
+        Vector v1 = livingEntity.getLocation().getDirection();
+        Vector v2 = target.clone().subtract(livingEntity.getLocation()).toVector();
+
+        double cosTheta = v1.dot(v2) / (v1.length() * v2.length());
+        double degree = Math.toDegrees(Math.acos(cosTheta));
+        // 距离判断
+        if (target.distance(livingEntity.getLocation()) < radius) {
+            // 向量夹角判断
+            return degree < angle * 0.5f;
+        }
+        return false;
+    }
+
+    /**
+     * 判断一个是否处在实体面向的扇形区域内
+     * <p>
+     * 通过叉乘算法
+     *
+     * @param target       目标坐标
+     * @param livingEntity 实体
+     * @param radius       扇形半径
+     * @param angle        扇形角度
+     * @return 如果处于扇形区域则返回 true
+     */
+    public static boolean isInsideSector(Location target, LivingEntity livingEntity, double radius, double angle) {
+        Vector sectorStart = VectorUtils.rotateAroundAxisY(livingEntity.getLocation().getDirection().clone(), -angle / 2);
+        Vector sectorEnd = VectorUtils.rotateAroundAxisY(livingEntity.getLocation().getDirection().clone(), angle / 2);
+
+        Vector v = target.clone().subtract(livingEntity.getLocation()).toVector();
+
+        boolean start = -sectorStart.getX() * v.getZ() + sectorStart.getZ() * v.getX() > 0;
+        boolean end = -sectorEnd.getX() * v.getZ() + sectorEnd.getZ() * v.getX() > 0;
+        return !start && end && target.distance(livingEntity.getLocation()) < radius;
+    }
 }
