@@ -3,8 +3,10 @@ package top.zoyn.particlelib.pobject;
 import com.google.common.collect.Lists;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Consumer;
 import org.bukkit.util.Vector;
+import top.zoyn.particlelib.ParticleLib;
 
 import java.util.Collection;
 import java.util.List;
@@ -15,7 +17,7 @@ import java.util.function.Predicate;
  *
  * @author Zoyn IceCold
  */
-public class Ray extends ParticleObject {
+public class Ray extends ParticleObject implements Playable {
 
     private Vector direction;
     private double maxLength;
@@ -27,6 +29,9 @@ public class Ray extends ParticleObject {
     private RayStopType stopType;
     private Consumer<Entity> hitEntityConsumer;
     private Predicate<Entity> entityFilter;
+
+    private double length;
+    private double currentStep = 0D;
 
     public Ray(Location origin, Vector direction, double maxLength) {
         this(origin, direction, maxLength, 0.2D);
@@ -79,6 +84,80 @@ public class Ray extends ParticleObject {
                     break;
                 }
             }
+        }
+    }
+
+    @Override
+    public void play() {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                // 进行关闭
+                if (currentStep > maxLength) {
+                    cancel();
+                    return;
+                }
+                currentStep += step;
+                Vector vectorTemp = direction.clone().multiply(currentStep);
+                Location spawnLocation = getOrigin().clone().add(vectorTemp);
+
+                spawnParticle(spawnLocation);
+
+                if (stopType.equals(RayStopType.HIT_ENTITY)) {
+                    Collection<Entity> nearbyEntities = spawnLocation.getWorld().getNearbyEntities(spawnLocation, range, range, range);
+                    List<Entity> entities = Lists.newArrayList();
+                    // 检测有无过滤器
+                    if (entityFilter != null) {
+                        for (Entity entity : nearbyEntities) {
+                            if (!entityFilter.test(entity)) {
+                                entities.add(entity);
+                            }
+                        }
+                    } else {
+                        entities = (List<Entity>) nearbyEntities;
+                    }
+
+                    // 获取首个实体
+                    if (entities.size() != 0) {
+                        hitEntityConsumer.accept(entities.get(0));
+                        cancel();
+                    }
+                }
+            }
+        }.runTaskTimer(ParticleLib.getInstance(), 0, getPeriod());
+    }
+
+    @Override
+    public void playNextPoint() {
+        currentStep += step;
+        Vector vectorTemp = direction.clone().multiply(currentStep);
+        Location spawnLocation = getOrigin().clone().add(vectorTemp);
+
+        spawnParticle(spawnLocation);
+
+        if (stopType.equals(RayStopType.HIT_ENTITY)) {
+            Collection<Entity> nearbyEntities = spawnLocation.getWorld().getNearbyEntities(spawnLocation, range, range, range);
+            List<Entity> entities = Lists.newArrayList();
+            // 检测有无过滤器
+            if (entityFilter != null) {
+                for (Entity entity : nearbyEntities) {
+                    if (!entityFilter.test(entity)) {
+                        entities.add(entity);
+                    }
+                }
+            } else {
+                entities = (List<Entity>) nearbyEntities;
+            }
+
+            // 获取首个实体
+            if (entities.size() != 0) {
+                hitEntityConsumer.accept(entities.get(0));
+                return;
+            }
+        }
+
+        if (currentStep > maxLength) {
+            currentStep = 0D;
         }
     }
 
