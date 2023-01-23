@@ -2,6 +2,7 @@
 一个有趣的 Minecraft 特效类库  
 
 [![Java CI with Gradle](https://github.com/602723113/ParticleLib/actions/workflows/gradle.yml/badge.svg)](https://github.com/602723113/ParticleLib/actions/workflows/gradle.yml)
+[![](https://jitpack.io/v/602723113/ParticleLib.svg)](https://jitpack.io/#602723113/ParticleLib)
 
 # 你可以拿来做什么?
 你可以用这个类库来制作你想要的 Minecraft 粒子特效
@@ -27,7 +28,7 @@ Step 2. Add the dependency
 <dependency>
     <groupId>com.github.602723113</groupId>
     <artifactId>ParticleLib</artifactId>
-    <version>1.3.0</version>
+    <version>1.4.0</version>
 </dependency>
 ```
 # Gradle
@@ -43,6 +44,6 @@ allprojects {
 Step 2. Add the dependency
 ```gradle
 dependencies {
-    implementation 'com.github.602723113:ParticleLib:1.3.0'
+    implementation 'com.github.602723113:ParticleLib:1.4.0'
 }
 ```
