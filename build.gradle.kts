@@ -31,7 +31,7 @@ dependencies {
 }
 
 group = "top.zoyn.particlelib"
-version = "1.3.0"
+version = "1.4.0"
 description = "ParticleLib"
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
