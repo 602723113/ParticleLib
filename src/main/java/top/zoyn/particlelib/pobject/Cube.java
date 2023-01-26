@@ -19,9 +19,9 @@ public class Cube extends ParticleObject {
      * 向 X正半轴 的向量
      */
     private static final Vector RIGHT = new Vector(1, 0, 0).normalize();
-    private final Location minLoc;
-    private final Location maxLoc;
-    private final double step;
+    private Location minLoc;
+    private Location maxLoc;
+    private double step;
 
     public Cube(Location minLoc, Location maxLoc) {
         this(minLoc, maxLoc, 0.2D);
@@ -41,6 +41,30 @@ public class Cube extends ParticleObject {
         if (minLoc.getWorld() != maxLoc.getWorld()) {
             throw new IllegalArgumentException("这两个坐标的所对应的世界不相同");
         }
+    }
+
+    public Location getMinLocation() {
+        return minLoc;
+    }
+
+    public void setMinLocation(Location minLoc) {
+        this.minLoc = minLoc;
+    }
+
+    public Location getMaxLocation() {
+        return maxLoc;
+    }
+
+    public void setMaxLocation(Location maxLoc) {
+        this.maxLoc = maxLoc;
+    }
+
+    public double getStep() {
+        return step;
+    }
+
+    public void setStep(double step) {
+        this.step = step;
     }
 
     @Override

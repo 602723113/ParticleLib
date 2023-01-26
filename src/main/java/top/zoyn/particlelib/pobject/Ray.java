@@ -30,7 +30,6 @@ public class Ray extends ParticleObject implements Playable {
     private Consumer<Entity> hitEntityConsumer;
     private Predicate<Entity> entityFilter;
 
-    private double length;
     private double currentStep = 0D;
 
     public Ray(Location origin, Vector direction, double maxLength) {
