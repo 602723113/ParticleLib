@@ -1,49 +1,13 @@
 # ParticleLib
-一个有趣的 Minecraft 特效类库  
+
+ParticleLib 是一个基于 BukkitAPI 编写的粒子特效程序库，只需要简单的几步即可生成出你想要的粒子轨迹。
+
+ParticleLib 提供极其简洁易懂的 API，使你可以毫无压力地开始验证你的绝佳创意， 只需编写最少量的代码，即可实现丰富的功能。
 
 [![Java CI with Gradle](https://github.com/602723113/ParticleLib/actions/workflows/gradle.yml/badge.svg)](https://github.com/602723113/ParticleLib/actions/workflows/gradle.yml)
 [![](https://jitpack.io/v/602723113/ParticleLib.svg)](https://jitpack.io/#602723113/ParticleLib)
 
-# 你可以拿来做什么?
-你可以用这个类库来制作你想要的 Minecraft 粒子特效
-
-# 留言
-目前类库还在**初步阶段**, 如果你发现了什么 bug 或者你有更好的算法，欢迎给该项目发 pr 或 issues
-
 # 使用方法
-请点击 [Wiki](https://github.com/602723113/ParticleLib/wiki) 获得更多
+现已上线 [ParticleLib Docs](https://effect.zoyn.top/) 欢迎查阅已获得最新的 帮助
 
-# Maven
-Step 1. Add the JitPack repository to your build file
-```xml
-<repositories>
-    <repository>
-        <id>jitpack.io</id>
-        <url>https://www.jitpack.io</url>
-    </repository>
-</repositories>
-```
-Step 2. Add the dependency
-```xml
-<dependency>
-    <groupId>com.github.602723113</groupId>
-    <artifactId>ParticleLib</artifactId>
-    <version>1.4.0</version>
-</dependency>
-```
-# Gradle
-Step 1. Add the JitPack repository to your build file
-Add it in your root build.gradle at the end of repositories:
-```gradle
-allprojects {
-    repositories {
-        maven { url 'https://www.jitpack.io' }
-    }
-}
-```
-Step 2. Add the dependency
-```gradle
-dependencies {
-    implementation 'com.github.602723113:ParticleLib:1.4.0'
-}
-```
+~~请点击 [Wiki](https://github.com/602723113/ParticleLib/wiki) 获得更多~~
