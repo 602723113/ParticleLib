@@ -1,7 +1,6 @@
 package top.zoyn.particlelib.pobject;
 
 import org.bukkit.Location;
-import org.bukkit.Particle;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import top.zoyn.particlelib.ParticleLib;
@@ -15,12 +14,11 @@ import top.zoyn.particlelib.utils.VectorUtils;
 public class Star extends ParticleObject implements Playable {
 
     private final double length;
+    private final Vector changeableStart;
     private double radius;
     private double step;
     private int currentSide = 1;
     private double currentStep = 0;
-
-    private Vector changeableStart;
     private Location changableEnd;
 
     public Star(Location origin) {
@@ -111,6 +109,7 @@ public class Star extends ParticleObject implements Playable {
 
         spawnParticle(spawnLocation);
         currentStep += step;
+
         if (currentStep >= length) {
             // 切换到下一条边开始
             currentSide += 1;
@@ -119,19 +118,8 @@ public class Star extends ParticleObject implements Playable {
             vectorTemp = changeableStart.clone().multiply(length);
             changableEnd = changableEnd.clone().add(vectorTemp);
 
+            // 由于 play 的向量是不需要重置的, 因此可以一直旋转 144 然后画线即可
             VectorUtils.rotateAroundAxisY(changeableStart, 144);
-        }
-
-        // 重置
-        if (currentSide >= 6) {
-            currentSide = 1;
-            currentStep = 0;
-
-            double x = radius * Math.cos(Math.toRadians(72));
-            double z = radius * Math.sin(Math.toRadians(72));
-            changeableStart = new Vector(radius * (Math.cos(Math.toRadians(72 * 3)) - x), 0, radius * (Math.sin(Math.toRadians(72 * 3)) - z));
-            changeableStart.normalize();
-            changableEnd = getOrigin().clone().add(x, 0, z);
         }
     }
 
