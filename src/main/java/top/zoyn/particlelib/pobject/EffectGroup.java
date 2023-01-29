@@ -5,6 +5,7 @@ import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.Entity;
+import top.zoyn.particlelib.utils.matrix.Matrix;
 import top.zoyn.particlelib.utils.matrix.Matrixs;
 
 import java.util.Arrays;
@@ -117,6 +118,30 @@ public class EffectGroup {
      */
     public EffectGroup rotateAroundZAxis(double angle) {
         effectList.forEach(effect -> effect.addMatrix(Matrixs.rotateAroundZAxis(angle)));
+        return this;
+    }
+
+    /**
+     * 将特效组内的特效增加一个矩阵
+     * <p>
+     * 建议请把矩阵设定为 3行3列 的矩阵, 以支持 2D 和 3D 的特效
+     * </p>
+     *
+     * @param matrix 指定的矩阵
+     * @return {@link EffectGroup}
+     */
+    public EffectGroup addMatrix(Matrix matrix) {
+        effectList.forEach(effect -> effect.addMatrix(matrix));
+        return this;
+    }
+
+    /**
+     * 将特效组内的特效的矩阵全部移除
+     *
+     * @return {@link EffectGroup}
+     */
+    public EffectGroup removeMatrix() {
+        effectList.forEach(ParticleObject::removeMatrix);
         return this;
     }
 
