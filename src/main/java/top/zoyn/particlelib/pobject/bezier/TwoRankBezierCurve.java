@@ -1,8 +1,11 @@
 package top.zoyn.particlelib.pobject.bezier;
 
 import org.bukkit.Location;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import top.zoyn.particlelib.ParticleLib;
 import top.zoyn.particlelib.pobject.ParticleObject;
+import top.zoyn.particlelib.pobject.Playable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,13 +16,14 @@ import java.util.List;
  *
  * @author Zoyn
  */
-public class TwoRankBezierCurve extends ParticleObject {
+public class TwoRankBezierCurve extends ParticleObject implements Playable {
 
     private final List<Location> locations;
     private Location p0;
     private Location p1;
     private Location p2;
     private double step;
+    private int currentSample = 0;
 
     public TwoRankBezierCurve(Location p0, Location p1, Location p2) {
         this(p0, p1, p2, 0.05);
@@ -49,9 +53,34 @@ public class TwoRankBezierCurve extends ParticleObject {
         locations.forEach(loc -> {
             if (loc != null) {
                 spawnParticle(loc);
-//                loc.getWorld().spawnParticle(this.getParticle(), loc, 1);
             }
         });
+    }
+
+    @Override
+    public void play() {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                // 进行关闭
+                if (currentSample + 1 == locations.size()) {
+                    cancel();
+                    return;
+                }
+                currentSample++;
+
+                spawnParticle(locations.get(currentSample));
+            }
+        }.runTaskTimer(ParticleLib.getInstance(), 0, getPeriod());
+    }
+
+    @Override
+    public void playNextPoint() {
+        if (currentSample + 1 == locations.size()) {
+            currentSample = 0;
+        }
+        spawnParticle(locations.get(currentSample));
+        currentSample++;
     }
 
     public Location getP0() {

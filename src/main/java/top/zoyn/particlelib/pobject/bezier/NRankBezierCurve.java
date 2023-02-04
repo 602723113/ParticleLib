@@ -2,7 +2,10 @@ package top.zoyn.particlelib.pobject.bezier;
 
 import com.google.common.collect.Lists;
 import org.bukkit.Location;
+import org.bukkit.scheduler.BukkitRunnable;
+import top.zoyn.particlelib.ParticleLib;
 import top.zoyn.particlelib.pobject.ParticleObject;
+import top.zoyn.particlelib.pobject.Playable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -13,7 +16,7 @@ import java.util.List;
  *
  * @author Zoyn
  */
-public class NRankBezierCurve extends ParticleObject {
+public class NRankBezierCurve extends ParticleObject implements Playable {
 
     /**
      * 用于保存将要播放的粒子的点位
@@ -24,6 +27,7 @@ public class NRankBezierCurve extends ParticleObject {
      * 用于计算贝塞尔曲线上的点
      */
     private final List<Location> locations;
+    private int currentSample = 0;
 
     public NRankBezierCurve(Location... locations) {
         this(Arrays.asList(locations));
@@ -71,6 +75,32 @@ public class NRankBezierCurve extends ParticleObject {
                 spawnParticle(loc);
             }
         });
+    }
+
+    @Override
+    public void play() {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                // 进行关闭
+                if (currentSample + 1 == points.size()) {
+                    cancel();
+                    return;
+                }
+                currentSample++;
+
+                spawnParticle(points.get(currentSample));
+            }
+        }.runTaskTimer(ParticleLib.getInstance(), 0, getPeriod());
+    }
+
+    @Override
+    public void playNextPoint() {
+        if (currentSample + 1 == points.size()) {
+            currentSample = 0;
+        }
+        spawnParticle(points.get(currentSample));
+        currentSample++;
     }
 
     public void resetLocation() {
