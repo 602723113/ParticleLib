@@ -37,10 +37,11 @@ public class Arc extends ParticleObject implements Playable {
     /**
      * 构造一个弧
      *
-     * @param origin 弧所在的圆的圆点
-     * @param angle  弧所占的角度
-     * @param radius 弧所在的圆的半径
-     * @param step   每个粒子的间隔(也即步长)
+     * @param origin     弧所在的圆的圆点
+     * @param startAngle 弧开始的角度
+     * @param angle      弧所占的角度
+     * @param radius     弧所在的圆的半径
+     * @param step       每个粒子的间隔(也即步长)
      */
     public Arc(Location origin, double startAngle, double angle, double radius, double step) {
         this(origin, startAngle, angle, radius, step, 20L);

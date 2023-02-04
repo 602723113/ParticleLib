@@ -41,6 +41,10 @@ publishing {
     }
 }
 
-tasks.withType<JavaCompile>() {
+tasks.withType<JavaCompile> {
+    options.encoding = "UTF-8"
+}
+
+tasks.withType<Javadoc> {
     options.encoding = "UTF-8"
 }
