@@ -36,7 +36,7 @@ jobs:
         run: ./gradlew build
 
       - name: Upload Artifacts
-          uses: actions/upload-artifact@v2
-          with:
-            name: ParticleLib-dev
-            path: build/libs/*.jar
+        uses: actions/upload-artifact@v2
+        with:
+          name: ParticleLib-dev
+          path: build/libs/*.jar
