@@ -9,6 +9,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 import top.zoyn.particlelib.ParticleLib;
+import top.zoyn.particlelib.utils.VersionUtils;
 import top.zoyn.particlelib.utils.matrix.Matrix;
 
 /**
@@ -45,13 +46,14 @@ public abstract class ParticleObject {
      */
     private Matrix matrix;
 
-    public static boolean isNewer() {
-        String bukkitVersion = Bukkit.getBukkitVersion();
-        return !bukkitVersion.contains("1.6") && !bukkitVersion.contains("1.7") && !bukkitVersion.contains("1.8") && !bukkitVersion.contains("1.9") && !bukkitVersion.contains("1.10") && !bukkitVersion.contains("1.11") && !bukkitVersion.contains("1.12");
-    }
-
+    /**
+     * 将特效对象展示
+     */
     public abstract void show();
 
+    /**
+     * 将特效对象持续地展示
+     */
     public void alwaysShow() {
         turnOffTask();
 
@@ -72,6 +74,9 @@ public abstract class ParticleObject {
         }, 2L);
     }
 
+    /**
+     * 将特效对象持续地异步地展示
+     */
     public void alwaysShowAsync() {
         turnOffTask();
 
@@ -92,6 +97,9 @@ public abstract class ParticleObject {
         }, 2L);
     }
 
+    /**
+     * 将特效对象持续地播放
+     */
     public void alwaysPlay() {
         if (!(this instanceof Playable)) {
             try {
@@ -121,6 +129,9 @@ public abstract class ParticleObject {
         }, 2L);
     }
 
+    /**
+     * 将特效对象持续地异步地播放
+     */
     public void alwaysPlayAsync() {
         if (!(this instanceof Playable)) {
             try {
@@ -150,6 +161,9 @@ public abstract class ParticleObject {
         }, 2L);
     }
 
+    /**
+     * 将正在展示或播放的特效关闭
+     */
     public void turnOffTask() {
         if (task != null) {
             running = false;
@@ -158,6 +172,12 @@ public abstract class ParticleObject {
         }
     }
 
+    /**
+     * 给该特效对象叠加一个矩阵
+     *
+     * @param matrix 给定的矩阵
+     * @return {@link ParticleObject}
+     */
     public ParticleObject addMatrix(Matrix matrix) {
         if (this.matrix == null) {
             setMatrix(matrix);
@@ -167,20 +187,45 @@ public abstract class ParticleObject {
         return this;
     }
 
+    /**
+     * 给该特效对象设置一个矩阵
+     * <p>
+     * 该方法将会直接覆盖之前所有已经变换好的矩阵
+     *
+     * @param matrix 给定的矩阵
+     * @return {@link ParticleObject}
+     */
     public ParticleObject setMatrix(Matrix matrix) {
         this.matrix = matrix;
         return this;
     }
 
+    /**
+     * 移除该特效对象的矩阵
+     *
+     * @return {@link ParticleObject}
+     */
     public ParticleObject removeMatrix() {
         matrix = null;
         return this;
     }
 
+    /**
+     * 判断该特效对象是否拥有矩阵
+     *
+     * @return 当拥有矩阵时返回 true
+     */
     public boolean hasMatrix() {
         return matrix != null;
     }
 
+    /**
+     * 获取该特效对象的原点
+     * <p>
+     * 当特效对象内已经 attachEntity 时则会返回该实体的 Location
+     *
+     * @return {@link Location}
+     */
     public Location getOrigin() {
         if (entity != null) {
             return entity.getLocation();
@@ -188,33 +233,74 @@ public abstract class ParticleObject {
         return origin;
     }
 
+    /**
+     * 设置特效对象的原点
+     *
+     * @param origin 给定的原点
+     * @return {@link ParticleObject}
+     */
     public ParticleObject setOrigin(Location origin) {
         this.origin = origin;
         return this;
     }
 
+    /**
+     * 得到特效对象的 周期(period) 参数
+     *
+     * @return 单位为 tick
+     */
     public long getPeriod() {
         return period;
     }
 
+    /**
+     * 设置特效对象的 周期(period) 参数
+     *
+     * @param period 给定的周期参数
+     * @return {@link ParticleObject}
+     */
     public ParticleObject setPeriod(long period) {
         this.period = period;
         return this;
     }
 
+    /**
+     * 得到该特效对象的展示类型
+     *
+     * @return {@link ShowType}
+     */
     public ShowType getShowType() {
         return showType;
     }
 
+    /**
+     * 设置该特效对象的展示类型
+     *
+     * @param showType 给定的展示类型
+     * @return {@link ParticleObject}
+     */
     public ParticleObject setShowType(ShowType showType) {
         this.showType = showType;
         return this;
     }
 
+    /**
+     * 得到该特效对象的粒子类型
+     *
+     * @return {@link Particle}
+     */
     public Particle getParticle() {
         return particle;
     }
 
+    /**
+     * 设置该特效对象的粒子类型
+     * <p>
+     * 该方法将会覆盖已设置的 color 参数
+     *
+     * @param particle 给定的粒子类型
+     * @return {@link ParticleObject}
+     */
     public ParticleObject setParticle(Particle particle) {
         this.particle = particle;
         // 记得重置颜色
@@ -224,88 +310,206 @@ public abstract class ParticleObject {
         return this;
     }
 
+    /**
+     * 得到 {@link ParticleObject#spawnParticle(Location, Particle, int, double, double, double, double, Object)} 时的粒子数量
+     *
+     * @return 一个点的粒子数量
+     */
     public int getCount() {
         return count;
     }
 
+    /**
+     * 设置 {@link ParticleObject#spawnParticle(Location, Particle, int, double, double, double, double, Object)} 时的粒子数量
+     *
+     * @param count 粒子数量
+     * @return {@link ParticleObject}
+     */
     public ParticleObject setCount(int count) {
         this.count = count;
         return this;
     }
 
+    /**
+     * 得到 {@link ParticleObject#spawnParticle(Location, Particle, int, double, double, double, double, Object)} 时的 X 轴偏移量
+     *
+     * @return 一个点的 X 轴偏移量
+     */
     public double getOffsetX() {
         return offsetX;
     }
 
+    /**
+     * 设置 {@link ParticleObject#spawnParticle(Location, Particle, int, double, double, double, double, Object)} 时的 X 轴偏移量
+     *
+     * @param offsetX X 轴偏移量
+     * @return {@link ParticleObject}
+     */
     public ParticleObject setOffsetX(double offsetX) {
         this.offsetX = offsetX;
         return this;
     }
 
+    /**
+     * 得到 {@link ParticleObject#spawnParticle(Location, Particle, int, double, double, double, double, Object)} 时的 Y 轴偏移量
+     *
+     * @return 一个点的 Y 轴偏移量
+     */
     public double getOffsetY() {
         return offsetY;
     }
 
+    /**
+     * 设置 {@link ParticleObject#spawnParticle(Location, Particle, int, double, double, double, double, Object)} 时的 Y 轴偏移量
+     *
+     * @param offsetY Y 轴偏移量
+     * @return {@link ParticleObject}
+     */
     public ParticleObject setOffsetY(double offsetY) {
         this.offsetY = offsetY;
         return this;
     }
 
+    /**
+     * 得到 {@link ParticleObject#spawnParticle(Location, Particle, int, double, double, double, double, Object)} 时的 Z 轴偏移量
+     *
+     * @return 一个点的 Z 轴偏移量
+     */
     public double getOffsetZ() {
         return offsetZ;
     }
 
+    /**
+     * 设置 {@link ParticleObject#spawnParticle(Location, Particle, int, double, double, double, double, Object)} 时的 Z 轴偏移量
+     *
+     * @param offsetZ Z 轴偏移量
+     * @return {@link ParticleObject}
+     */
     public ParticleObject setOffsetZ(double offsetZ) {
         this.offsetZ = offsetZ;
         return this;
     }
 
+    /**
+     * 得到 {@link ParticleObject#spawnParticle(Location, Particle, int, double, double, double, double, Object)} 时的 extra 参数
+     *
+     * @return 一个点的 extra 参数
+     */
     public double getExtra() {
         return extra;
     }
 
+    /**
+     * 设置 {@link ParticleObject#spawnParticle(Location, Particle, int, double, double, double, double, Object)} 时的 extra 参数
+     * <p>
+     * 通常为 速度
+     *
+     * @param extra extra 参数
+     * @return {@link ParticleObject}
+     */
     public ParticleObject setExtra(double extra) {
         this.extra = extra;
         return this;
     }
 
+    /**
+     * 得到 {@link ParticleObject#spawnParticle(Location, Particle, int, double, double, double, double, Object)} 时的 data 参数
+     *
+     * @return 一个点的 data 参数
+     */
     public Object getData() {
         return data;
     }
 
+    /**
+     * 设置 {@link ParticleObject#spawnParticle(Location, Particle, int, double, double, double, double, Object)} 时的 data 参数
+     *
+     * @param data data 参数
+     * @return {@link ParticleObject}
+     */
     public ParticleObject setData(Object data) {
         this.data = data;
         return this;
     }
 
+    /**
+     * 得到当前特效对象的颜色
+     *
+     * @return {@link Color}
+     */
     public Color getColor() {
         return color;
     }
 
+    /**
+     * 设置当前特效对象的颜色(支持 RGB)
+     * <p>
+     * 该方法将会覆盖 particle 的作用
+     *
+     * @param color 给定的颜色
+     * @return {@link ParticleObject}
+     */
     public ParticleObject setColor(Color color) {
         this.color = color;
         return this;
     }
 
+    /**
+     * 得到当前特效对象的所连接的实体
+     *
+     * @return {@link Entity}
+     */
     public Entity getEntity() {
         return entity;
     }
 
+    /**
+     * 设置当前特效对象的所连接的实体
+     * <p>
+     * 该方法将会在 {@link ParticleObject#getOrigin()} 时自动替换成实体的实时 Location
+     *
+     * @param entity 给定的实体
+     * @return {@link ParticleObject}
+     */
     public ParticleObject attachEntity(Entity entity) {
         this.entity = entity;
         return this;
     }
 
+    /**
+     * 设置 {@link ParticleObject#spawnParticle(Location, Particle, int, double, double, double, double, Object)} 时 X 轴上的增量
+     * <p>
+     * 换言之是在 X 轴上固定移动 incrementX 个单位
+     *
+     * @param incrementX X 轴的增量
+     * @return {@link ParticleObject}
+     */
     public ParticleObject setIncrementX(double incrementX) {
         this.incrementX = incrementX;
         return this;
     }
 
+    /**
+     * 设置 {@link ParticleObject#spawnParticle(Location, Particle, int, double, double, double, double, Object)} 时 Y 轴上的增量
+     * <p>
+     * 换言之是在 Y 轴上固定移动 incrementY 个单位
+     *
+     * @param incrementY Y 轴的增量
+     * @return {@link ParticleObject}
+     */
     public ParticleObject setIncrementY(double incrementY) {
         this.incrementY = incrementY;
         return this;
     }
 
+    /**
+     * 设置 {@link ParticleObject#spawnParticle(Location, Particle, int, double, double, double, double, Object)} 时 Z 轴上的增量
+     * <p>
+     * 换言之是在 Z 轴上固定移动 incrementZ 个单位
+     *
+     * @param incrementZ Z 轴的增量
+     * @return {@link ParticleObject}
+     */
     public ParticleObject setIncrementZ(double incrementZ) {
         this.incrementZ = incrementZ;
         return this;
@@ -346,7 +550,7 @@ public abstract class ParticleObject {
 
         // 可以在这里设置 Color
         if (color != null) {
-            if (isNewer()) {
+            if (VersionUtils.isNewer()) {
                 Particle.DustOptions dust = new Particle.DustOptions(color, 1);
                 location.getWorld().spawnParticle(Particle.REDSTONE, showLocation.getX(), showLocation.getY(), showLocation.getZ(), 0, offsetX, offsetY, offsetZ, 1, dust);
             } else {
