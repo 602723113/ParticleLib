@@ -12,6 +12,8 @@ import top.zoyn.particlelib.ParticleLib;
 import top.zoyn.particlelib.utils.VersionUtils;
 import top.zoyn.particlelib.utils.matrix.Matrix;
 
+import java.util.List;
+
 /**
  * 表示一个特效对象
  *
@@ -45,6 +47,13 @@ public abstract class ParticleObject {
      * 表示该特效对象所拥有的矩阵
      */
     private Matrix matrix;
+
+    /**
+     * 将计算好的粒子展示位置以列表的方式返回
+     *
+     * @return 粒子位置列表
+     */
+    public abstract List<Location> calculateLocations();
 
     /**
      * 将特效对象展示

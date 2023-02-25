@@ -1,10 +1,13 @@
 package top.zoyn.particlelib.pobject;
 
+import com.google.common.collect.Lists;
 import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import top.zoyn.particlelib.ParticleLib;
 import top.zoyn.particlelib.utils.VectorUtils;
+
+import java.util.List;
 
 /**
  * 表示一个星星
@@ -38,6 +41,34 @@ public class Star extends ParticleObject implements Playable {
         changeableStart = new Vector(radius * (Math.cos(Math.toRadians(72 * 3)) - x), 0, radius * (Math.sin(Math.toRadians(72 * 3)) - z));
         changeableStart.normalize();
         changableEnd = getOrigin().clone().add(x, 0, z);
+    }
+
+    @Override
+    public List<Location> calculateLocations() {
+        List<Location> points = Lists.newArrayList();
+        double x = radius * Math.cos(Math.toRadians(72));
+        double z = radius * Math.sin(Math.toRadians(72));
+
+        double x2 = radius * Math.cos(Math.toRadians(72 * 3));
+        double z2 = radius * Math.sin(Math.toRadians(72 * 3));
+
+        Vector START = new Vector(x2 - x, 0, z2 - z);
+        START.normalize();
+        Location end = getOrigin().clone().add(x, 0, z);
+
+        for (int i = 1; i <= 5; i++) {
+            for (double j = 0; j < length; j += step) {
+                Vector vectorTemp = START.clone().multiply(j);
+                Location spawnLocation = end.clone().add(vectorTemp);
+
+                points.add(spawnLocation);
+            }
+            Vector vectorTemp = START.clone().multiply(length);
+            end = end.clone().add(vectorTemp);
+
+            VectorUtils.rotateAroundAxisY(START, 144);
+        }
+        return points;
     }
 
     @Override

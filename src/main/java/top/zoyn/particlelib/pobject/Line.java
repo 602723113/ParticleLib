@@ -1,11 +1,14 @@
 package top.zoyn.particlelib.pobject;
 
+import com.google.common.collect.Lists;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import top.zoyn.particlelib.ParticleLib;
+
+import java.util.List;
 
 /**
  * 表示一条线
@@ -76,6 +79,16 @@ public class Line extends ParticleObject implements Playable {
         for (double i = 0; i < vectorLength; i += step) {
             locA.getWorld().spawnParticle(Particle.REDSTONE, locA.clone().add(vectorAB.clone().multiply(i)), 1, 0, 0, 0, color);
         }
+    }
+
+    @Override
+    public List<Location> calculateLocations() {
+        List<Location> points = Lists.newArrayList();
+        for (double i = 0; i < length; i += step) {
+            Vector vectorTemp = vector.clone().multiply(i);
+            points.add(start.clone().add(vectorTemp));
+        }
+        return points;
     }
 
     @Override

@@ -61,6 +61,23 @@ public class Wing extends ParticleObject {
     }
 
     @Override
+    public List<Location> calculateLocations() {
+        resetWing();
+
+        List<Location> points = Lists.newArrayList();
+        for (Vector vector : vectors) {
+            if (getEntity() != null) {
+                points.add(getOrigin().clone().add(VectorUtils.rotateVector(vector, getOrigin().getYaw() - 90 + (float) currentAngle, 0F)));
+                points.add(getOrigin().clone().add(VectorUtils.rotateVector(vector.clone().setX(-vector.getX()), getOrigin().getYaw() - 90 - (float) currentAngle, 0F)));
+                continue;
+            }
+            points.add(getOrigin().clone().add(VectorUtils.rotateVector(vector, (float) currentAngle, 0F)));
+            points.add(getOrigin().clone().add(VectorUtils.rotateVector(vector.clone().setX(-vector.getX()), -(float) currentAngle, 0F)));
+        }
+        return points;
+    }
+
+    @Override
     public void show() {
         for (Vector vector : vectors) {
             if (getEntity() != null) {

@@ -1,8 +1,11 @@
 package top.zoyn.particlelib.pobject;
 
+import com.google.common.collect.Lists;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 import top.zoyn.particlelib.utils.VectorUtils;
+
+import java.util.List;
 
 /**
  * 表示一个N角星, N必须是一个奇数
@@ -26,6 +29,35 @@ public class NStar extends ParticleObject {
         this.step = step;
 
         this.angle = 360D / corner;
+    }
+
+    @Override
+    public List<Location> calculateLocations() {
+        List<Location> points = Lists.newArrayList();
+        double x = radius * Math.cos(Math.toRadians(angle));
+        double z = radius * Math.sin(Math.toRadians(angle));
+
+        double x2 = radius * Math.cos(Math.toRadians(angle * 3));
+        double z2 = radius * Math.sin(Math.toRadians(angle * 3));
+
+        Vector START = new Vector(x2 - x, 0, z2 - z);
+        double length = START.length();
+        START.normalize();
+        Location end = getOrigin().clone().add(x, 0, z);
+
+        for (int i = 1; i <= corner; i++) {
+            for (double j = 0; j < length; j += step) {
+                Vector vectorTemp = START.clone().multiply(j);
+                Location spawnLocation = end.clone().add(vectorTemp);
+
+                points.add(spawnLocation);
+            }
+            Vector vectorTemp = START.clone().multiply(length);
+            end = end.clone().add(vectorTemp);
+
+            VectorUtils.rotateAroundAxisY(START, 180 - angle / 2);
+        }
+        return points;
     }
 
     @Override

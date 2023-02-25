@@ -47,6 +47,11 @@ public class TwoRankBezierCurve extends ParticleObject implements Playable {
         resetLocations();
     }
 
+    @Override
+    public List<Location> calculateLocations() {
+        resetLocations();
+        return locations;
+    }
 
     @Override
     public void show() {

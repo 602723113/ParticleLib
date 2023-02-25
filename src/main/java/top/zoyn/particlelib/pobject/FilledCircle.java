@@ -49,6 +49,22 @@ public class FilledCircle extends ParticleObject implements Playable {
         }
     }
 
+    @Override
+    public List<Location> calculateLocations() {
+        List<Location> locations = new ArrayList<>();
+        for (int i = 0; i < sample; i++) {
+            double indices = i + 0.5;
+            double r = Math.sqrt(indices / sample);
+            double theta = Math.PI * (1 + Math.sqrt(5)) * indices;
+            double x = radius * r * Math.cos(theta);
+            double z = radius * r * Math.sin(theta);
+
+            Location spawnLocation = getOrigin().clone().add(x, 0, z);
+            locations.add(spawnLocation);
+        }
+        return locations;
+    }
+
     /**
      * 获得实心圆中所有点的Location
      *

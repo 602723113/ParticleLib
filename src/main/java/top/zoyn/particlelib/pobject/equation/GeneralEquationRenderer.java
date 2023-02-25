@@ -1,11 +1,13 @@
 package top.zoyn.particlelib.pobject.equation;
 
+import com.google.common.collect.Lists;
 import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitRunnable;
 import top.zoyn.particlelib.ParticleLib;
 import top.zoyn.particlelib.pobject.ParticleObject;
 import top.zoyn.particlelib.pobject.Playable;
 
+import java.util.List;
 import java.util.function.Function;
 
 /**
@@ -35,6 +37,15 @@ public class GeneralEquationRenderer extends ParticleObject implements Playable 
         this.minX = minX;
         this.maxX = maxX;
         this.dx = dx;
+    }
+
+    @Override
+    public List<Location> calculateLocations() {
+        List<Location> points = Lists.newArrayList();
+        for (double x = minX; x < maxX; x += dx) {
+            points.add(getOrigin().clone().add(x, function.apply(x), 0));
+        }
+        return points;
     }
 
     @Override

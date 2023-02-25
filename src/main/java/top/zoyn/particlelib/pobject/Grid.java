@@ -1,7 +1,10 @@
 package top.zoyn.particlelib.pobject;
 
+import com.google.common.collect.Lists;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
+
+import java.util.List;
 
 public class Grid extends ParticleObject {
 
@@ -37,6 +40,82 @@ public class Grid extends ParticleObject {
         }
 
         this.gridLength = gridLength;
+    }
+
+    @Override
+    public List<Location> calculateLocations() {
+        List<Location> points = Lists.newArrayList();
+        // 为防止给定的最小和最高点出现反向的情况, 这里做了个查找操作
+        Location minLocation = findMinimumLocation();
+        Location maxLocation = findMaximumLocation();
+
+        double height;
+        double width;
+
+        // 在Y平面下有点不一样
+        if (isYDimension) {
+            height = Math.abs(minLocation.getX() - maxLocation.getX());
+            width = Math.abs(minLocation.getZ() - maxLocation.getZ());
+        } else {
+            height = Math.abs(maximumLocation.getY() - minimumLocation.getY());
+            if (isXDimension) {
+                width = Math.abs(maximumLocation.getX() - minimumLocation.getX());
+            } else {
+                width = Math.abs(maximumLocation.getZ() - minimumLocation.getZ());
+            }
+        }
+        int heightSideLine = (int) (height / gridLength);
+        int widthSideLine = (int) (width / gridLength);
+
+        if (isYDimension) {
+            for (int i = 1; i <= heightSideLine; i++) {
+                Vector vector = maxLocation.clone().subtract(minLocation).toVector();
+                vector.setZ(0).normalize();
+
+                Location start = minLocation.clone().add(0, 0, i * gridLength);
+                for (double j = 0; j < width; j += 0.2) {
+                    points.add(start.clone().add(vector.clone().multiply(j)));
+                }
+            }
+
+            for (int i = 1; i <= widthSideLine; i++) {
+                Vector vector = maxLocation.clone().subtract(minLocation).toVector();
+                vector.setX(0).normalize();
+                Location start = minLocation.clone().add(i * gridLength, 0, 0);
+
+                for (double j = 0; j < height; j += 0.2) {
+                    points.add(start.clone().add(vector.clone().multiply(j)));
+                }
+            }
+            return points;
+        }
+
+        for (int i = 1; i <= heightSideLine; i++) {
+            Vector vector = maxLocation.clone().subtract(minLocation).toVector();
+            vector.setY(0).normalize();
+
+            Location start = minLocation.clone().add(0, i * gridLength, 0);
+            for (double j = 0; j < width; j += 0.2) {
+                points.add(start.clone().add(vector.clone().multiply(j)));
+            }
+        }
+
+        for (int i = 1; i <= widthSideLine; i++) {
+            Vector vector = maxLocation.clone().subtract(minLocation).toVector();
+            Location start;
+            if (isXDimension) {
+                vector.setX(0).normalize();
+                start = minLocation.clone().add(i * gridLength, 0, 0);
+            } else {
+                vector.setZ(0).normalize();
+                start = minLocation.clone().add(0, 0, i * gridLength);
+            }
+
+            for (double j = 0; j < height; j += 0.2) {
+                points.add(start.clone().add(vector.clone().multiply(j)));
+            }
+        }
+        return points;
     }
 
     @Override

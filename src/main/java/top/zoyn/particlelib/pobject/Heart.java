@@ -1,8 +1,11 @@
 package top.zoyn.particlelib.pobject;
 
+import com.google.common.collect.Lists;
 import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitRunnable;
 import top.zoyn.particlelib.ParticleLib;
+
+import java.util.List;
 
 /**
  * 表示一颗心
@@ -64,6 +67,18 @@ public class Heart extends ParticleObject implements Playable {
 
     public void setStep(double step) {
         this.step = step;
+    }
+
+    @Override
+    public List<Location> calculateLocations() {
+        List<Location> points = Lists.newArrayList();
+        for (double t = -1.0D; t <= 1.0D; t += step) {
+            double x = xScaleRate * Math.sin(t) * Math.cos(t) * Math.log(Math.abs(t));
+            double y = yScaleRate * Math.sqrt(Math.abs(t)) * Math.cos(t);
+
+            points.add(getOrigin().clone().add(x, 0, y));
+        }
+        return points;
     }
 
     @Override

@@ -1,8 +1,11 @@
 package top.zoyn.particlelib.pobject;
 
+import com.google.common.collect.Lists;
 import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitRunnable;
 import top.zoyn.particlelib.ParticleLib;
+
+import java.util.List;
 
 /**
  * 表示一个弧
@@ -32,7 +35,6 @@ public class Arc extends ParticleObject implements Playable {
     public Arc(Location origin, double startAngle, double angle, double radius) {
         this(origin, startAngle, angle, radius, 1);
     }
-
 
     /**
      * 构造一个弧
@@ -64,6 +66,18 @@ public class Arc extends ParticleObject implements Playable {
         this.radius = radius;
         this.step = step;
         setPeriod(period);
+    }
+
+    @Override
+    public List<Location> calculateLocations() {
+        List<Location> points = Lists.newArrayList();
+        for (double i = startAngle; i < angle; i += step) {
+            double radians = Math.toRadians(i);
+            double x = radius * Math.cos(radians);
+            double z = radius * Math.sin(radians);
+            points.add(getOrigin().clone().add(x, 0, z));
+        }
+        return points;
     }
 
     @Override

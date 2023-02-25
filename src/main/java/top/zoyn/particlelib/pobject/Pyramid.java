@@ -103,6 +103,12 @@ public class Pyramid extends ParticleObject {
     }
 
     @Override
+    public List<Location> calculateLocations() {
+        resetLocations();
+        return locations;
+    }
+
+    @Override
     public void show() {
         if (locations.isEmpty()) {
             return;

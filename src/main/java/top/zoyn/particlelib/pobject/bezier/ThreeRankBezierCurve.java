@@ -51,6 +51,12 @@ public class ThreeRankBezierCurve extends ParticleObject implements Playable {
     }
 
     @Override
+    public List<Location> calculateLocations() {
+        resetLocations();
+        return locations;
+    }
+
+    @Override
     public void show() {
         locations.forEach(loc -> {
             if (loc != null) {

@@ -56,6 +56,40 @@ public class Ray extends ParticleObject implements Playable {
     }
 
     @Override
+    public List<Location> calculateLocations() {
+        List<Location> points = Lists.newArrayList();
+
+        for (double i = 0; i < maxLength; i += step) {
+            Vector vectorTemp = direction.clone().multiply(i);
+            Location spawnLocation = getOrigin().clone().add(vectorTemp);
+
+            points.add(spawnLocation);
+
+            if (stopType.equals(RayStopType.HIT_ENTITY)) {
+                Collection<Entity> nearbyEntities = spawnLocation.getWorld().getNearbyEntities(spawnLocation, range, range, range);
+                List<Entity> entities = Lists.newArrayList();
+                // 检测有无过滤器
+                if (entityFilter != null) {
+                    for (Entity entity : nearbyEntities) {
+                        if (!entityFilter.test(entity)) {
+                            entities.add(entity);
+                        }
+                    }
+                } else {
+                    entities = (List<Entity>) nearbyEntities;
+                }
+
+                // 获取首个实体
+                if (entities.size() != 0) {
+                    break;
+                }
+            }
+        }
+
+        return points;
+    }
+
+    @Override
     public void show() {
         for (double i = 0; i < maxLength; i += step) {
             Vector vectorTemp = direction.clone().multiply(i);

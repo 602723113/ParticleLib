@@ -66,6 +66,12 @@ public class Polygon extends ParticleObject implements Playable {
     }
 
     @Override
+    public List<Location> calculateLocations() {
+        resetLocations();
+        return locations;
+    }
+
+    @Override
     public void show() {
         if (locations.isEmpty()) {
             return;

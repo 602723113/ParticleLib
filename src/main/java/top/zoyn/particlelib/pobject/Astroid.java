@@ -1,8 +1,11 @@
 package top.zoyn.particlelib.pobject;
 
+import com.google.common.collect.Lists;
 import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitRunnable;
 import top.zoyn.particlelib.ParticleLib;
+
+import java.util.List;
 
 /**
  * 表示一个星形线
@@ -39,6 +42,20 @@ public class Astroid extends ParticleObject implements Playable {
         this.radius = radius;
         this.step = step;
         setOrigin(origin);
+    }
+
+    @Override
+    public List<Location> calculateLocations() {
+        List<Location> points = Lists.newArrayList();
+        for (double t = 0.0D; t < 360.0D; t += step) {
+            double radians = Math.toRadians(t);
+            // 计算公式
+            double x = Math.pow(this.radius * Math.cos(radians), 3.0D);
+            double z = Math.pow(this.radius * Math.sin(radians), 3.0D);
+
+            points.add(getOrigin().clone().add(x, 0, z));
+        }
+        return points;
     }
 
     @Override

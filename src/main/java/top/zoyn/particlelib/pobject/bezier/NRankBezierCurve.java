@@ -46,7 +46,7 @@ public class NRankBezierCurve extends ParticleObject implements Playable {
     public NRankBezierCurve(List<Location> locations, double step) {
         this.locations = locations;
         this.step = step;
-        resetLocation();
+        resetLocations();
     }
 
     private static Location calculateCurve(List<Location> locList, double t) {
@@ -66,6 +66,12 @@ public class NRankBezierCurve extends ParticleObject implements Playable {
             locListTemp.add(p0.clone().add(p1.clone().subtract(p0).toVector().multiply(t)));
         }
         return calculateCurve(locListTemp, t);
+    }
+
+    @Override
+    public List<Location> calculateLocations() {
+        resetLocations();
+        return points;
     }
 
     @Override
@@ -103,7 +109,7 @@ public class NRankBezierCurve extends ParticleObject implements Playable {
         currentSample++;
     }
 
-    public void resetLocation() {
+    public void resetLocations() {
         points.clear();
 
         for (double t = 0; t < 1; t += step) {

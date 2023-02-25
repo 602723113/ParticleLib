@@ -1,11 +1,13 @@
 package top.zoyn.particlelib.pobject.equation;
 
+import com.google.common.collect.Lists;
 import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitRunnable;
 import top.zoyn.particlelib.ParticleLib;
 import top.zoyn.particlelib.pobject.ParticleObject;
 import top.zoyn.particlelib.pobject.Playable;
 
+import java.util.List;
 import java.util.function.Function;
 
 /**
@@ -48,6 +50,17 @@ public class PolarEquationRenderer extends ParticleObject implements Playable {
         this.dTheta = dTheta;
     }
 
+    @Override
+    public List<Location> calculateLocations() {
+        List<Location> points = Lists.newArrayList();
+        for (double theta = minTheta; theta < maxTheta; theta += dTheta) {
+            double rho = function.apply(theta);
+            double x = rho * Math.cos(theta);
+            double y = rho * Math.sin(theta);
+            points.add(getOrigin().clone().add(x, y, 0));
+        }
+        return points;
+    }
 
     @Override
     public void show() {
@@ -56,8 +69,6 @@ public class PolarEquationRenderer extends ParticleObject implements Playable {
             double x = rho * Math.cos(theta);
             double y = rho * Math.sin(theta);
             spawnParticle(getOrigin().clone().add(x, y, 0));
-
-//            origin.getWorld().spawnParticle(this.getParticle(), origin.clone().add(x, y, 0), 1);
         }
     }
 

@@ -1,8 +1,11 @@
 package top.zoyn.particlelib.pobject;
 
+import com.google.common.collect.Lists;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 import top.zoyn.particlelib.utils.VectorUtils;
+
+import java.util.List;
 
 /**
  * 表示一个八角星
@@ -19,6 +22,35 @@ public class OctagonalStar extends ParticleObject {
 
         this.radius = radius;
         this.step = step;
+    }
+
+    @Override
+    public List<Location> calculateLocations() {
+        List<Location> points = Lists.newArrayList();
+        double x = radius * Math.cos(Math.toRadians(45));
+        double z = radius * Math.sin(Math.toRadians(45));
+
+        double x2 = radius * Math.cos(Math.toRadians(45 * 3));
+        double z2 = radius * Math.sin(Math.toRadians(45 * 3));
+
+        Vector START = new Vector(x2 - x, 0, z2 - z);
+        double length = START.length();
+        START.normalize();
+        Location end = getOrigin().clone().add(x, 0, z);
+
+        for (int i = 1; i <= 8; i++) {
+            for (double j = 0; j < length; j += step) {
+                Vector vectorTemp = START.clone().multiply(j);
+                Location spawnLocation = end.clone().add(vectorTemp);
+
+                points.add(spawnLocation);
+            }
+            Vector vectorTemp = START.clone().multiply(length);
+            end = end.clone().add(vectorTemp);
+
+            VectorUtils.rotateAroundAxisY(START, 135);
+        }
+        return points;
     }
 
     @Override

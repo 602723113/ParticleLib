@@ -1,8 +1,11 @@
 package top.zoyn.particlelib.pobject;
 
+import com.google.common.collect.Lists;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 import top.zoyn.particlelib.utils.VectorUtils;
+
+import java.util.List;
 
 /**
  * 表示一个立方体特效
@@ -67,6 +70,55 @@ public class Cube extends ParticleObject {
 
     public void setStep(double step) {
         this.step = step;
+    }
+
+    @Override
+    public List<Location> calculateLocations() {
+        List<Location> points = Lists.newArrayList();
+        // 获得最大最小的两个点
+        double minX = Math.min(minLoc.getX(), maxLoc.getX());
+        double minY = Math.min(minLoc.getY(), maxLoc.getY());
+        double minZ = Math.min(minLoc.getZ(), maxLoc.getZ());
+
+        double maxX = Math.max(minLoc.getX(), maxLoc.getX());
+        double maxY = Math.max(minLoc.getY(), maxLoc.getY());
+        double maxZ = Math.max(minLoc.getZ(), maxLoc.getZ());
+
+        Location minLoc = new Location(this.minLoc.getWorld(), minX, minY, minZ);
+
+        // 获得立方体的 长 宽 高
+        double width = maxX - minX;
+        double height = maxY - minY;
+        double depth = maxZ - minZ;
+
+        // 此处的 newOrigin是底部的四个点
+        Location newOrigin = minLoc;
+        double length;
+        // 这里直接得到向X正半轴方向的向量
+        Vector vector = RIGHT.clone();
+        for (int i = 1; i <= 4; i++) {
+            if (i % 2 == 0) {
+                length = depth;
+            } else {
+                length = width;
+            }
+
+            // 4条高
+            for (double j = 0; j < height; j += step) {
+                points.add(newOrigin.clone().add(UP.clone().multiply(j)));
+            }
+
+            // 第n条边
+            for (double j = 0; j < length; j += step) {
+                Location spawnLoc = newOrigin.clone().add(vector.clone().multiply(j));
+                points.add(spawnLoc);
+                points.add(spawnLoc.add(0, height, 0));
+            }
+            // 获取结束时的坐标
+            newOrigin = newOrigin.clone().add(vector.clone().multiply(length));
+            vector = VectorUtils.rotateAroundAxisY(vector, 90D);
+        }
+        return points;
     }
 
     @Override

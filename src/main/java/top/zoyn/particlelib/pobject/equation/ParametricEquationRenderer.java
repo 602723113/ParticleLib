@@ -1,11 +1,13 @@
 package top.zoyn.particlelib.pobject.equation;
 
+import com.google.common.collect.Lists;
 import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitRunnable;
 import top.zoyn.particlelib.ParticleLib;
 import top.zoyn.particlelib.pobject.ParticleObject;
 import top.zoyn.particlelib.pobject.Playable;
 
+import java.util.List;
 import java.util.function.Function;
 
 /**
@@ -82,13 +84,20 @@ public class ParametricEquationRenderer extends ParticleObject implements Playab
     }
 
     @Override
-    public void show() {
+    public List<Location> calculateLocations() {
+        List<Location> points = Lists.newArrayList();
         for (double t = minT; t < maxT; t += dt) {
             double x = xFunction.apply(t);
             double y = yFunction.apply(t);
             double z = zFunction.apply(t);
-            spawnParticle(getOrigin().clone().add(x, y, z));
+            points.add(getOrigin().clone().add(x, y, z));
         }
+        return points;
+    }
+
+    @Override
+    public void show() {
+
     }
 
     @Override
