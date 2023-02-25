@@ -18,7 +18,7 @@ ParticleLib 是一个基于 BukkitAPI 编写的粒子特效程序库。它提供
 
 # 使用方法
 
-现已上线 [ParticleLib Docs](https://effect.zoyn.top/) 欢迎查阅已获得最新的帮助
+现已上线 [ParticleLib Docs](https://effect.zoyn.top/) 欢迎查阅以获得最新的文档帮助
 
 <div align="center">
 <b>无法访问请挂梯子</b>
