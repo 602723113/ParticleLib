@@ -35,6 +35,15 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
 
+      - name: Publish with Gradle
+        run: ./gradlew publish
+        env:
+          OSSRH_USERNAME: ${{ secrets.ossrh_username }}
+          OSSRH_PASSWORD: ${{ secrets.ossrh_password }}
+          GPG_KEY_ID: ${{ secrets.gpg_key_id }}
+          GPG_KEY_SECRET: ${{ secrets.gpg_key_secret }}
+          GPG_KEY_PASSWORD: ${{ secrets.gpg_key_password }}
+
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
