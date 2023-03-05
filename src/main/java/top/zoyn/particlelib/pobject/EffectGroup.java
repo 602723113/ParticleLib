@@ -8,8 +8,10 @@ import org.bukkit.entity.Entity;
 import top.zoyn.particlelib.utils.matrix.Matrix;
 import top.zoyn.particlelib.utils.matrix.Matrixs;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 代表一个特效组
@@ -64,6 +66,12 @@ public class EffectGroup {
     public EffectGroup addEffect(ParticleObject... particleObj) {
         effectList.addAll(Arrays.asList(particleObj));
         return this;
+    }
+
+    public List<Location> calculateLocations() {
+        return effectList.stream()
+                .flatMap(p -> p.calculateLocations().stream())
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     /**
