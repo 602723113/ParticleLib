@@ -66,28 +66,28 @@ public class ParticleLib extends JavaPlugin {
         Location origin = player.getLocation();
         Vector direction = origin.getDirection();
 
-        Arc arc = new Arc(player.getLocation(), 0, 180, 3, 9);
-        arc.calculateLocations()
-                .stream()
-                .map(loc -> {
-                    Vector v = VectorUtils.createVector(loc, arc.getOrigin());
-                    Matrix matrix = Matrixs.rotateAroundYAxis(-player.getLocation().getYaw());
-                    return arc.getOrigin().clone().add(matrix.applyVector(v));
-                }).collect(Collectors.toList());
-
-
-        Random random = new Random();
-        Ray ray = new Ray(origin, direction, 10, 0.33);
-        List<Location> locs = Lists.newArrayList();
-        for (Location location : ray.calculateLocations()) {
-            locs.add(location.clone().add(0, random.nextBoolean() ? 0.5 + random.nextDouble() : 0.5 + (-random.nextDouble()), 0));
-        }
-        for (int i = 0; i < locs.size(); i++) {
-            if (i + 1 == locs.size()) {
-                break;
-            }
-            Line.buildLine(locs.get(i), locs.get(i + 1), 0.02, Particle.DRIP_LAVA);
-        }
+//        Arc arc = new Arc(player.getLocation(), 0, 180, 3, 9);
+//        arc.calculateLocations()
+//                .stream()
+//                .map(loc -> {
+//                    Vector v = VectorUtils.createVector(loc, arc.getOrigin());
+//                    Matrix matrix = Matrixs.rotateAroundYAxis(-player.getLocation().getYaw());
+//                    return arc.getOrigin().clone().add(matrix.applyVector(v));
+//                }).collect(Collectors.toList());
+//
+//
+//        Random random = new Random();
+//        Ray ray = new Ray(origin, direction, 10, 0.33);
+//        List<Location> locs = Lists.newArrayList();
+//        for (Location location : ray.calculateLocations()) {
+//            locs.add(location.clone().add(0, random.nextBoolean() ? 0.5 + random.nextDouble() : 0.5 + (-random.nextDouble()), 0));
+//        }
+//        for (int i = 0; i < locs.size(); i++) {
+//            if (i + 1 == locs.size()) {
+//                break;
+//            }
+//            Line.buildLine(locs.get(i), locs.get(i + 1), 0.02, Particle.DRIP_LAVA);
+//        }
 
 //        double radiansI = Math.toRadians(0);
 //        double xi = Math.cos(radiansI);
