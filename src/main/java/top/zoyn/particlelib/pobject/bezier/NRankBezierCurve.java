@@ -3,12 +3,14 @@ package top.zoyn.particlelib.pobject.bezier;
 import com.google.common.collect.Lists;
 import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 import top.zoyn.particlelib.ParticleLib;
 import top.zoyn.particlelib.pobject.ParticleObject;
 import top.zoyn.particlelib.pobject.Playable;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 表示一条n阶贝塞尔曲线
@@ -70,8 +72,25 @@ public class NRankBezierCurve extends ParticleObject implements Playable {
 
     @Override
     public List<Location> calculateLocations() {
-        resetLocations();
-        return points;
+        List<Location> points = Lists.newArrayList();
+        for (double t = 0; t < 1; t += step) {
+            Location location = calculateCurve(locations, t);
+            points.add(location);
+        }
+
+        // 做一个对 Matrix 和 Increment 的兼容
+        return points.stream().map(location -> {
+            Location showLocation = location;
+            if (hasMatrix()) {
+                Vector v = new Vector(location.getX() - getOrigin().getX(), location.getY() - getOrigin().getY(), location.getZ() - getOrigin().getZ());
+                Vector changed = getMatrix().applyVector(v);
+
+                showLocation = getOrigin().clone().add(changed);
+            }
+
+            showLocation.add(getIncrementX(), getIncrementY(), getIncrementZ());
+            return showLocation;
+        }).collect(Collectors.toList());
     }
 
     @Override

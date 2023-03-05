@@ -1,5 +1,6 @@
 package top.zoyn.particlelib.pobject.bezier;
 
+import com.google.common.collect.Lists;
 import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
@@ -9,6 +10,7 @@ import top.zoyn.particlelib.pobject.Playable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 表示一条三阶贝塞尔曲线
@@ -52,8 +54,39 @@ public class ThreeRankBezierCurve extends ParticleObject implements Playable {
 
     @Override
     public List<Location> calculateLocations() {
-        resetLocations();
-        return locations;
+        List<Location> points = Lists.newArrayList();
+
+        for (double t = 0; t < 1; t += step) {
+            Vector v1 = p1.clone().subtract(p0).toVector();
+            Location t1 = p0.clone().add(v1.multiply(t));
+            Vector v2 = p2.clone().subtract(p1).toVector();
+            Location t2 = p1.clone().add(v2.multiply(t));
+            Vector v3 = p3.clone().subtract(p2).toVector();
+            Location t3 = p2.clone().add(v3.multiply(t));
+
+            Vector dv1 = t2.clone().subtract(t1).toVector();
+            Location d1 = t1.clone().add(dv1.multiply(t));
+            Vector dv2 = t3.clone().subtract(t2).toVector();
+            Location d2 = t2.clone().add(dv2.multiply(t));
+
+            Vector f1 = d2.clone().subtract(d1).toVector();
+            Location destination = d1.clone().add(f1.multiply(t));
+            points.add(destination.clone());
+        }
+
+        // 做一个对 Matrix 和 Increment 的兼容
+        return points.stream().map(location -> {
+            Location showLocation = location;
+            if (hasMatrix()) {
+                Vector v = new Vector(location.getX() - getOrigin().getX(), location.getY() - getOrigin().getY(), location.getZ() - getOrigin().getZ());
+                Vector changed = getMatrix().applyVector(v);
+
+                showLocation = getOrigin().clone().add(changed);
+            }
+
+            showLocation.add(getIncrementX(), getIncrementY(), getIncrementZ());
+            return showLocation;
+        }).collect(Collectors.toList());
     }
 
     @Override

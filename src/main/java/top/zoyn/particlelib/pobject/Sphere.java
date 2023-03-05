@@ -1,12 +1,15 @@
 package top.zoyn.particlelib.pobject;
 
+import com.google.common.collect.Lists;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 import top.zoyn.particlelib.ParticleLib;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 表示一个球
@@ -51,8 +54,35 @@ public class Sphere extends ParticleObject implements Playable {
 
     @Override
     public List<Location> calculateLocations() {
-        resetLocations();
-        return locations;
+        List<Location> points = Lists.newArrayList();
+
+        for (int i = 0; i < sample; i++) {
+            // y goes from 1 to -1
+            double y = 1 - (i / (sample - 1f)) * 2;
+            // radius at y
+            double yRadius = Math.sqrt(1 - y * y);
+            // golden angle increment
+            double theta = phi * i;
+            double x = Math.cos(theta) * radius * yRadius;
+            double z = Math.sin(theta) * radius * yRadius;
+            y *= radius;
+
+            points.add(getOrigin().clone().add(x, y, z));
+        }
+
+        // 做一个对 Matrix 和 Increment 的兼容
+        return points.stream().map(location -> {
+            Location showLocation = location;
+            if (hasMatrix()) {
+                Vector v = new Vector(location.getX() - getOrigin().getX(), location.getY() - getOrigin().getY(), location.getZ() - getOrigin().getZ());
+                Vector changed = getMatrix().applyVector(v);
+
+                showLocation = getOrigin().clone().add(changed);
+            }
+
+            showLocation.add(getIncrementX(), getIncrementY(), getIncrementZ());
+            return showLocation;
+        }).collect(Collectors.toList());
     }
 
     @Override

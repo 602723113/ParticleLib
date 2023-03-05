@@ -3,6 +3,7 @@ package top.zoyn.particlelib.pobject;
 import com.google.common.collect.Lists;
 import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 import top.zoyn.particlelib.ParticleLib;
 
 import java.util.List;
@@ -76,7 +77,17 @@ public class Heart extends ParticleObject implements Playable {
             double x = xScaleRate * Math.sin(t) * Math.cos(t) * Math.log(Math.abs(t));
             double y = yScaleRate * Math.sqrt(Math.abs(t)) * Math.cos(t);
 
-            points.add(getOrigin().clone().add(x, 0, y));
+            Location showLocation = getOrigin().clone().add(x, 0, y);
+            if (hasMatrix()) {
+                Vector vector = new Vector(x, 0, y);
+                Vector changed = getMatrix().applyVector(vector);
+
+                showLocation = getOrigin().clone().add(changed);
+            }
+
+            showLocation.add(getIncrementX(), getIncrementY(), getIncrementZ());
+            points.add(showLocation);
+//            points.add(getOrigin().clone().add(x, 0, y));
         }
         return points;
     }

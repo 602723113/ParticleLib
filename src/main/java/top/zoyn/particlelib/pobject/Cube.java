@@ -6,6 +6,7 @@ import org.bukkit.util.Vector;
 import top.zoyn.particlelib.utils.VectorUtils;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 表示一个立方体特效
@@ -112,13 +113,26 @@ public class Cube extends ParticleObject {
             for (double j = 0; j < length; j += step) {
                 Location spawnLoc = newOrigin.clone().add(vector.clone().multiply(j));
                 points.add(spawnLoc);
-                points.add(spawnLoc.add(0, height, 0));
+                points.add(spawnLoc.clone().add(0, height, 0));
             }
             // 获取结束时的坐标
             newOrigin = newOrigin.clone().add(vector.clone().multiply(length));
             vector = VectorUtils.rotateAroundAxisY(vector, 90D);
         }
-        return points;
+
+        // 做一个对 Matrix 和 Increment 的兼容
+        return points.stream().map(location -> {
+            Location showLocation = location;
+            if (hasMatrix()) {
+                Vector v = new Vector(location.getX() - getOrigin().getX(), location.getY() - getOrigin().getY(), location.getZ() - getOrigin().getZ());
+                Vector changed = getMatrix().applyVector(v);
+
+                showLocation = getOrigin().clone().add(changed);
+            }
+
+            showLocation.add(getIncrementX(), getIncrementY(), getIncrementZ());
+            return showLocation;
+        }).collect(Collectors.toList());
     }
 
     @Override

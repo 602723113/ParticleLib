@@ -2,6 +2,7 @@ package top.zoyn.particlelib.pobject;
 
 import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 import top.zoyn.particlelib.ParticleLib;
 
 import java.util.ArrayList;
@@ -59,8 +60,18 @@ public class FilledCircle extends ParticleObject implements Playable {
             double x = radius * r * Math.cos(theta);
             double z = radius * r * Math.sin(theta);
 
-            Location spawnLocation = getOrigin().clone().add(x, 0, z);
-            locations.add(spawnLocation);
+            Location showLocation = getOrigin().clone().add(x, 0, z);
+            if (hasMatrix()) {
+                Vector vector = new Vector(x, 0 ,z);
+                Vector changed = getMatrix().applyVector(vector);
+
+                showLocation = getOrigin().clone().add(changed);
+            }
+
+            showLocation.add(getIncrementX(), getIncrementY(), getIncrementZ());
+            locations.add(showLocation);
+//            Location spawnLocation = getOrigin().clone().add(x, 0, z);
+//            locations.add(spawnLocation);
         }
         return locations;
     }

@@ -6,6 +6,7 @@ import org.bukkit.util.Vector;
 import top.zoyn.particlelib.utils.VectorUtils;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 表示一个翅膀
@@ -74,7 +75,20 @@ public class Wing extends ParticleObject {
             points.add(getOrigin().clone().add(VectorUtils.rotateVector(vector, (float) currentAngle, 0F)));
             points.add(getOrigin().clone().add(VectorUtils.rotateVector(vector.clone().setX(-vector.getX()), -(float) currentAngle, 0F)));
         }
-        return points;
+
+        // 做一个对 Matrix 和 Increment 的兼容
+        return points.stream().map(location -> {
+            Location showLocation = location;
+            if (hasMatrix()) {
+                Vector v = new Vector(location.getX() - getOrigin().getX(), location.getY() - getOrigin().getY(), location.getZ() - getOrigin().getZ());
+                Vector changed = getMatrix().applyVector(v);
+
+                showLocation = getOrigin().clone().add(changed);
+            }
+
+            showLocation.add(getIncrementX(), getIncrementY(), getIncrementZ());
+            return showLocation;
+        }).collect(Collectors.toList());
     }
 
     @Override

@@ -3,6 +3,7 @@ package top.zoyn.particlelib.pobject;
 import com.google.common.collect.Lists;
 import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 import top.zoyn.particlelib.ParticleLib;
 
 import java.util.List;
@@ -75,7 +76,17 @@ public class Arc extends ParticleObject implements Playable {
             double radians = Math.toRadians(i);
             double x = radius * Math.cos(radians);
             double z = radius * Math.sin(radians);
-            points.add(getOrigin().clone().add(x, 0, z));
+
+            Location showLocation = getOrigin().clone().add(x, 0, z);
+            if (hasMatrix()) {
+                Vector vector = new Vector(x, 0, z);
+                Vector changed = getMatrix().applyVector(vector);
+
+                showLocation = getOrigin().clone().add(changed);
+            }
+
+            showLocation.add(getIncrementX(), getIncrementY(), getIncrementZ());
+            points.add(showLocation);
         }
         return points;
     }
