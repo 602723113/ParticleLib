@@ -197,19 +197,6 @@ public abstract class ParticleObject {
     }
 
     /**
-     * 给该特效对象设置一个矩阵
-     * <p>
-     * 该方法将会直接覆盖之前所有已经变换好的矩阵
-     *
-     * @param matrix 给定的矩阵
-     * @return {@link ParticleObject}
-     */
-    public ParticleObject setMatrix(Matrix matrix) {
-        this.matrix = matrix;
-        return this;
-    }
-
-    /**
      * 移除该特效对象的矩阵
      *
      * @return {@link ParticleObject}
@@ -226,6 +213,94 @@ public abstract class ParticleObject {
      */
     public boolean hasMatrix() {
         return matrix != null;
+    }
+
+    /**
+     * 得到该特效对象的矩阵
+     *
+     * @return {@link Matrix}
+     */
+    public Matrix getMatrix() {
+        return matrix;
+    }
+
+    /**
+     * 给该特效对象设置一个矩阵
+     * <p>
+     * 该方法将会直接覆盖之前所有已经变换好的矩阵
+     *
+     * @param matrix 给定的矩阵
+     * @return {@link ParticleObject}
+     */
+    public ParticleObject setMatrix(Matrix matrix) {
+        this.matrix = matrix;
+        return this;
+    }
+
+    /**
+     * 得到 X 轴上的增量
+     *
+     * @return X 轴的增量
+     */
+    public double getIncrementX() {
+        return incrementX;
+    }
+
+    /**
+     * 设置 {@link ParticleObject#spawnParticle(Location, Particle, int, double, double, double, double, Object)} 时 X 轴上的增量
+     * <p>
+     * 换言之是在 X 轴上固定移动 incrementX 个单位
+     *
+     * @param incrementX X 轴的增量
+     * @return {@link ParticleObject}
+     */
+    public ParticleObject setIncrementX(double incrementX) {
+        this.incrementX = incrementX;
+        return this;
+    }
+
+    /**
+     * 得到 Y 轴上的增量
+     *
+     * @return Y 轴的增量
+     */
+    public double getIncrementY() {
+        return incrementY;
+    }
+
+    /**
+     * 设置 {@link ParticleObject#spawnParticle(Location, Particle, int, double, double, double, double, Object)} 时 Y 轴上的增量
+     * <p>
+     * 换言之是在 Y 轴上固定移动 incrementY 个单位
+     *
+     * @param incrementY Y 轴的增量
+     * @return {@link ParticleObject}
+     */
+    public ParticleObject setIncrementY(double incrementY) {
+        this.incrementY = incrementY;
+        return this;
+    }
+
+    /**
+     * 得到 Z 轴上的增量
+     *
+     * @return Z 轴的增量
+     */
+    public double getIncrementZ() {
+        return incrementZ;
+    }
+
+    /**
+     * 设置 {@link ParticleObject#spawnParticle(Location, Particle, int, double, double, double, double, Object)} 时 Z 轴上的增量
+     * <p>
+     * 换言之是在 Z 轴上固定移动 incrementZ 个单位
+     *
+     * @param incrementZ Z 轴的增量
+     * @return {@link ParticleObject}
+     */
+    public ParticleObject setIncrementZ(double incrementZ) {
+        this.incrementZ = incrementZ;
+        return this;
     }
 
     /**
@@ -482,45 +557,6 @@ public abstract class ParticleObject {
      */
     public ParticleObject attachEntity(Entity entity) {
         this.entity = entity;
-        return this;
-    }
-
-    /**
-     * 设置 {@link ParticleObject#spawnParticle(Location, Particle, int, double, double, double, double, Object)} 时 X 轴上的增量
-     * <p>
-     * 换言之是在 X 轴上固定移动 incrementX 个单位
-     *
-     * @param incrementX X 轴的增量
-     * @return {@link ParticleObject}
-     */
-    public ParticleObject setIncrementX(double incrementX) {
-        this.incrementX = incrementX;
-        return this;
-    }
-
-    /**
-     * 设置 {@link ParticleObject#spawnParticle(Location, Particle, int, double, double, double, double, Object)} 时 Y 轴上的增量
-     * <p>
-     * 换言之是在 Y 轴上固定移动 incrementY 个单位
-     *
-     * @param incrementY Y 轴的增量
-     * @return {@link ParticleObject}
-     */
-    public ParticleObject setIncrementY(double incrementY) {
-        this.incrementY = incrementY;
-        return this;
-    }
-
-    /**
-     * 设置 {@link ParticleObject#spawnParticle(Location, Particle, int, double, double, double, double, Object)} 时 Z 轴上的增量
-     * <p>
-     * 换言之是在 Z 轴上固定移动 incrementZ 个单位
-     *
-     * @param incrementZ Z 轴的增量
-     * @return {@link ParticleObject}
-     */
-    public ParticleObject setIncrementZ(double incrementZ) {
-        this.incrementZ = incrementZ;
         return this;
     }
 
