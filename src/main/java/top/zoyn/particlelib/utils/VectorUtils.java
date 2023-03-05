@@ -108,4 +108,61 @@ public class VectorUtils {
 
         return new Vector(x, y, z);
     }
+
+    /**
+     * 判断一个向量是否已单位化
+     *
+     * @param vector 向量
+     * @return 是否单位化
+     */
+    public static boolean isNormalized(Vector vector) {
+        return Math.abs(vector.lengthSquared() - 1) < Vector.getEpsilon();
+    }
+
+    /**
+     * 空间向量绕任一向量旋转
+     *
+     * @param vector 待旋转向量
+     * @param axis   旋转轴向量
+     * @param angle  旋转角度
+     * @return {@link Vector}
+     */
+    public static Vector rotateAroundAxis(Vector vector, Vector axis, double angle) {
+        return rotateAroundNonUnitAxis(vector, isNormalized(axis) ? axis : axis.clone().normalize(), angle);
+    }
+
+    /**
+     * 空间向量绕任一向量旋转
+     * <p>注: 这里的旋转轴必须为已单位化才可使用!</p>
+     * <p>
+     * 罗德里格旋转公式: https://zh.wikipedia.org/wiki/%E7%BD%97%E5%BE%B7%E9%87%8C%E6%A0%BC%E6%97%8B%E8%BD%AC%E5%85%AC%E5%BC%8F
+     * <p>
+     * 正常人能看懂的: https://www.cnblogs.com/wubugui/p/3734627.html
+     *
+     * @param vector 要旋转的向量
+     * @param axis   旋转轴向量
+     * @param angle  旋转角度
+     * @return {@link Vector}
+     */
+    public static Vector rotateAroundNonUnitAxis(Vector vector, Vector axis, double angle) {
+        double x = vector.getX(), y = vector.getY(), z = vector.getZ();
+        double x2 = axis.getX(), y2 = axis.getY(), z2 = axis.getZ();
+
+        double cosTheta = Math.cos(angle);
+        double sinTheta = Math.sin(angle);
+        double dotProduct = vector.dot(axis);
+
+        double xPrime = x2 * dotProduct * (1d - cosTheta)
+                + x * cosTheta
+                + (-z2 * y + y2 * z) * sinTheta;
+        double yPrime = y2 * dotProduct * (1d - cosTheta)
+                + y * cosTheta
+                + (z2 * x - x2 * z) * sinTheta;
+        double zPrime = z2 * dotProduct * (1d - cosTheta)
+                + z * cosTheta
+                + (-y2 * x + x2 * y) * sinTheta;
+
+        return vector.setX(xPrime).setY(yPrime).setZ(zPrime);
+    }
+
 }

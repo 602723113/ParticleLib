@@ -31,7 +31,7 @@ public class LocationUtils {
 
     public static Location rotateLocationAboutVector(Location location, Location origin, double angle, Vector axis) {
         Vector vector = location.clone().subtract(origin).toVector();
-        return origin.clone().add(vector.rotateAroundAxis(axis, angle));
+        return origin.clone().add(VectorUtils.rotateAroundAxis(vector, axis, angle));
     }
 
     /**
