@@ -611,4 +611,29 @@ public abstract class ParticleObject {
         location.getWorld().spawnParticle(particle, showLocation, count, offsetX, offsetY, offsetZ, extra, data);
     }
 
+    public void spawnColorParticle(Location location, int r, int g, int b) {
+        Location showLocation = location;
+        if (hasMatrix()) {
+            Vector vector = location.clone().subtract(origin).toVector();
+            Vector changed = matrix.applyVector(vector);
+
+            showLocation = origin.clone().add(changed);
+        }
+
+        // 在这里可以设置一个XYZ的变化量
+        showLocation.add(incrementX, incrementY, incrementZ);
+
+        if (VersionUtils.isNewer()) {
+            Particle.DustOptions dust = new Particle.DustOptions(Color.fromRGB(r, g, b), 1);
+            location.getWorld().spawnParticle(Particle.REDSTONE, showLocation.getX(), showLocation.getY(), showLocation.getZ(), 0, r, g, b, 1, dust);
+        } else {
+            // 对低版本的黑色做一个小小的兼容
+            if (color.getRed() == 0 && color.getBlue() == 0 && color.getGreen() == 0) {
+                location.getWorld().spawnParticle(Particle.REDSTONE, showLocation.getX(), showLocation.getY(), showLocation.getZ(), 0, Float.MIN_VALUE / 255.0f, Float.MIN_VALUE / 255.0f, Float.MIN_VALUE / 255.0f, 1);
+            } else {
+                location.getWorld().spawnParticle(Particle.REDSTONE, showLocation.getX(), showLocation.getY(), showLocation.getZ(), 0, r / 255.0f, g / 255.0f, b / 255.0f, 1);
+            }
+        }
+    }
+
 }
