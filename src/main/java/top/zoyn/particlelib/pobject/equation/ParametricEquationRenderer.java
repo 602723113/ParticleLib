@@ -111,7 +111,12 @@ public class ParametricEquationRenderer extends ParticleObject implements Playab
 
     @Override
     public void show() {
-
+        for (double t = minT; t < maxT; t += dt) {
+            double x = xFunction.apply(t);
+            double y = yFunction.apply(t);
+            double z = zFunction.apply(t);
+            spawnParticle(getOrigin().clone().add(x, y, z));
+        }
     }
 
     @Override
