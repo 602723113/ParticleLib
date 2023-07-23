@@ -57,8 +57,9 @@ public class PolarEquationRenderer extends ParticleObject implements Playable {
         List<Location> points = Lists.newArrayList();
         for (double theta = minTheta; theta < maxTheta; theta += dTheta) {
             double rho = function.apply(theta);
-            double x = rho * Math.cos(theta);
-            double y = rho * Math.sin(theta);
+            double rad = Math.toRadians(theta);
+            double x = rho * Math.cos(rad);
+            double y = rho * Math.sin(rad);
             points.add(getOrigin().clone().add(x, y, 0));
         }
         // 做一个对 Matrix 和 Increment 的兼容
@@ -80,8 +81,9 @@ public class PolarEquationRenderer extends ParticleObject implements Playable {
     public void show() {
         for (double theta = minTheta; theta < maxTheta; theta += dTheta) {
             double rho = function.apply(theta);
-            double x = rho * Math.cos(theta);
-            double y = rho * Math.sin(theta);
+            double rad = Math.toRadians(theta);
+            double x = rho * Math.cos(rad);
+            double y = rho * Math.sin(rad);
             spawnParticle(getOrigin().clone().add(x, y, 0));
         }
     }
@@ -99,8 +101,9 @@ public class PolarEquationRenderer extends ParticleObject implements Playable {
                 currentTheta += dTheta;
 
                 double rho = function.apply(currentTheta);
-                double x = rho * Math.cos(currentTheta);
-                double y = rho * Math.sin(currentTheta);
+                double rad = Math.toRadians(currentTheta);
+                double x = rho * Math.cos(rad);
+                double y = rho * Math.sin(rad);
                 spawnParticle(getOrigin().clone().add(x, y, 0));
             }
         }.runTaskTimer(ParticleLib.getInstance(), 0, getPeriod());
@@ -115,8 +118,9 @@ public class PolarEquationRenderer extends ParticleObject implements Playable {
         currentTheta += dTheta;
 
         double rho = function.apply(currentTheta);
-        double x = rho * Math.cos(currentTheta);
-        double y = rho * Math.sin(currentTheta);
+        double rad = Math.toRadians(currentTheta);
+        double x = rho * Math.cos(rad);
+        double y = rho * Math.sin(rad);
         spawnParticle(getOrigin().clone().add(x, y, 0));
     }
 
